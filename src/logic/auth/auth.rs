@@ -1,4 +1,5 @@
-use crate::App;
+use crate::login_app::AppLogin;
+use crate::login_app::AppViewLogin;
 use crate::app::AppView;
 use ratatui::backend::CrosstermBackend;
 use ratatui::widgets::{Block, Borders};
@@ -12,8 +13,9 @@ use ratatui::{
 use crate::api::server::auth::*;
 use crossterm::event::{self, KeyEvent, KeyCode};  
 
-impl App {
-    pub fn auth(&mut self) -> io::Result<()> {
+
+impl AppLogin {
+    pub async fn auth(&mut self) -> io::Result<()> {
         /// init input area
         let stdout = io::stdout();
         let stdout = stdout.lock();
@@ -130,4 +132,3 @@ impl App {
         }
     }
 }
-

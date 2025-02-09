@@ -28,7 +28,6 @@ use rusqlite::Connection;
 use std::thread;
 use std::time::Duration;
 
-
 pub enum AppView {
     Home,
     Library,
@@ -82,7 +81,6 @@ impl App {
         // init config
         let config = load_config()?;
 
-        let bool_test = true;
         let mut view_state = AppView::Home; // By default, Home will be the first AppView launched when the app start
         // Default view_state
         // init database from Database struct
