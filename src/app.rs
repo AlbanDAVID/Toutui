@@ -650,7 +650,7 @@ impl App {
 
             // previous chapter
             KeyCode::Char('U') => {
-                let _ = handle_key_player("P", self.config.player.address.as_str(), self.config.player.port.as_str(), &mut is_playback, self.username.as_str());
+                let _ = handle_key_player("U", self.config.player.address.as_str(), self.config.player.port.as_str(), &mut is_playback, self.username.as_str());
             }
 
             // speed rate up
@@ -668,12 +668,12 @@ impl App {
                 let _ = handle_key_player("o", self.config.player.address.as_str(), self.config.player.port.as_str(), &mut is_playback, self.username.as_str()); 
             }
 
-            // speed rate down
+            // volume down
             KeyCode::Char('i') => {
                 let _ = handle_key_player("i", self.config.player.address.as_str(), self.config.player.port.as_str(), &mut is_playback, self.username.as_str()); 
             }
 
-            // shutdown
+            // shutdown VLC
             KeyCode::Char('Y') => {
                 let _ = handle_key_player("Y", self.config.player.address.as_str(), self.config.player.port.as_str(), &mut is_playback, self.username.as_str()); 
             }
