@@ -289,7 +289,13 @@ install_config() {
     done
 
     # config.
-    local example_config=config.example.toml
+    # create temp directory
+    local tmpdir
+    tmpdir=$(mktemp -d) # not supported in bash 3.2
+    # dl config.example.toml in temp directory
+    curl -LsSf https://github.com/AlbanDAVID/Toutui/raw/main/config.example.toml -o "$tmpdir/config.toml"
+
+    local example_config="$tmpdir/config.toml"
     if ! [[ -f "$example_config" ]]; then
         echo "[ERROR] \"config.example.toml\" not found."
         exit $EXIT_CONFIG
@@ -352,7 +358,7 @@ install_config() {
 	    # Enjoy Toutui's respect for their users' config files <|:^)
             echo -e "$merged_config" > "$user_config"
         else
-            cp config.example.toml "$user_config" || (echo "[ERROR] Cannot copy \"config.toml\"."; exit $EXIT_CONFIG)
+            cp "$example_config" "$user_config" || (echo "[ERROR] Cannot copy \"config.toml\"."; exit $EXIT_CONFIG)
         fi
     fi
 }
@@ -443,9 +449,9 @@ install_toutui() {
     install_deps # install essential and/or optional deps
     install_config # create ~/.config/toutui/ etc.
     install_rust # cornerstone! toutui is written by a crab
-    cargo build --release
+    cargo install --git https://github.com/AlbanDAVID/Toutui --branch stable
     # copy Toutui binary to system path
-    sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
+    # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
     echo "[DONE] Install complete. Type toutui in your terminal to run it."
     echo "[ADVICE] Explore themes: https://github.com/AlbanDAVID/Toutui-theme"
     echo "[ADVICE] Best experience with Kitty or Alacritty terminal."
