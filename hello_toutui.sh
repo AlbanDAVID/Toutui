@@ -289,7 +289,7 @@ install_config() {
     done
 
     # config.
-    # create temp directory
+     # create temp directory
     local tmpdir
     tmpdir=$(mktemp -d) # not supported in bash 3.2
     # dl config.example.toml in temp directory
@@ -306,8 +306,8 @@ install_config() {
         if [[ -f "$user_config" ]]; then
             # If maintainer decides adding options in "config.toml", we have to
             # update user's config file accordingly without breaking things up.
-	    # Here is an attempt. If you know of any way to simplify this, feel
-	    # free to PR <|:^)
+            # Here is an attempt. If you know of any way to simplify this, feel
+            # free to PR <|:^)
             local merged_config=
 
             # Grab sections from config.example.toml AND from user config (e.g. [player])
@@ -451,7 +451,7 @@ install_toutui() {
     install_rust # cornerstone! toutui is written by a crab
     cargo install --git https://github.com/AlbanDAVID/Toutui --branch stable
     # copy Toutui binary to system path
-     sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
+    # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
     echo "[DONE] Install complete. Type toutui in your terminal to run it."
     echo "[ADVICE] Explore themes: https://github.com/AlbanDAVID/Toutui-theme"
     echo "[ADVICE] Best experience with Kitty or Alacritty terminal."
