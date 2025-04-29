@@ -284,7 +284,7 @@ install_config() {
     local prompt="Please provide a secret key to encrypt the token stored in the database ($env): "
     local key=
     until [[ -f "$env" && $(sed "s/TOUTUI_SECRET_KEY=//g" "$env") != "" ]]; do
-        read -sp "$prompt: " key
+        read -p "$prompt: " key
         if ! [[ $key == "" ]]; then echo "TOUTUI_SECRET_KEY=${key}" > "$env"; echo;fi
     done
 
