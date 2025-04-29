@@ -451,7 +451,7 @@ install_toutui() {
     install_rust # cornerstone! toutui is written by a crab
     cargo install --git https://github.com/AlbanDAVID/Toutui --branch stable
     # copy Toutui binary to system path
-    # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
+     sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
     echo "[DONE] Install complete. Type toutui in your terminal to run it."
     echo "[ADVICE] Explore themes: https://github.com/AlbanDAVID/Toutui-theme"
     echo "[ADVICE] Best experience with Kitty or Alacritty terminal."
