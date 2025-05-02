@@ -19,11 +19,11 @@
 
 ## ✨ Features  
 ✅ **Cross-platform** – <img src=".github/tux.png" align="top" width="24" alt="Tux (Linux)"/>  Linux and <img src=".github/apple.png" align="top" width="24" alt="Apple (macOS)"/> macOS    
-✅ **Lightweight & Fast** – A minimalist, terminal-based UI (TUI) written in Rust 🦀  
+✅ **Lightweight & Fast** – A minimalist terminal user interface (TUI) written in Rust 🦀  
 ✅ **Supports Books & Podcasts** – Enjoy both audiobooks and podcasts  
 ✅ **Sync Progress & Stats** – Keep your listening progress in sync  
 ✅ **Streaming Support** – Play directly without downloading  
-✅ **Customizable Color Theme** – A config file will allow you to customize the color theme. Explore themes [here](https://github.com/AlbanDAVID/Toutui-theme).
+✅ **Customizable Color Theme** – A config file will allow you to customize the color theme. Explore and try various themes [here](https://github.com/AlbanDAVID/Toutui-theme).
 
 ## 📰 Media
 <img src=".github/korben.png" align="top" width="50" alt="Korben"/> Featured on [Korben](https://korben.info/toutui-client-terminal-audiobookshelf.html), a well-known French tech blog covering open source and technology.
