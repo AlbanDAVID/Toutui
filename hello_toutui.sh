@@ -449,7 +449,8 @@ install_toutui() {
     install_deps # install essential and/or optional deps
     install_config # create ~/.config/toutui/ etc.
     install_rust # cornerstone! toutui is written by a crab
-    cargo install --git https://github.com/AlbanDAVID/Toutui --branch stable
+    #cargo install --git https://github.com/AlbanDAVID/Toutui --branch stable
+    cargo install --git https://github.com/AlbanDAVID/Toutui.git --tag v0.3.4-beta
     # copy Toutui binary to system path
     # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
     echo "[DONE] Install complete. Type toutui in your terminal to run it."
@@ -512,8 +513,8 @@ update_toutui() {
     install_deps # check for new deps
     local local_release=$(get_toutui_local_release)
     local github_release=$(get_toutui_github_release)
-    echo "[INFO] Local :  $local_release"
-    echo "[INFO] GitHub : $github_release"
+    echo "[INFO] Local:  $local_release"
+    echo "[INFO] GitHub: $github_release"
     if [[ $local_release == $github_release ]]; then
         echo "[INFO] Up to date (version $local_release)."
     else
