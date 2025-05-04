@@ -449,8 +449,7 @@ install_toutui() {
     install_deps # install essential and/or optional deps
     install_config # create ~/.config/toutui/ etc.
     install_rust # cornerstone! toutui is written by a crab
-    cargo install --git https://github.com/AlbanDAVID/Toutui.git --tag v0.3.4-beta
-
+    cargo install --git https://github.com/AlbanDAVID/Toutui --branch stable
     # copy Toutui binary to system path
     # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
     echo "[DONE] Install complete. Type toutui in your terminal to run it."
@@ -498,8 +497,9 @@ pull_latest_version() {
             git fetch && git pull
             echo "[INFO] Installing latest version..."
 	    install_config
-            cargo build --release
-            sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
+            cargo install --force --git https://github.com/AlbanDAVID/Toutui --branch stable
+           # cargo build --release
+           # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
             echo "[OK] Latest version installed (v$version)."
             ;;
     esac
