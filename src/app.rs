@@ -29,7 +29,7 @@ use crate::player::vlc::quit_vlc::*;
 use crate::logic::sync_session::sync_session_from_database::*;
 use crate::logic::sync_session::wait_prev_session_finished::*;
 use crate::player::integrated::handle_key_player::*;
-
+use crate::utils::check_update::*;
 
 pub enum AppView {
     Home,
@@ -148,6 +148,7 @@ pub struct App {
     pub start_vlc_program: String,
     pub config: ConfigFile,
     pub changelog: String,
+    pub update_msg: String,
 }
 
 /// Init app
@@ -452,6 +453,12 @@ impl App {
         start_vlc_program = "/Applications/VLC.app/Contents/MacOS/VLC".to_string();
     }
 
+    // Init for check_update
+    let update_msg = match check_update().await {
+        Some(msg) => msg,
+        None => "".to_string(),
+    };
+
     // Init ListeState for `Home` list (continue listening)
     let mut list_state_cnt_list = ListState::default(); // init the ListState ratatui's widget
     list_state_cnt_list.select(Some(0)); // select the first item of the list when app is launch
@@ -590,6 +597,7 @@ impl App {
         start_vlc_program,
         config,
         changelog,
+        update_msg,
     })
     }
 
