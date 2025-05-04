@@ -1,5 +1,5 @@
 [package]
-name = "Toutui"
+name = "toutui"
 version = "0.3.5-beta"
 edition = "2021"
 
