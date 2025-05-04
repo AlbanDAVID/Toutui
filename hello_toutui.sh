@@ -493,10 +493,10 @@ pull_latest_version() {
         no)
             echo "[INFO] Ignoring latest version.";;
         yes)
-            echo "[INFO] Pulling latest version..."
-            git fetch && git pull
+           # echo "[INFO] Pulling latest version..."
+           # git fetch && git pull
             echo "[INFO] Installing latest version..."
-	    install_config
+	        install_config
             cargo install --force --git https://github.com/AlbanDAVID/Toutui --branch stable
            # cargo build --release
            # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
