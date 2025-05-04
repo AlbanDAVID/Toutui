@@ -40,7 +40,7 @@ pub async fn get_latest_release_gh() -> Result<String, Box<dyn std::error::Error
     let v: Value = serde_json::from_str(&text)?;
 
     if let Some(tag_name) = v["tag_name"].as_str() {
-        Ok(tag_name.to_string())
+    Ok(tag_name.trim_start_matches('v').to_string())
     } else {
         Err("[get_latest_release_gh] couldn't find last release".into())
     }
