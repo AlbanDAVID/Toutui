@@ -3,6 +3,9 @@ name = "toutui"
 version = "0.3.5-beta"
 edition = "2021"
 
+[[bin]]
+name = "toutui"
+
 [dependencies]
 openssl = "0.10.71"
 tokio = { version = "1", features = ["full"] }
