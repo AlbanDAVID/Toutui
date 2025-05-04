@@ -469,7 +469,7 @@ get_toutui_local_release() {
 #    fi
 #    grep "version" Cargo.toml | head -1 | sed -E "s/^version\s*=\s*\"([^\"]*)\"\s*$/\1/"
 
-version=$(Toutui --version | cut -d' ' -f2)
+(Toutui --version | cut -d' ' -f2)
 
 }
 
