@@ -463,11 +463,14 @@ post_update_msg() {
 }
 
 get_toutui_local_release() {
-    if ! [[ -f Cargo.toml ]]; then
-        echo "[ERROR] Cannot find \"Cargo.toml\"."
-        exit $EXIT_NO_CARGO_TOML
-    fi
-    grep "version" Cargo.toml | head -1 | sed -E "s/^version\s*=\s*\"([^\"]*)\"\s*$/\1/"
+#    if ! [[ -f Cargo.toml ]]; then
+#        echo "[ERROR] Cannot find \"Cargo.toml\"."
+#        exit $EXIT_NO_CARGO_TOML
+#    fi
+#    grep "version" Cargo.toml | head -1 | sed -E "s/^version\s*=\s*\"([^\"]*)\"\s*$/\1/"
+
+version=$(Toutui --version | cut -d' ' -f2)
+
 }
 
 get_toutui_github_release() {
