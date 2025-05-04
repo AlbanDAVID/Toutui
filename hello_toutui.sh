@@ -512,6 +512,8 @@ update_toutui() {
     install_deps # check for new deps
     local local_release=$(get_toutui_local_release)
     local github_release=$(get_toutui_github_release)
+    echo "Local :  $local_release"
+echo "GitHub : $github_release"
     if [[ $local_release == $github_release ]]; then
         echo "[INFO] Up to date (version $local_release)."
     else
