@@ -361,6 +361,8 @@ install_config() {
             cp "$example_config" "$user_config" || (echo "[ERROR] Cannot copy \"config.toml\"."; exit $EXIT_CONFIG)
         fi
     fi
+
+    rm -rf "$tmpdir"
 }
 
 dep_already_installed() {
@@ -445,18 +447,111 @@ install_deps() {
     propose_optional_dependencies "${optionals[@]}"
 }
 
+install_update_menu() {
+    echo "[HELP] Option 1 is the most user-friendly installation. No compilation time, no need to install Rust/Cargo. However, if it does not work, select option 2."
+    PS3="Please enter your choice: "
+    options=("Option 1 - Use binary (Recommended)" "Option 2 - Compile from source" "Quit")
+
+    select opt in "${options[@]}"
+    do
+        case $REPLY in
+            1)
+                install_method="binary"
+                break
+                ;;
+            2)
+                install_method="source"
+                break
+                ;;
+            3)
+                echo "Bye!"
+                exit 0
+                break
+                ;;
+            *)
+                echo "Invalid option: $REPLY"
+                ;;
+        esac
+    done
+}
+
+dl_handle_compressed_binary() {
+    local final_url=$1
+    local binary_name=$2
+    temp_dir=$(mktemp -d)
+    echo "[INFO] Downloading the compressed binary from $final_url"
+    sudo curl -L "$final_url" -o "$temp_dir/$binary_name"
+    echo "[INFO] Decompression"
+    sudo tar -xvzf "$temp_dir/$binary_name" -C "$temp_dir"
+    echo "[INFO] Copy the binary from temp directory to ~/.cargo/bin/"
+    cp "$temp_dir/toutui" "$HOME/.cargo/bin/"
+    echo "[INFO] Temp directory removed"
+    rm -rf "$temp_dir"
+}
+
+install_binary() {
+    # get the architecture
+    arch=$(uname -m)
+
+    # get full and latest version on github(e.g: v0.1.0-beta)
+    full_version=$(curl -s https://api.github.com/repos/AlbDav55/Toutui/releases/latest | grep tag_name | sed -E "s|.*\"([^\"]*)\",|\1|")
+
+    # get general url
+    general_url="https://github.com/AlbDav55/Toutui/releases/download/$full_version/{binary_name}"
+
+    # determine binary to download
+    if [[ "$OS" == "linux" && "$arch" == "x86_64" ]]; then
+        echo "[INFO] Linux x86_64 detected"
+        binary_name="toutui-x86_64-unknown-linux-gnu.tar.gz"
+        final_url=$(echo "$general_url" | sed "s/{binary_name}/$binary_name/")
+        dl_handle_compressed_binary "$final_url" "$binary_name"
+    fi
+    if [[ "$OS" == "linux" && "$arch" == "aarch64" ]]; then
+        echo "[INFO] Linux aarch64 detected"
+        binary_name="toutui-aarch64-unknown-linux-gnu.tar.gz"
+        final_url=$(echo "$general_url" | sed "s/{binary_name}/$binary_name/")
+        dl_handle_compressed_binary "$final_url" "$binary_name"
+    fi
+    if [[ "$OS" == "macOS" && "$arch" == "arm64" ]]; then
+        echo "[INFO] macOS arm64 detected"
+        binary_name="toutui-universal-apple-darwin.tar.gz" # for intel and sillicon
+        final_url=$(echo "$general_url" | sed "s/{binary_name}/$binary_name/")
+        dl_handle_compressed_binary "$final_url" "$binary_name"
+    fi
+    if [[ "$OS" == "macOS" && "$arch" == "x86_64" ]]; then
+        echo "[INFO] macOS x86_64 detected"
+        binary_name="toutui-universal-apple-darwin.tar.gz" # for intel and sillicon
+        final_url=$(echo "$general_url" | sed "s/{binary_name}/$binary_name/")
+        dl_handle_compressed_binary "$final_url" "$binary_name"
+    fi
+    if [[ "$OS" == "unknown" ]]; then
+        echo "unknown os"
+        exit 0
+        break
+    fi
+
+}
+
 install_toutui() {
-    install_deps # install essential and/or optional deps
-    install_config # create ~/.config/toutui/ etc.
-    install_rust # cornerstone! toutui is written by a crab
-    #cargo install --git https://github.com/AlbanDAVID/Toutui --branch install_with_cargo
-    cargo install --git https://github.com/AlbDav55/Toutui --branch stable
-    # copy Toutui binary to system path
-    # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
-    echo "[DONE] Install complete. Type toutui in your terminal to run it."
-    echo "[ADVICE] Explore themes: https://github.com/AlbanDAVID/Toutui-theme"
-    echo "[ADVICE] Best experience with Kitty or Alacritty terminal."
-    post_install_msg # only if .env not found
+    install_update_menu
+    if [[ "$install_method" == "binary" ]]; then
+        install_deps # install essential and/or optional deps
+        install_config # create ~/.config/toutui/ etc.
+        install_binary
+    elif [[ "$install_method" == "source" ]]; then
+        echo "Compiling from source..."
+        install_deps # install essential and/or optional deps
+        install_config # create ~/.config/toutui/ etc.
+        install_rust # cornerstone! toutui is written by a crab
+        #cargo install --git https://github.com/AlbanDAVID/Toutui --branch install_with_cargo
+        cargo install --git https://github.com/AlbDav55/Toutui --branch stable
+        # copy Toutui binary to system path
+        # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
+        echo "[DONE] Install complete. Type toutui in your terminal to run it."
+        echo "[ADVICE] Explore themes: https://github.com/AlbanDAVID/Toutui-theme"
+        echo "[ADVICE] Best experience with Kitty or Alacritty terminal."
+        post_install_msg # only if .env not found
+    fi
 }
 
 post_update_msg() {
