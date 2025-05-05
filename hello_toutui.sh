@@ -484,6 +484,7 @@ dl_handle_compressed_binary() {
     echo "[INFO] Decompression"
     sudo tar -xvzf "$temp_dir/$binary_name" -C "$temp_dir"
     echo "[INFO] Copy the binary from temp directory to ~/.cargo/bin/"
+    mkdir -p "$HOME/.cargo/bin"
     cp "$temp_dir/toutui" "$HOME/.cargo/bin/"
     echo "[INFO] Temp directory removed"
     rm -rf "$temp_dir"
