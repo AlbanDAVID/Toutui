@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Install Toutui and dependencies automagically.
+# bash -c 'tmpfile=$(mktemp) && curl -LsSf https://github.com/AlbanDAVID/Toutui/raw/install_with_cargo/hello_toutui.sh -o "$tmpfile" && bash "$tmpfile" install && rm -f "$tmpfile"'
 
 set -eo pipefail
 
