@@ -449,7 +449,8 @@ install_toutui() {
     install_deps # install essential and/or optional deps
     install_config # create ~/.config/toutui/ etc.
     install_rust # cornerstone! toutui is written by a crab
-    cargo install --git https://github.com/AlbanDAVID/Toutui --branch install_with_cargo
+    #cargo install --git https://github.com/AlbanDAVID/Toutui --branch install_with_cargo
+    cargo install --git https://github.com/AlbDav55/Toutui --branch stable
     # copy Toutui binary to system path
     # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
     echo "[DONE] Install complete. Type toutui in your terminal to run it."
@@ -474,11 +475,11 @@ toutui --version | cut -d' ' -f2
 }
 
 get_toutui_github_release() {
-    curl -s https://api.github.com/repos/AlbanDAVID/Toutui/releases/latest | grep tag_name | sed -E "s|.*\"v([^\"]*)\",|\1|"
+    curl -s https://api.github.com/repos/AlbDav55/Toutui/releases/latest | grep tag_name | sed -E "s|.*\"v([^\"]*)\",|\1|"
 }
 
 display_changelog() {
-    local changelog=$(curl -s https://api.github.com/repos/AlbanDAVID/Toutui/releases/latest | grep "\"body\"" | sed -E "s|^\s*\"body\":\s*\"([^\"]*)\"|\1|")
+    local changelog=$(curl -s https://api.github.com/repos/AlbDav55/Toutui/releases/latest | grep "\"body\"" | sed -E "s|^\s*\"body\":\s*\"([^\"]*)\"|\1|")
     echo -e "\x1b[2m### CHANGELOG ###\x1b[0m"
     echo -e "\x1b[2m$changelog\x1b[0m"
     echo -e "\x1b[2m#################\x1b[0m"
@@ -500,7 +501,7 @@ pull_latest_version() {
            # git fetch && git pull
             echo "[INFO] Installing latest version..."
 	        install_config
-            cargo install --force --git https://github.com/AlbanDAVID/Toutui --branch install_with_cargo
+            cargo install --force --git https://github.com/AlbDav55/Toutui --branch stable
            # cargo build --release
            # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
             echo "[OK] Latest version installed (v$version)."
