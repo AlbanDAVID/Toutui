@@ -243,6 +243,19 @@ source_cargo_env() {
     fi
 }
 
+export_source() {
+    if [[ $SHELL =~ \/(sh|bash|zsh|ash|pdksh) ]]; then
+        echo '. "$HOME/.cargo/env"' >> "$HOME/.bashrc"
+        echo '. "$HOME/.cargo/env"' >> "$HOME/.bash_profile"
+        echo '. "$HOME/.cargo/env"' >> "$HOME/.profile"
+        echo '. "$HOME/.cargo/env"' >> "$HOME/.zshrc"
+    elif [[ $SHELL =~ \/fish ]]; then
+        echo 'source "$HOME/.cargo/env.fish"' >> ~/.config/fish/config.fish
+    else
+        echo "[ERROR] Unsupported shell: $SHELL"
+    fi
+}
+
 install_packages() {
     local dep="$@"
     if (( ${#dep} == 0 )); then return; fi
@@ -461,7 +474,8 @@ export_cargo_bin_menu() {
             1)
                 curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/export_env_cargo/env" -o "$HOME/.cargo/env"
                 curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/export_env_cargo/env.fish" -o "$HOME/.cargo/env.fish"
-                #source_cargo_env
+                export_source
+                source_cargo_env
                 break
                 ;;
             2)
