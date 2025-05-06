@@ -461,7 +461,29 @@ export_cargo_bin_menu() {
             1)
                 curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/export_env_cargo/env" -o "$HOME/.cargo/env"
                 curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/export_env_cargo/env.fish" -o "$HOME/.cargo/env.fish"
-                sudo source_cargo_env
+                if [[ $SHELL =~ \/(sh|bash|zsh|ash|pdksh) ]]; then
+                    if [[ -z "${CARGO_HOME}" ]]; then
+                        source "$HOME/.cargo/env"
+                    else
+                        source "${CARGO_HOME}/env"
+                    fi
+                elif [[ $SHELL =~ \/fish ]]; then
+                    if [[ -z "${CARGO_HOME}" ]]; then
+                        source "$HOME/.cargo/env.fish"
+                    else
+                        source "${CARGO_HOME}/env.fish"
+                    fi
+                elif [[ $SHELL =~ \/nushell ]]; then
+                    if [[ -z "${CARGO_HOME}" ]]; then
+                        source "$HOME/.cargo/env.nu"
+                    else
+                        source "${CARGO_HOME}/env.nu"
+                    fi
+                else
+                    echo "[ERROR] Cannot source cargo environment automatically."
+                    echo "Open a new terminal and launch \"hello_toutui.sh\" again."
+                    exit $EXIT_NO_CARGO_PATH
+                fi
                 break
                 ;;
             2)
