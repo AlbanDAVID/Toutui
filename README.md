@@ -28,6 +28,7 @@
 ## 🛠️ Roadmap  
 **Short-term Goals**  
 - Since this is a beta version, the main focus is on tracking and fixing bugs.
+- Installation from binary.
 - Currently working on the next release: [v0.3.6-beta]
 
 **Mid-term Goals**  
