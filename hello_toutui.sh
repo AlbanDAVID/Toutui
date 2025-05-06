@@ -448,6 +448,55 @@ install_deps() {
     propose_optional_dependencies "${optionals[@]}"
 }
 
+export_cargo_bin_menu() {
+    PS3="Please enter your choice: "
+    options=(
+        "Option 1 - Export automatically now (Recommended)"
+        "Option 2 - No, I prefer do it by myself"
+
+    )
+    select opt in "${options[@]}"
+    do
+        case $REPLY in
+            1)
+                shell=$(echo $SHELL | grep -o "fish")
+                if [[ -n "$shell" ]]; then
+                    case ":${PATH}:" in
+                        *:"$HOME/.cargo/bin":*)
+                            ;;
+                        *)
+                            # Prepending path in case a system-installed rustc needs to be overridden
+                            export PATH="$HOME/.cargo/bin:$PATH"
+                            ;;
+                    esac
+                else
+                    if [[ ":$PATH:" != *":$HOME/.cargo/bin:"* ]]; then
+                        # Prepending path in case a system-installed rustc needs to be overridden
+                        export PATH="$HOME/.cargo/bin:$PATH"
+                    fi
+
+            2)
+            echo "You chose to do it manually."
+                break
+                ;;
+            *)
+                echo "Invalid option: $REPLY"
+                ;;
+        esac
+    done
+}
+export_cargo_bin(){
+
+    path_cargo_bin=$(echo $PATH | grep -o "$HOME/.cargo/bin")
+    if [[ -n "$path_cargo_bin" ]]; then
+        echo "~/cargo/bin is not exported in your PATH."
+        echo "You need it to run toutui"
+        export_cargo_bin_menu
+    else
+        echo "~/.cargo/bin already exported in PATH"
+    fi
+
+}
 install_update_menu() {
     echo "[HELP] Option 1 is the most user-friendly installation. No compilation time, no need to install Rust/Cargo. However, if it does not work, select option 2."
     PS3="Please enter your choice: "
