@@ -462,7 +462,6 @@ export_cargo_bin_menu() {
                 curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/export_env_cargo/env" -o "$HOME/.cargo/env"
                 curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/export_env_cargo/env.fish" -o "$HOME/.cargo/env.fish"
                 source_cargo_env
-                break
                 ;;
             2)
                 echo "You chose to do it manually."
