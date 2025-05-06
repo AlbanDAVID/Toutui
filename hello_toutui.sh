@@ -249,8 +249,10 @@ export_source() {
         echo '. "$HOME/.cargo/env"' >> "$HOME/.bash_profile"
         echo '. "$HOME/.cargo/env"' >> "$HOME/.profile"
         echo '. "$HOME/.cargo/env"' >> "$HOME/.zshrc"
+        source "$HOME/.cargo/env"
     elif [[ $SHELL =~ \/fish ]]; then
-        echo 'source "$HOME/.cargo/env.fish"' >> ~/.config/fish/config.fish
+        echo 'source "$HOME/.cargo/env.fish"' >> "$HOME/.config/fish/config.fish"
+        source "$HOME/.cargo/env.fish"
     else
         echo "[ERROR] Unsupported shell: $SHELL"
     fi
@@ -466,7 +468,6 @@ export_cargo_bin_menu() {
     options=(
         "Option 1 - Export automatically now (Recommended)"
         "Option 2 - No, I prefer do it by myself"
-
     )
     select opt in "${options[@]}"
     do
@@ -475,7 +476,9 @@ export_cargo_bin_menu() {
                 curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/export_env_cargo/env" -o "$HOME/.cargo/env"
                 curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/export_env_cargo/env.fish" -o "$HOME/.cargo/env.fish"
                 export_source
-                source_cargo_env
+               # echo "[IMPORTANT] Restart you terminal or type the following command in your terminal:"
+               # echo "bash, zsh, sh:"
+               # echo "source
                 break
                 ;;
             2)
@@ -492,10 +495,10 @@ export_cargo_bin_menu() {
 export_cargo_bin() {
     path_cargo_bin=$(echo $PATH | grep -o "$HOME/.cargo/bin")
     if [[ -n "$path_cargo_bin" ]]; then
-        echo "~/.cargo/bin already exported in PATH"
+        echo "[INFO] ~/.cargo/bin already exported in PATH"
     else
-        echo "~/cargo/bin is not exported in your PATH."
-        echo "You need it to run toutui"
+        echo "[WARN] ~/cargo/bin is not exported in your PATH."
+        echo "[WARN] You need it to run toutui"
         export_cargo_bin_menu
     fi
 }
@@ -618,7 +621,7 @@ install_toutui() {
         install_binary
         export_cargo_bin
         echo "[DONE] Install complete. Type toutui in your terminal to run it."
-        echo "[ADVICE] Explore themes: https://github.com/AlbanDAVID/Toutui-theme"
+        echo "[ADVICE] Explore and try various themes: https://github.com/AlbanDAVID/Toutui-theme"
         echo "[ADVICE] Best experience with Kitty or Alacritty terminal."
     elif [[ "$install_method" == "source" ]]; then
         echo "Compiling from source..."
@@ -630,7 +633,7 @@ install_toutui() {
         # copy Toutui binary to system path
         # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
         echo "[DONE] Install complete. Type toutui in your terminal to run it."
-        echo "[ADVICE] Explore themes: https://github.com/AlbanDAVID/Toutui-theme"
+        echo "[ADVICE] Explore and try various themes: https://github.com/AlbanDAVID/Toutui-theme"
         echo "[ADVICE] Best experience with Kitty or Alacritty terminal."
         post_install_msg # only if .env not found
     fi
