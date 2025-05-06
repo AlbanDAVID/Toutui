@@ -6,10 +6,6 @@
 </p>
 
 <p align="center">
-    🚀 <strong>Be toutui and enjoy audiobookshelf from your terminal!</strong>
-</p>
-
-<p align="center">
     <img src="assets/demo_3.gif" alt="🎬 Demo">
 </p>
 
