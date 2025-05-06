@@ -36,24 +36,24 @@ load_dependencies() {
     # os:package_to_install(:cmd)?
     HC_DEPS=(
         arch:gnu-netcat:netcat \
-        centos:libsqlite3-dev:no_check \
+        #centos:libsqlite3-dev:no_check \
         centos:nc \
         *centos:epel-release \
         debian:netcat \
-        debian:libsqlite3-dev:no_check \
-        debian:libssl-dev:no_check \
+        #debian:libsqlite3-dev:no_check \
+        #debian:libssl-dev:no_check \
         fedora:nc \
         linux:curl \
         *linux:kitty \
-        linux:pkg-config \
-        linux:sqlite3 \
+        #linux:pkg-config \
+        #linux:sqlite3 \
         linux:vlc  \
         macOS:curl \
         *macOS:kitty \
         macOS:netcat\
         #%macOS:openssl \
-        macOS:pkg-config \
-        macOS:sqlite3 \
+        #macOS:pkg-config \
+        #macOS:sqlite3 \
         macOS:vlc \
         opensuse:netcat \
     )
@@ -171,10 +171,10 @@ get_distro() {
     echo "$distro"
 }
 
-#install_brew() {
-#    # adapted from https://brew.sh/
-#    bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-#}
+install_brew() {
+    # adapted from https://brew.sh/
+    bash -c "$(sudo curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+}
 
 install_from_source() {
     echo "[ERROR] Could not identify OS/Distro."
@@ -261,9 +261,9 @@ install_packages() {
 	    if command -v brew >/dev/null 2>&1; then
     	        brew install ${dep[@]}
     	    else
-    	        #install_brew
-    	        echo "[ERROR] Please install \"brew\"."
-    	        exit $EXIT_FAIL
+    	        install_brew
+    	        #echo "[ERROR] Please install \"brew\"."
+    	        #exit $EXIT_FAIL
     	    fi ;;
     esac
     echo "[INFO] Packages installed successfully."
@@ -451,7 +451,11 @@ install_deps() {
 install_update_menu() {
     echo "[HELP] Option 1 is the most user-friendly installation. No compilation time, no need to install Rust/Cargo. However, if it does not work, select option 2."
     PS3="Please enter your choice: "
-    options=("Option 1 - Use binary (Recommended)" "Option 2 - Compile from source" "Quit")
+    options=(
+        "Option 1 - Use binary (Recommended)"
+        "Option 2 - Compile from source (remotely, no local clone)"
+        "Option 3 - Clone the repo and compile from source locally (manually)"
+        "Quit")
 
     select opt in "${options[@]}"
     do
@@ -465,6 +469,26 @@ install_update_menu() {
                 break
                 ;;
             3)
+                echo "Requirements:"
+                echo "Rust, Netcat, VLC, (optional : Kitty)"
+                echo "Follow these steps: "
+                echo "clone the main branch (not stable):"
+                echo "git clone https://github.com/AlbanDAVID/Toutui"
+                echo "OR clone the last stable release:"
+                echo "git clone --branch stable --single-branch https://github.com/AlbanDAVID/Toutui"
+                echo "cd Toutui/"
+                echo "mkdir -p ~/.config/toutui"
+                echo "cp config.example.toml ~/.config/toutui/config.toml"
+                echo "Token encryption in the database (NOTE: replace secret) : "
+                echo "echo TOUTUI_SECRET_KEY=secret >> ~/.config/toutui/.env"
+                echo "cargo run --release"
+                echo "UPDATE :"
+                echo "git pull https://github.com/AlbanDAVID/Toutui"
+                echo "cargo run --release"
+                exit 0
+                break
+                ;;
+            4)
                 echo "Bye!"
                 exit 0
                 break
@@ -540,6 +564,9 @@ install_toutui() {
         install_deps # install essential and/or optional deps
         install_config # create ~/.config/toutui/ etc.
         install_binary
+        echo "[DONE] Install complete. Type toutui in your terminal to run it."
+        echo "[ADVICE] Explore themes: https://github.com/AlbanDAVID/Toutui-theme"
+        echo "[ADVICE] Best experience with Kitty or Alacritty terminal."
     elif [[ "$install_method" == "source" ]]; then
         echo "Compiling from source..."
         install_deps # install essential and/or optional deps
