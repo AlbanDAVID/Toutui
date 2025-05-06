@@ -221,6 +221,7 @@ source_cargo_env() {
     if [[ $SHELL =~ \/(sh|bash|zsh|ash|pdksh) ]]; then
         if [[ -z "${CARGO_HOME}" ]]; then
             source "$HOME/.cargo/env"
+            echo" DONE SOURCE"
         else
             source "${CARGO_HOME}/env"
         fi
