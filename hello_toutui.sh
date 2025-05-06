@@ -477,10 +477,10 @@ export_cargo_bin_menu() {
                 curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/export_env_cargo/env.fish" -o "$HOME/.cargo/env.fish"
                 export_source
                 echo "[IMPORTANT] Restart you terminal or type the following command in your terminal:"
-                echo "for bash, zsh, sh:"
-                echo "source "$HOME/.cargo/env"
-                echo "for fish:"
-                echo "source "$HOME/.cargo/env.fish"
+                echo "            for bash, zsh, sh:"
+                echo "            source "$HOME/.cargo/env"
+                echo "            for fish:"
+                echo "             source "$HOME/.cargo/env.fish"
                 break
                 ;;
             2)
