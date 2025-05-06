@@ -244,15 +244,15 @@ source_cargo_env() {
 }
 
 export_source() {
-    if [[ $SHELL =~ \/(sh|bash|zsh|ash|pdksh) ]]; then
+    if [[ $SHELL =~ \/(sh|bash|zsh) ]]; then
         echo '. "$HOME/.cargo/env"' >> "$HOME/.bashrc"
         echo '. "$HOME/.cargo/env"' >> "$HOME/.bash_profile"
         echo '. "$HOME/.cargo/env"' >> "$HOME/.profile"
         echo '. "$HOME/.cargo/env"' >> "$HOME/.zshrc"
-        source "$HOME/.cargo/env"
+        #source "$HOME/.cargo/env"
     elif [[ $SHELL =~ \/fish ]]; then
         echo 'source "$HOME/.cargo/env.fish"' >> "$HOME/.config/fish/config.fish"
-        source "$HOME/.cargo/env.fish"
+        #source "$HOME/.cargo/env.fish"
     else
         echo "[ERROR] Unsupported shell: $SHELL"
     fi
@@ -476,9 +476,11 @@ export_cargo_bin_menu() {
                 curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/export_env_cargo/env" -o "$HOME/.cargo/env"
                 curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/export_env_cargo/env.fish" -o "$HOME/.cargo/env.fish"
                 export_source
-               # echo "[IMPORTANT] Restart you terminal or type the following command in your terminal:"
-               # echo "bash, zsh, sh:"
-               # echo "source
+                echo "[IMPORTANT] Restart you terminal or type the following command in your terminal:"
+                echo "for bash, zsh, sh:"
+                echo "source "$HOME/.cargo/env"
+                echo "for fish:"
+                echo "source "$HOME/.cargo/env.fish"
                 break
                 ;;
             2)
