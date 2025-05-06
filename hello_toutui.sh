@@ -459,24 +459,14 @@ export_cargo_bin_menu() {
     do
         case $REPLY in
             1)
-                shell=$(echo $SHELL | grep -o "fish")
-                if [[ -n "$shell" ]]; then
-                    case ":${PATH}:" in
-                        *:"$HOME/.cargo/bin":*)
-                            ;;
-                        *)
-                            # Prepending path in case a system-installed rustc needs to be overridden
-                            export PATH="$HOME/.cargo/bin:$PATH"
-                            ;;
-                    esac
-                else
-                    if [[ ":$PATH:" != *":$HOME/.cargo/bin:"* ]]; then
-                        # Prepending path in case a system-installed rustc needs to be overridden
-                        export PATH="$HOME/.cargo/bin:$PATH"
-                    fi
-
+                curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/export_env_cargo/env" -o "$HOME/.cargo/bin/env"
+                chmod +x "$HOME/.cargo/bin/env"
+                curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/export_env_cargo/env.fish" -o "$HOME/.cargo/bin/env.fish"
+                chmod +x "$HOME/.cargo/bin/env"
+                source_cargo_env
+                ;;
             2)
-            echo "You chose to do it manually."
+                echo "You chose to do it manually."
                 break
                 ;;
             *)
