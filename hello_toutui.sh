@@ -475,6 +475,7 @@ export_cargo_bin_menu() {
         esac
     done
 }
+
 export_cargo_bin(){
 
     path_cargo_bin=$(echo $PATH | grep -o "$HOME/.cargo/bin")
@@ -603,6 +604,7 @@ install_toutui() {
         install_deps # install essential and/or optional deps
         install_config # create ~/.config/toutui/ etc.
         install_binary
+        export_cargo_bin
         echo "[DONE] Install complete. Type toutui in your terminal to run it."
         echo "[ADVICE] Explore themes: https://github.com/AlbanDAVID/Toutui-theme"
         echo "[ADVICE] Best experience with Kitty or Alacritty terminal."
