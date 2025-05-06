@@ -460,10 +460,8 @@ export_cargo_bin_menu() {
         case $REPLY in
             1)
                 curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/export_env_cargo/env" -o "$HOME/.cargo/env"
-                chmod +x "$HOME/.cargo/env"
                 curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/export_env_cargo/env.fish" -o "$HOME/.cargo/env.fish"
-                chmod +x "$HOME/.cargo/env"
-                #source_cargo_env
+                source_cargo_env
                 break
                 ;;
             2)
