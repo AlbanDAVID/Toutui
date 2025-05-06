@@ -476,18 +476,17 @@ export_cargo_bin_menu() {
     done
 }
 
-export_cargo_bin(){
-
+export_cargo_bin() {
     path_cargo_bin=$(echo $PATH | grep -o "$HOME/.cargo/bin")
     if [[ -n "$path_cargo_bin" ]]; then
+        echo "~/.cargo/bin already exported in PATH"
+    else
         echo "~/cargo/bin is not exported in your PATH."
         echo "You need it to run toutui"
         export_cargo_bin_menu
-    else
-        echo "~/.cargo/bin already exported in PATH"
     fi
-
 }
+
 install_update_menu() {
     echo "[HELP] Option 1 is the most user-friendly installation. No compilation time, no need to install Rust/Cargo. However, if it does not work, select option 2."
     PS3="Please enter your choice: "
