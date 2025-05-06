@@ -477,10 +477,10 @@ export_cargo_bin_menu() {
                 curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/export_env_cargo/env.fish" -o "$HOME/.cargo/env.fish"
                 export_source
                 echo "[IMPORTANT] Restart you terminal or type the following command in your terminal:"
-                echo "            for bash, zsh, sh:"
-                echo "            source "$HOME/.cargo/env"
-                echo "            for fish:"
-                echo "             source "$HOME/.cargo/env.fish"
+                echo "for bash, zsh, sh:"
+                echo "source "$HOME/.cargo/env"
+                echo "for fish:"
+                echo "source "$HOME/.cargo/env.fish"
                 break
                 ;;
             2)
@@ -563,12 +563,10 @@ dl_handle_compressed_binary() {
     temp_dir=$(mktemp -d)
     echo "[INFO] Downloading the compressed binary from $final_url"
     sudo curl -L "$final_url" -o "$temp_dir/$binary_name"
-    echo "[INFO] Decompression"
     sudo tar -xvzf "$temp_dir/$binary_name" -C "$temp_dir"
     echo "[INFO] Copy the binary from temp directory to ~/.cargo/bin/"
     mkdir -p "$HOME/.cargo/bin"
     cp "$temp_dir/toutui" "$HOME/.cargo/bin/"
-    echo "[INFO] Temp directory removed"
     rm -rf "$temp_dir"
 }
 
