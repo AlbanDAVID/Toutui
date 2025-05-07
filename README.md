@@ -54,6 +54,9 @@ At worst, you may experience **sync issues**, but there is **no risk** of data l
 ### 🤝 **Contributing**  
 Do not hesitate to contribute to this project by submitting your code, ideas, or feedback. Please make sure to read the [contributing guidelines](https://github.com/AlbanDAVID/Toutui/blob/main/CONTRIBUTING.md) first.
 
+### 🔁 Branching workflow 
+This project follow this [branching workflow](https://gist.github.com/digitaljhelms/4287848). 
+
 ### 🎨 **UI**
 Explore and share themes [here](https://github.com/AlbanDAVID/Toutui-theme).    
 The **font** and **emojis** may vary depending on the terminal you are using.    
