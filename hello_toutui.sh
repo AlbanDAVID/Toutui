@@ -478,7 +478,7 @@ export_cargo_bin_menu() {
         echo "$HOME/.profile"
         echo "$HOME/.bash_profile"
         echo "$HOME/.bashrc"
-        echo " You can run "toutui --uninstall" to revert these changes. Note: To avoid conflict, PATH environement will be deleted only if rust and cargo are not installed."
+        echo " You can run "toutui --uninstall" or the official uninstall curl link to revert these changes. Note: To avoid conflict, PATH environement will be deleted only if rust and cargo are not installed."
     elif [[ $SHELL =~ \/(zsh) ]]; then
         echo "If you select option 1, the path will then be added to your PATH environement variable by modifying the profile files located at:"
         echo "$HOME/.profile"
