@@ -1,3 +1,3 @@
 #!/bin/bash
 terminal="Terminal"
-open -a "$terminal" "bash -c '$HOME/.cargo/bin/toutui; exec bash'"
+open -a "$terminal" "$HOME/.cargo/bin/toutui"
