@@ -8,7 +8,7 @@ This project is still in **heavy development**. I built this app to learn Rust. 
 Check the [roadmap](https://github.com/AlbanDAVID/Toutui?tab=readme-ov-file#%EF%B8%8F-roadmap) to see what I'm currently working on.  
 If you want to contribute new features but don't have any ideas, feel free to check the [future features](https://github.com/AlbanDAVID/Toutui?tab=readme-ov-file#-future-features) section for inspiration. 
 
-## Branching workflow 
+## 🔁 Branching workflow 
 This project follow this [branching workflow](https://gist.github.com/digitaljhelms/4287848). 
 
 ## 💬 How to Contribute
