@@ -151,6 +151,7 @@ usage() {
     echo "Help:"
     echo " --install: install toutui and dependencies."
     echo " --update: update toutui and dependencies."
+    echo " --uninstall: uninstall toutui."
     echo "Example: /bin/bash ./$(basename $0) install /usr/bin"
     eval "exit \$EXIT_${exit_code}"
 }
@@ -551,6 +552,7 @@ info_message() {
     echo ".env, db.sqlite3, config.toml, toutui.log"
     echo " "
     echo " You can run "toutui --uninstall" or the official uninstall curl link to remove all these added files. Note: To avoid conflicts, PATH environment and $HOME/.cargo/bin will be deleted only if rust and cargo are not installed."
+    echo 'Only dependencies will not be uninstalled (VLC, Netcat, Rust)'
     echo " "
 }
 
@@ -828,7 +830,7 @@ uninstall_process() {
             sudo rm -r "$HOME/.config/toutui"
         fi
 
-    sudo rm "$HOME/.local/share/applications/toutui.config"
+    sudo rm "$HOME/.local/share/applications/toutui.desktop"
 
     fi
 
