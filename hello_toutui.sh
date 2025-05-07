@@ -244,13 +244,21 @@ source_cargo_env() {
 }
 
 export_source() {
-    if [[ $SHELL =~ \/(sh|bash|zsh) ]]; then
+    if [[ $SHELL =~ \/(sh|bash) ]]; then
+        echo '. "$HOME/.cargo/env"' >> "$HOME/.bashrc"
+        echo '. "$HOME/.cargo/env"' >> "$HOME/.bash_profile"
+        echo '. "$HOME/.cargo/env"' >> "$HOME/.profile"
+        #source "$HOME/.cargo/env"
+    elif [[ $SHELL =~ \/zsh ]]; then
         echo '. "$HOME/.cargo/env"' >> "$HOME/.bashrc"
         echo '. "$HOME/.cargo/env"' >> "$HOME/.bash_profile"
         echo '. "$HOME/.cargo/env"' >> "$HOME/.profile"
         echo '. "$HOME/.cargo/env"' >> "$HOME/.zshrc"
         #source "$HOME/.cargo/env"
     elif [[ $SHELL =~ \/fish ]]; then
+        echo '. "$HOME/.cargo/env"' >> "$HOME/.bashrc"
+        echo '. "$HOME/.cargo/env"' >> "$HOME/.bash_profile"
+        echo '. "$HOME/.cargo/env"' >> "$HOME/.profile"
         echo 'source "$HOME/.cargo/env.fish"' >> "$HOME/.config/fish/conf.d/toutui.env.fish"
         #source "$HOME/.cargo/env.fish"
     else
@@ -465,8 +473,30 @@ install_deps() {
 
 export_cargo_bin_menu() {
     PS3="Please enter your choice: "
+    if [[ $SHELL =~ \/(sh|bash) ]]; then
+        echo "If you select option 1, the path will then be added to your PATH environement variable by modifying the profile files located at:"
+        echo "$HOME/.profile"
+        echo "$HOME/.bash_profile"
+        echo "$HOME/.bashrc"
+        echo " You can run "toutui --uninstall" to revert these changes. Note: To avoid conflict, PATH environement will be deleted only if rust and cargo are not installed."
+    elif [[ $SHELL =~ \/(zsh) ]]; then
+        echo "If you select option 1, the path will then be added to your PATH environement variable by modifying the profile files located at:"
+        echo "$HOME/.profile"
+        echo "$HOME/.bash_profile"
+        echo "$HOME/.bashrc"
+        echo "$HOME/.zshenv"
+        echo " You can run "toutui --uninstall" or the official uninstall curl link to revert these changes. Note: To avoid conflict, PATH environement will be deleted only if rust and cargo are not installed."
+    elif [[ $SHELL =~ \/(fish) ]]; then
+        echo "If you select option 1, the path will then be added to your PATH environement variable by modifying the profile files located at:"
+        echo "$HOME/.profile"
+        echo "$HOME/.bash_profile"
+        echo "$HOME/.bashrc"
+        echo "$HOME/.config/fish/conf.d/toutui.env.fish"
+        echo " You can run "toutui --uninstall" or the official uninstall curl link to revert these changes. Note: To avoid conflict, PATH environement will be deleted only if rust and cargo are not installed."
+    fi
+
     options=(
-        "Option 1 - Export automatically now (Recommended)"
+        "Option 1 - Add automatically the path (Recommended)"
         "Option 2 - No, I prefer do it by myself"
     )
     select opt in "${options[@]}"
@@ -499,7 +529,7 @@ export_cargo_bin() {
     if [[ -n "$path_cargo_bin" ]]; then
         echo "[INFO] ~/.cargo/bin already exported in PATH"
     else
-        echo "[WARN] ~/cargo/bin is not exported in your PATH."
+        echo "[WARN] $HOME/.cargo/bin is not exported in your PATH."
         echo "[WARN] You need it to run toutui"
         export_cargo_bin_menu
     fi
