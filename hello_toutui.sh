@@ -516,7 +516,7 @@ install_menu() {
 
     select opt in "${options[@]}"
     do
-        case $reply in
+        case $REPLY in
             1)
                 install_method="binary"
                 break
@@ -551,7 +551,7 @@ install_menu() {
                 break
                 ;;
             *)
-                echo "invalid option: $reply"
+                echo "invalid option: $REPLY"
                 ;;
         esac
     done
@@ -725,7 +725,7 @@ pull_latest_version() {
     local version=$1
     local answer=
     while :; do
-        read -p "Would you like to pull the latest version? (Y/n) : " answer
+        read -p "Would you like to update to the latest version? (Y/n) : " answer
         if [[ $answer =~ (n|N) ]]; then answer=no; break; fi
         if [[ $answer == "" || $answer =~ (y|Y) ]]; then answer=yes; break; fi
     done
