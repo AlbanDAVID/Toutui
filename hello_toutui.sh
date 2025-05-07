@@ -535,6 +535,24 @@ export_cargo_bin() {
     fi
 }
 
+info_message() {
+    echo "[INFO]"
+    echo "The installation will have these effects:"
+    echo "Install dependencies if needed: VLC, Netcat and Rust"
+    echo "Add the binary in $HOME/.cargo/bin (this path will be created if does not exist)"
+    echo "$HOME/.cargo/bin will be added to your PATH (only if you want, you will be asked later)"
+    echo "For Linux:"
+    echo "Add the directory "toutui" in $HOME/.config (or any other path specified in XDG_CONFIG_HOME) with inside the following files: "
+    echo ".env, db.sqlite3, config.toml, toutui.log"
+    echo "toutui.desktop will be added in $HOME/.local/share/applications"
+    echo "For macOS:"
+    echo "Add the directory "toutui" in $HOME/Library/Preferences (or any other path specified in XDG_CONFIG_HOME) with inside the following files: "
+    echo ".env, db.sqlite3, config.toml, toutui.log"
+    echo " "
+    echo " You can run "toutui --uninstall" or the official uninstall curl link to remove all these added files. Note: To avoid conflicts, PATH environment and $HOME/.cargo/bin will be deleted only if rust and cargo are not installed."
+    echo " "
+}
+
 install_menu() {
     echo "[HELP] Option 1 is the most user-friendly installation. No compilation time, no need to install rust/cargo. However, if it does not work, select option 2."
     ps3="Please enter your choice: "
@@ -560,7 +578,7 @@ install_menu() {
                 echo "requirements:"
                 echo "rust, netcat, vlc, (optional : kitty)"
                 echo "follow these steps: "
-                echo "clone the main branch (not stable):"
+                echo "clone the main branch (might be unstable):"
                 echo "git clone https://github.com/albandavid/toutui"
                 echo "or clone the last stable release:"
                 echo "git clone --branch stable --single-branch https://github.com/albandavid/toutui"
@@ -571,7 +589,7 @@ install_menu() {
                 echo "echo toutui_secret_key=secret >> ~/.config/toutui/.env"
                 echo "cargo run --release"
                 echo "update :"
-                echo "git pull https://github.com/albandavid/toutui"
+                echo "git pull {URL}"
                 echo "cargo run --release"
                 exit 0
                 break
@@ -698,7 +716,9 @@ install_binary() {
 
 }
 
+
 install_toutui() {
+    info_message
     install_menu
     if [[ "$install_method" == "binary" ]]; then
         echo "Install from binary..."
