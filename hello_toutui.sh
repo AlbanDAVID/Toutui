@@ -27,6 +27,7 @@ main() {
     case $1 in
         --install|install) install_toutui && exit $EXIT_OK || exit $EXIT_FAIL;;
         --update|update) update_toutui && exit $EXIT_OK || exit $EXIT_FAIL;;
+        --uninstall|uninstall) uninstall_toutui && exit $EXIT_OK || exit $EXIT_FAIL;;
         *) usage "INCORRECT_ARG";;
     esac
 }
@@ -253,7 +254,7 @@ export_source() {
         echo '. "$HOME/.cargo/env"' >> "$HOME/.bashrc"
         echo '. "$HOME/.cargo/env"' >> "$HOME/.bash_profile"
         echo '. "$HOME/.cargo/env"' >> "$HOME/.profile"
-        echo '. "$HOME/.cargo/env"' >> "$HOME/.zshrc"
+        echo '. "$HOME/.cargo/env"' >> "$HOME/.zshenv"
         #source "$HOME/.cargo/env"
     elif [[ $SHELL =~ \/fish ]]; then
         echo '. "$HOME/.cargo/env"' >> "$HOME/.bashrc"
@@ -817,6 +818,58 @@ update_toutui() {
 
     fi
     post_update_msg
+}
+
+uninstall_process() {
+    if [[ "$OS" == "linux" ]]; then
+        if [[ -n "$XDG_CONFIG_HOME"  ]]; then
+            sudo rm -r "$XDG_CONFIG_HOME/toutui"
+        else
+            sudo rm -r "$HOME/.config/toutui"
+        fi
+
+    sudo rm "$HOME/.local/share/applications/toutui.config"
+
+    fi
+
+    if [[ "$OS" == "macOS" ]]; then
+        if [[ -n "$XDG_CONFIG_HOME"  ]]; then
+            sudo rm -r "$XDG_CONFIG_HOME/toutui"
+        else
+            sudo rm -r "$HOME/Library/Preferences/toutui"
+        fi
+    fi
+
+    if ! command -v rustc >/dev/null 2>&1; then
+        sed -i '/\. "\$HOME\/\.cargo\/env"/d' $HOME/.bashrc
+        sed -i '/\. "\$HOME\/\.cargo\/env"/d' $HOME/.bash_profile
+        sed -i '/\. "\$HOME\/\.cargo\/env"/d' $HOME/.profile
+        sed -i '/\. "\$HOME\/\.cargo\/env"/d' $HOME/.zshenv
+        sudo rm $HOME/.config/fish/conf.d/toutui.env.fish
+        sudo rm -r $HOME/.cargo
+    else
+        sudo rm $HOME/.cargo/bin/toutui
+    fi
+
+}
+
+uninstall_toutui() {
+    local answer=
+    while :; do
+        read -p "Are you sure to uninstall toutui? (Y/n) : " answer
+        if [[ $answer =~ (n|N) ]]; then answer=no; break; fi
+        if [[ $answer == "" || $answer =~ (y|Y) ]]; then answer=yes; break; fi
+    done
+    case $answer in
+        no)
+            echo "[INFO] Uninstall aborted";;
+        yes)
+            echo "[INFO] Starting uninstall..."
+            uninstall_process
+            echo "[OK] Toutui has been successfully uninstalled."
+            ;;
+    esac
+
 }
 
 load_exit_codes() {
