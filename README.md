@@ -28,7 +28,7 @@
 ## 🛠️ Roadmap  
 **Short-term Goals**  
 - Since this is a beta version, the main focus is on tracking and fixing bugs.
-- Currently working on the next release: [v0.4.0-beta]. Main features: installation from binary, application launcher support, notify and proceed to update directly from the app. 
+- **Currently working on the next release: [v0.4.0-beta]. Main features: installation from binary, application launcher support, notify and proceed to update directly from the app.**
 
 **Mid-term Goals**  
 - Put the app on yay    
