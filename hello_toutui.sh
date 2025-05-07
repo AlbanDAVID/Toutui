@@ -508,11 +508,11 @@ export_cargo_bin_menu() {
                 curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/env" -o "$HOME/.cargo/env"
                 curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/env.fish" -o "$HOME/.cargo/env.fish"
                 export_source
-                echo "[IMPORTANT] Restart you terminal or type the following command in your terminal:"
-                echo "for bash, zsh, sh:"
-                echo "source "$HOME/.cargo/env"
-                echo "for fish:"
-                echo "source "$HOME/.cargo/env.fish"
+                echo "[IMPORTANT] Restart your terminal or type the following command:"
+                echo "    for bash, zsh, sh:"
+                echo "        source \"\$HOME/.cargo/env\""
+                echo "    for fish:"
+                echo "        source \"\$HOME/.cargo/env.fish\""
                 break
                 ;;
             2)
@@ -665,7 +665,7 @@ dl_handle_compressed_binary() {
 setup_launcher() {
     if [[ "$OS" == "linux" ]]; then
         mkdir -p "$HOME/.local/share/applications"
-        curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/toutui.desktop" -o "$HOME/.local/share/applications/toutui.desktop"
+        curl -sSL "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/toutui.desktop" -o "$HOME/.local/share/applications/toutui.desktop"
     fi
    # elif [[ "$OS" == "macOS" ]]; then
    #     mkdir -p "/Applications/toutui.app/Contents"
