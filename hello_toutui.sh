@@ -251,7 +251,7 @@ export_source() {
         echo '. "$HOME/.cargo/env"' >> "$HOME/.zshrc"
         #source "$HOME/.cargo/env"
     elif [[ $SHELL =~ \/fish ]]; then
-        echo 'source "$HOME/.cargo/env.fish"' >> "$HOME/.config/fish/config.fish"
+        echo 'source "$HOME/.cargo/env.fish"' >> "$HOME/.config/fish/conf.d/toutui.env.fish"
         #source "$HOME/.cargo/env.fish"
     else
         echo "[ERROR] Unsupported shell: $SHELL"
