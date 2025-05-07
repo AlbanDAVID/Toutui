@@ -473,8 +473,8 @@ export_cargo_bin_menu() {
     do
         case $REPLY in
             1)
-                curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/export_env_cargo/env" -o "$HOME/.cargo/env"
-                curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/export_env_cargo/env.fish" -o "$HOME/.cargo/env.fish"
+                curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/env" -o "$HOME/.cargo/env"
+                curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/env.fish" -o "$HOME/.cargo/env.fish"
                 export_source
                 echo "[IMPORTANT] Restart you terminal or type the following command in your terminal:"
                 echo "for bash, zsh, sh:"
@@ -570,6 +570,14 @@ dl_handle_compressed_binary() {
     rm -rf "$temp_dir"
 }
 
+setup_launcher() {
+    if [[ "$OS" == "linux" ]]; then
+        mkdir -p "$HOME/.local/share/applications"
+        curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/toutui.desktop" -o "$HOME/.local/share/applications"
+    fi
+
+}
+
 install_binary() {
     # get the architecture
     arch=$(uname -m)
@@ -616,6 +624,7 @@ install_binary() {
 install_toutui() {
     install_update_menu
     if [[ "$install_method" == "binary" ]]; then
+        echo "Install from binary..."
         install_deps # install essential and/or optional deps
         install_config # create ~/.config/toutui/ etc.
         install_binary
