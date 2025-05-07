@@ -516,7 +516,7 @@ install_menu() {
 
     select opt in "${options[@]}"
     do
-        case $REPLY in
+        case $reply in
             1)
                 install_method="binary"
                 break
@@ -551,7 +551,7 @@ install_menu() {
                 break
                 ;;
             *)
-                echo "invalid option: $REPLY"
+                echo "invalid option: $reply"
                 ;;
         esac
     done
@@ -667,7 +667,7 @@ install_binary() {
 }
 
 install_toutui() {
-    install_menu
+    update_menu
     if [[ "$install_method" == "binary" ]]; then
         echo "Install from binary..."
         install_deps # install essential and/or optional deps
