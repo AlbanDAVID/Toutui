@@ -150,6 +150,7 @@ cd Toutui/
 mkdir -p ~/.config/toutui
 cp config.example.toml ~/.config/toutui/config.toml
 ```
+Note: `main` can be unstable. Prefer `git clone --branch stable --single-branch https://github.com/AlbanDAVID/Toutui` if you want to have the last stable release.
 
 Token encryption in the database (<u>**NOTE**</u>: replace `secret`)
 ```bash
