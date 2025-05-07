@@ -506,17 +506,18 @@ export_cargo_bin() {
 }
 
 install_menu() {
-    echo "[help] option 1 is the most user-friendly installation. no compilation time, no need to install rust/cargo. however, if it does not work, select option 2."
-    ps3="please enter your choice: "
+    echo "[HELP] Option 1 is the most user-friendly installation. No compilation time, no need to install rust/cargo. However, if it does not work, select option 2."
+    ps3="Please enter your choice: "
     options=(
-        "option 1 - use binary (recommended)"
-        "option 2 - compile from source (remotely, no local clone)"
-        "option 3 - clone the repo and compile from source locally (manually)"
-        "quit")
+        "Option 1 - Use binary (recommended)"
+        "Option 2 - Compile from source (remotely, no local clone)"
+        "Option 3 - Clone the repo and compile from source locally (manually)"
+        "Quit"
+    )
 
     select opt in "${options[@]}"
     do
-        case $reply in
+        case $REPLY in
             1)
                 install_method="binary"
                 break
@@ -551,24 +552,25 @@ install_menu() {
                 break
                 ;;
             *)
-                echo "invalid option: $reply"
+                echo "invalid option: $REPLY"
                 ;;
         esac
     done
 }
 
 update_menu() {
-    echo "[help] Option 1 is the most user-friendly updating method. No compilation time, no need to install rust/cargo. However, if it does not work, select option 2."
-    ps3="please enter your choice: "
+    echo "[HELP] Option 1 is the most user-friendly updating method. No compilation time, no need to install rust/cargo. However, if it does not work, select option 2."
+    ps3="Please enter your choice: "
     options=(
-        "option 1 - Update the binary (recommended)"
-        "option 2 - Update by compiling from source (remotely, no local clone)"
-        "option 3 - Update from the local clone (manually)"
-        "quit")
+        "Option 1 - Update the binary (recommended)"
+        "Option 2 - Update by compiling from source (remotely, no local clone)"
+        "Option 3 - Update from the local clone (manually)"
+        "Quit"
+    )
 
     select opt in "${options[@]}"
     do
-        case $reply in
+        case $REPLY in
             1)
                 update_method="binary"
                 break
@@ -590,7 +592,7 @@ update_menu() {
                 break
                 ;;
             *)
-                echo "invalid option: $reply"
+                echo "invalid option: $REPLY"
                 ;;
         esac
     done
