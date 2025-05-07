@@ -667,7 +667,7 @@ install_binary() {
 }
 
 install_toutui() {
-    update_menu
+    install_menu
     if [[ "$install_method" == "binary" ]]; then
         echo "Install from binary..."
         install_deps # install essential and/or optional deps
