@@ -141,7 +141,7 @@ In `~/.config/toutui` for Linux or `~/Library/Preferences` for macOS:
 
 *⚠️ If you had to install a package that is not listed above, please open an installation issue.*
 
-#### **Install**    
+#### **Install from source**    
 
 [![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
 ```bash
