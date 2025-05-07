@@ -574,8 +574,12 @@ setup_launcher() {
     if [[ "$OS" == "linux" ]]; then
         mkdir -p "$HOME/.local/share/applications"
         curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/toutui.desktop" -o "$HOME/.local/share/applications/toutui.desktop"
+    elif [[ "$OS" == "macOS" ]]; then
+        mkdir -p "$HOME/Applications/toutui.app/Contents"
+        mkdir -p "$HOME/Applications/toutui.app/Contents/MacOS"
+        curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/Info.plist" -o "$HOME/Applications/toutui.app/Contents/Info.plist"
+        curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/launch.command" -o "$HOME/Applications/toutui.app/Contents/MacOS/launch.command"
     fi
-
 }
 
 install_binary() {
