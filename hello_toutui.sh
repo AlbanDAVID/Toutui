@@ -579,6 +579,7 @@ setup_launcher() {
         mkdir -p "/Applications/toutui.app/Contents/MacOS"
         curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/Info.plist" -o "/Applications/toutui.app/Contents/Info.plist"
         curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/launch.command" -o "/Applications/toutui.app/Contents/MacOS/launch.command"
+        chmod +x "/Applications/toutui.app/Contents/MacOS/launch.command"
     fi
 }
 
