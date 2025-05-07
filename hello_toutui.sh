@@ -570,7 +570,7 @@ update_menu() {
     do
         case $reply in
             1)
-                uppdate_method="binary"
+                update_method="binary"
                 break
                 ;;
             2)
