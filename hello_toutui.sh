@@ -573,7 +573,7 @@ dl_handle_compressed_binary() {
 setup_launcher() {
     if [[ "$OS" == "linux" ]]; then
         mkdir -p "$HOME/.local/share/applications"
-        sudo curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/toutui.desktop" -o "$HOME/.local/share/applications"
+        curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/toutui.desktop" -o "$HOME/.local/share/applications/toutui.desktop"
     fi
 
 }
