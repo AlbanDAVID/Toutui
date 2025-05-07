@@ -741,6 +741,7 @@ pull_latest_version() {
             if [[ "$update_method" == "binary" ]]; then
                 install_binary
             elif [[ "$update_method" == "source" ]]; then
+                install_rust
                 cargo install --force --git https://github.com/AlbDav55/Toutui --branch stable
             fi
             install_config
