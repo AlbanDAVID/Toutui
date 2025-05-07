@@ -537,7 +537,7 @@ export_cargo_bin() {
     fi
 }
 
-info_message() {
+install_message() {
     echo "[INFO]"
     echo "The installation will have these effects:"
     echo "Install dependencies if needed: VLC, Netcat and Rust"
@@ -609,45 +609,6 @@ install_menu() {
     done
 }
 
-update_menu() {
-    echo "[HELP] Option 1 is the most user-friendly updating method. No compilation time, no need to install rust/cargo. However, if it does not work, select option 2."
-    ps3="Please enter your choice: "
-    options=(
-        "Option 1 - Update the binary (recommended)"
-        "Option 2 - Update by compiling from source (remotely, no local clone)"
-        "Option 3 - Update from the local clone (manually)"
-        "Quit"
-    )
-
-    select opt in "${options[@]}"
-    do
-        case $REPLY in
-            1)
-                update_method="binary"
-                break
-                ;;
-            2)
-                update_method="source"
-                break
-                ;;
-            3)
-                echo "cd {TOUTUI REPO}"
-                echo "git pull {URL}"
-                echo "cargo run --release"
-                exit 0
-                break
-                ;;
-            4)
-                echo "bye!"
-                exit 0
-                break
-                ;;
-            *)
-                echo "invalid option: $REPLY"
-                ;;
-        esac
-    done
-}
 
 dl_handle_compressed_binary() {
     local final_url=$1
@@ -721,7 +682,7 @@ install_binary() {
 
 
 install_toutui() {
-    info_message
+    install_message
     install_menu
     if [[ "$install_method" == "binary" ]]; then
         echo "Install from binary..."
@@ -752,6 +713,46 @@ install_toutui() {
 
 post_update_msg() {
     echo "[DONE] Update complete."
+}
+
+update_menu() {
+    echo "[HELP] Option 1 is the most user-friendly updating method. No compilation time, no need to install rust/cargo. However, if it does not work, select option 2."
+    ps3="Please enter your choice: "
+    options=(
+        "Option 1 - Update the binary (recommended)"
+        "Option 2 - Update by compiling from source (remotely, no local clone)"
+        "Option 3 - Update from the local clone (manually)"
+        "Quit"
+    )
+
+    select opt in "${options[@]}"
+    do
+        case $REPLY in
+            1)
+                update_method="binary"
+                break
+                ;;
+            2)
+                update_method="source"
+                break
+                ;;
+            3)
+                echo "cd {TOUTUI REPO}"
+                echo "git pull {URL}"
+                echo "cargo run --release"
+                exit 0
+                break
+                ;;
+            4)
+                echo "bye!"
+                exit 0
+                break
+                ;;
+            *)
+                echo "invalid option: $REPLY"
+                ;;
+        esac
+    done
 }
 
 get_toutui_local_release() {
@@ -822,6 +823,22 @@ update_toutui() {
     post_update_msg
 }
 
+uninstall_message() {
+    echo "Uninstall will do this:"
+    echo "Delete the binary in $HOME/.cargo/bin (If rust/cargo are not installed ~/.cargo will be deleted)"
+    echo "$HOME/.cargo/bin will be deleted from of your PATH (only if rust/cargo are not installed)"
+    echo "For Linux:"
+    echo "The directory "toutui" in $HOME/.config (or any other path specified in XDG_CONFIG_HOME) wil be deleted: "
+    echo "[IMPORTANT] save your config.toml if you need it later"
+    echo "toutui.desktop will be deleted from $HOME/.local/share/applications"
+    echo "For macOS:"
+    echo "The directory "toutui" in $HOME/Library/Preferences (or any other path specified in XDG_CONFIG_HOME) will be deleted: "
+    echo "[IMPORTANT] save your config.toml if you need it later"
+    echo " "
+    echo 'Only dependencies will not be uninstalled (VLC, Netcat, Rust)'
+    echo " "
+}
+
 uninstall_process() {
     if [[ "$OS" == "linux" ]]; then
         if [[ -n "$XDG_CONFIG_HOME"  ]]; then
@@ -856,6 +873,7 @@ uninstall_process() {
 }
 
 uninstall_toutui() {
+    uninstall_message
     local answer=
     while :; do
         read -p "Are you sure to uninstall toutui? (Y/n) : " answer
@@ -902,5 +920,4 @@ main "$@"
 # - clone repo from here (making this bloated bash script "portable")
 # - check for correct installation path (for now: /usr/bin/toutui)
 # - test automatic dependencies install on more distributions
-# - uninstall toutui
-# - allow calling toutui from outside the terminal (need a wrapper script)
+# - allow calling toutui from outside the terminal (for macOS, available for Linux)
