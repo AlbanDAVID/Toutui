@@ -505,18 +505,18 @@ export_cargo_bin() {
     fi
 }
 
-install_update_menu() {
-    echo "[HELP] Option 1 is the most user-friendly installation. No compilation time, no need to install Rust/Cargo. However, if it does not work, select option 2."
-    PS3="Please enter your choice: "
+install_menu() {
+    echo "[help] option 1 is the most user-friendly installation. no compilation time, no need to install rust/cargo. however, if it does not work, select option 2."
+    ps3="please enter your choice: "
     options=(
-        "Option 1 - Use binary (Recommended)"
-        "Option 2 - Compile from source (remotely, no local clone)"
-        "Option 3 - Clone the repo and compile from source locally (manually)"
-        "Quit")
+        "option 1 - use binary (recommended)"
+        "option 2 - compile from source (remotely, no local clone)"
+        "option 3 - clone the repo and compile from source locally (manually)"
+        "quit")
 
     select opt in "${options[@]}"
     do
-        case $REPLY in
+        case $reply in
             1)
                 install_method="binary"
                 break
@@ -526,32 +526,71 @@ install_update_menu() {
                 break
                 ;;
             3)
-                echo "Requirements:"
-                echo "Rust, Netcat, VLC, (optional : Kitty)"
-                echo "Follow these steps: "
+                echo "requirements:"
+                echo "rust, netcat, vlc, (optional : kitty)"
+                echo "follow these steps: "
                 echo "clone the main branch (not stable):"
-                echo "git clone https://github.com/AlbanDAVID/Toutui"
-                echo "OR clone the last stable release:"
-                echo "git clone --branch stable --single-branch https://github.com/AlbanDAVID/Toutui"
-                echo "cd Toutui/"
+                echo "git clone https://github.com/albandavid/toutui"
+                echo "or clone the last stable release:"
+                echo "git clone --branch stable --single-branch https://github.com/albandavid/toutui"
+                echo "cd toutui/"
                 echo "mkdir -p ~/.config/toutui"
                 echo "cp config.example.toml ~/.config/toutui/config.toml"
-                echo "Token encryption in the database (NOTE: replace secret) : "
-                echo "echo TOUTUI_SECRET_KEY=secret >> ~/.config/toutui/.env"
+                echo "token encryption in the database (note: replace secret) : "
+                echo "echo toutui_secret_key=secret >> ~/.config/toutui/.env"
                 echo "cargo run --release"
-                echo "UPDATE :"
-                echo "git pull https://github.com/AlbanDAVID/Toutui"
+                echo "update :"
+                echo "git pull https://github.com/albandavid/toutui"
                 echo "cargo run --release"
                 exit 0
                 break
                 ;;
             4)
-                echo "Bye!"
+                echo "bye!"
                 exit 0
                 break
                 ;;
             *)
-                echo "Invalid option: $REPLY"
+                echo "invalid option: $reply"
+                ;;
+        esac
+    done
+}
+
+update_menu() {
+    echo "[help] Option 1 is the most user-friendly updating method. No compilation time, no need to install rust/cargo. However, if it does not work, select option 2."
+    ps3="please enter your choice: "
+    options=(
+        "option 1 - Update the binary (recommended)"
+        "option 2 - Update by compiling from source (remotely, no local clone)"
+        "option 3 - Update from the local clone (manually)"
+        "quit")
+
+    select opt in "${options[@]}"
+    do
+        case $reply in
+            1)
+                uppdate_method="binary"
+                break
+                ;;
+            2)
+                update_method="source"
+                break
+                ;;
+            3)
+                echo "cd {TOUTUI REPO}"
+                echo "git pull {URL}"
+                echo "cargo run --release"
+                exit 0
+                break
+                ;;
+            4)
+                echo "bye!"
+                exit 0
+                break
+                ;;
+            *)
+                echo "invalid option: $reply"
                 ;;
         esac
     done
@@ -628,7 +667,7 @@ install_binary() {
 }
 
 install_toutui() {
-    install_update_menu
+    install_menu
     if [[ "$install_method" == "binary" ]]; then
         echo "Install from binary..."
         install_deps # install essential and/or optional deps
@@ -694,13 +733,17 @@ pull_latest_version() {
         no)
             echo "[INFO] Ignoring latest version.";;
         yes)
-           # echo "[INFO] Pulling latest version..."
-           # git fetch && git pull
-            echo "[INFO] Installing latest version..."
-	        install_config
-            cargo install --force --git https://github.com/AlbDav55/Toutui --branch stable
-           # cargo build --release
-           # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
+            # echo "[INFO] Pulling latest version..."
+            # git fetch && git pull
+            update_menu
+            if [[ "$update_method" == "binary" ]]; then
+                install_binary
+            elif [[ "$update_method" == "source" ]]; then
+                cargo install --force --git https://github.com/AlbDav55/Toutui --branch stable
+            fi
+            install_config
+            # cargo build --release
+            # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
             echo "[OK] Latest version installed (v$version)."
             ;;
     esac
@@ -718,6 +761,7 @@ update_toutui() {
         #echo "TODO: check if is behind or ahead?"
         display_changelog # display before pulling?
         pull_latest_version $github_release
+
     fi
     post_update_msg
 }
