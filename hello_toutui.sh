@@ -903,7 +903,7 @@ uninstall_message() {
     echo "[IMPORTANT] save your config.toml if you need it later"
     echo "[IMPORTANT] XDG_CONFIG_HOME must be the same as it was at the time Toutui was installed. (in case you change it)"
     echo " "
-    echo 'Only dependencies will not be uninstalled (VLC, Netcat, Rust)'
+    echo 'Only dependencies will not be uninstalled (e.g. VLC, Netcat, Rust, gsed)'
     echo " "
 }
 
