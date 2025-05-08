@@ -14,7 +14,7 @@ pub async fn check_update() -> Option<String> {
                     latest_version_gh
                 );
                 Some(format!(
-                    "🔄 Update to {} available (go to settings > update)",
+                    "🔄 Update to v{} available (go to settings > update)",
                     latest_version_gh
                 ))
             } else {
