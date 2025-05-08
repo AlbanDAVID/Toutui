@@ -3,8 +3,6 @@ use clap::{Arg, Command};
 pub fn clap() {
     let matches = Command::new("toutui")
         .version(env!("CARGO_PKG_VERSION"))
-        .author("Alban DAVID")
-        .about("TUI audiobookshelf client")
         .arg(
             Arg::new("update")
                 .long("update")
