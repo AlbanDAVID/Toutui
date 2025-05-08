@@ -14,6 +14,7 @@ main() {
     CONFIG_DIR="${XDG_CONFIG_HOME:-$(grab_config_dir)}/toutui"
     INSTALL_DIR="${2:-$(grab_install_dir)}"
 
+    # if gsed is needed on macos
     sed() {
         if [[ "$OS" == "macOS"  ]]; then
             command gsed "$@"
@@ -340,9 +341,6 @@ install_packages() {
         macOS)
             if command -v brew >/dev/null 2>&1; then
                 brew install ${dep[@]}
-#                if brew list | grep $pkg_name; then
-#                    installed="true"
-#                fi
             else
                 install_brew
                 #echo "[ERROR] Please install \"brew\"."
@@ -462,7 +460,7 @@ dep_already_installed() {
             opensuse*) (zypper se --installed-only "$pkg_name" &>/dev/null)2>/dev/null && installed="true";;
         esac
     elif [[ $OS == "macOS" ]]; then
-        (brew list | grep "^${pkg_name}$") && installed="true"
+        (brew list | grep $pkg_name) && installed="true"
     fi
     if [[ $installed == "false" ]]; then
         if [[ $cmd_check != "no_check" && $(command -v $cmd_check 2>/dev/null) ]]; then
@@ -608,9 +606,10 @@ install_message() {
     echo "For macOS:"
     echo "Add the directory "toutui" in $HOME/Library/Preferences (or any other path specified in XDG_CONFIG_HOME) with inside the following files: "
     echo ".env, db.sqlite3, config.toml, toutui.log"
+    echo "gsed dependencie will be installed"
     echo " "
     echo " You can run "toutui --uninstall" or the official uninstall curl link to remove all these added files. Note: To avoid conflicts, PATH environment and $HOME/.cargo/ will be deleted only if rust and cargo are not installed or if toutui is the only binary present in $HOME/.cargo/bin."
-    echo 'Only dependencies will not be uninstalled (VLC, Netcat, Rust)'
+    echo 'Only dependencies will not be uninstalled (e.g. VLC, Netcat, Rust, gsed)'
     echo " "
 }
 
