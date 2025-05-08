@@ -365,7 +365,7 @@ install_config() {
     local tmpdir
     tmpdir=$(mktemp -d) # not supported in bash 3.2
     # dl config.example.toml in temp directory
-    curl -LsSf https://github.com/AlbanDAVID/Toutui/raw/main/config.example.toml -o "$tmpdir/config.toml"
+    curl -LsSf https://github.com/AlbDav55/Toutui/raw/main/config.example.toml -o "$tmpdir/config.toml"
 
     local example_config="$tmpdir/config.toml"
     if ! [[ -f "$example_config" ]]; then
