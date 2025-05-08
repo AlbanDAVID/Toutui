@@ -285,16 +285,24 @@ check_toutui_installed() {
         fi
     fi
 
-
 }
 
 confirm_force_install_update() {
+    local message_type=$1
+    local message
+
+    if [[ "$message_type" == "install" ]]; then
+        message="Toutui is already installed. It's recommended to perform an uninstall before. Do you still want to force an installation (not recommended)? (Y/n) : "
+    elif [[ "$message_type" == "update" ]]; then
+        message="Toutui in not installed. Install toutui before perform an update. Do you want to force update (not recommended)? (Y/n) :"
+
+    fi
 
     local answer=
     while :; do
-        read -p "Toutui is already installed. It's recommended to perform an uninstall before. Do you still want to force an installation (not recommended)? (Y/n) : " answer
-        if [[ $answer =~ (n|N) ]]; then answer=no; break; fi
-        if [[ $answer == "" || $answer =~ (y|Y) ]]; then answer=yes; break; fi
+        read -p "$message" answer
+        if [[ -z $answer || $answer =~ (n|N) ]]; then answer=no; break; fi
+        if [[ $answer =~ (y|Y) ]]; then answer=yes; break; fi
     done
     case $answer in
         no)
@@ -722,12 +730,12 @@ install_binary() {
 install_toutui() {
     check_toutui_installed
     if [[ "$is_installed" == "true" ]]; then
-        confirm_force_install_update
+        confirm_force_install_update $install
     fi
     install_message
     install_menu
     if [[ "$install_method" == "binary" ]]; then
-        echo "Install from binary..."
+        echo "Install the binary..."
         install_deps # install essential and/or optional deps
         install_config # create ~/.config/toutui/ etc.
         install_binary
@@ -849,6 +857,10 @@ pull_latest_version() {
 }
 
 update_toutui() {
+    check_toutui_installed
+    if [[ "$is_installed" == "false" ]]; then
+        confirm_force_install_update $update
+    fi
     install_deps # check for new deps
     local local_release=$(get_toutui_local_release)
     local github_release=$(get_toutui_github_release)
