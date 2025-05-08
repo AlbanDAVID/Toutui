@@ -25,7 +25,6 @@ pub fn clap() {
             )
             .status()
             .expect("failed to run uninstall script");
-        return;
     }
     if matches.get_flag("update") {
         std::process::Command::new("sh")
@@ -35,7 +34,6 @@ pub fn clap() {
             )
             .status()
             .expect("failed to run update script");
-        return;
     }
 
 }
