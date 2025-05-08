@@ -52,7 +52,7 @@ load_dependencies() {
         macOS:curl \
         *macOS:kitty \
         macOS:netcat \
-        macOS:macos:gsed \
+        macOS:gsed \
         #%macOS:openssl \
         #macOS:pkg-config \
         #macOS:sqlite3 \
