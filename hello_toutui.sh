@@ -292,9 +292,9 @@ confirm_force_install_update() {
     local message
 
     if [[ "$message_type" == "install" ]]; then
-        message="Toutui is already installed. It's recommended to perform an uninstall before. Do you still want to force an installation (not recommended)? (Y/n) : "
+        message="Toutui is already installed. It's recommended to perform an uninstall before. Do you still want to force an installation (not recommended)? (y/N) : "
     elif [[ "$message_type" == "update" ]]; then
-        message="Toutui in not installed. Install toutui before perform an update. Do you want to force update (not recommended)? (Y/n) :"
+        message="Toutui in not installed. Install toutui before perform an update. Do you want to force update (not recommended)? (y/N) :"
 
     fi
 
@@ -895,7 +895,7 @@ uninstall_message() {
 
 uninstall_process() {
     if [[ "$OS" == "linux" ]]; then
-        if [[ -n "$XDG_CONFIG_HOME"  ]]; then
+        if [[ -n "$XDG_CONFIG_HOME" ]]; then
             sudo rm -r "$XDG_CONFIG_HOME/toutui"
         else
             sudo rm -r "$HOME/.config/toutui"
@@ -906,7 +906,7 @@ uninstall_process() {
     fi
 
     if [[ "$OS" == "macOS" ]]; then
-        if [[ -n "$XDG_CONFIG_HOME"  ]]; then
+        if [[ -n "$XDG_CONFIG_HOME" ]]; then
             sudo rm -r "$XDG_CONFIG_HOME/toutui"
         else
             sudo rm -r "$HOME/Library/Preferences/toutui"
@@ -921,7 +921,7 @@ uninstall_process() {
         # and then, only if $HOME/.cargo/bin directory is empty, $HOME/.cargo will be deleted
         # and the differents source for PATH.
         sudo rm $HOME/.cargo/bin/toutui
-        if [ -d "$HOME/.cargo/bin" ] && [ -z "$(ls -A "$DIR")" ]; then
+        if [ -d "$HOME/.cargo/bin" ] && [ -z "$(ls -A "$HOME/.cargo/bin")" ]; then
             sudo rm -r $HOME/.cargo
             sed -i '/\. "\$HOME\/\.cargo\/env"/d' $HOME/.bashrc
             sed -i '/\. "\$HOME\/\.cargo\/env"/d' $HOME/.bash_profile
