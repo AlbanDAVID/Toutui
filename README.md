@@ -80,7 +80,7 @@ To ensure the best experience, it's recommended to use **Kitty** or **Alacritty*
 > 
 > Install Homebrew:    
 > ```
->bash /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 > ```
 > Install openssl:
 >```  
