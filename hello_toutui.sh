@@ -331,9 +331,10 @@ install_packages() {
     	    esac ;;
         macOS)
             if command -v brew >/dev/null 2>&1; then
-                if brew list | grep $pkg_name; then
-                    installed="true"
-                fi
+                brew install ${dep[@]}
+#                if brew list | grep $pkg_name; then
+#                    installed="true"
+#                fi
             else
                 install_brew
                 #echo "[ERROR] Please install \"brew\"."
