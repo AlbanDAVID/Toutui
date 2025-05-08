@@ -51,7 +51,8 @@ load_dependencies() {
         linux:vlc  \
         macOS:curl \
         *macOS:kitty \
-        macOS:netcat\
+        macOS:netcat \
+        macOS:macos:gsed \
         #%macOS:openssl \
         #macOS:pkg-config \
         #macOS:sqlite3 \
@@ -329,14 +330,16 @@ install_packages() {
                 *) install_from_source;;
     	    esac ;;
         macOS)
-	    if command -v brew >/dev/null 2>&1; then
-    	        brew install ${dep[@]}
-    	    else
-    	        install_brew
-    	        #echo "[ERROR] Please install \"brew\"."
-    	        #exit $EXIT_FAIL
-    	    fi ;;
-    esac
+            if command -v brew >/dev/null 2>&1; then
+                if brew list | grep $pkg_name; then
+                    installed="true"
+                fi
+            else
+                install_brew
+                #echo "[ERROR] Please install \"brew\"."
+                #exit $EXIT_FAIL
+                fi ;;
+        esac
     echo "[INFO] Packages installed successfully."
 }
 
