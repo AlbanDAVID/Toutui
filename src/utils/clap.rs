@@ -7,11 +7,13 @@ pub fn clap() {
             Arg::new("update")
                 .long("update")
                 .help("Run update script via curl")
+                .action(clap::ArgAction::SetTrue),
         )
         .arg(
             Arg::new("uninstall")
                 .long("uninstall")
                 .help("Run uninstall script via curl")
+                .action(clap::ArgAction::SetTrue),
         )
         .get_matches();
 
@@ -23,6 +25,7 @@ pub fn clap() {
             )
             .status()
             .expect("failed to run uninstall script");
+        std::process::exit(0);
     }
     if matches.get_flag("update") {
         std::process::Command::new("sh")
@@ -32,6 +35,7 @@ pub fn clap() {
             )
             .status()
             .expect("failed to run update script");
+        std::process::exit(0);
     }
 
 }
