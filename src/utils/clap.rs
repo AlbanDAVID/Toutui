@@ -25,6 +25,7 @@ pub fn clap() {
             )
             .status()
             .expect("failed to run uninstall script");
+        return;
     }
     if matches.get_flag("update") {
         std::process::Command::new("sh")
@@ -33,7 +34,8 @@ pub fn clap() {
                 r#"bash -c 'tmpfile=$(mktemp) && curl -LsSf https://github.com/AlbanDAVID/Toutui/raw/install_with_cargo/hello_toutui.sh -o "$tmpfile" && bash "$tmpfile" update && rm -f "$tmpfile"'"#,
             )
             .status()
-            .expect("failed to run uninstall script");
+            .expect("failed to run update script");
+        return;
     }
 
 }
