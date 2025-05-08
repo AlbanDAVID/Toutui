@@ -981,6 +981,5 @@ main "$@"
 
 # TODO:
 # - clone repo from here (making this bloated bash script "portable")
-# - check for correct installation path (for now: /usr/bin/toutui)
 # - test automatic dependencies install on more distributions
 # - allow calling toutui from outside the terminal (for macOS, available for Linux)
