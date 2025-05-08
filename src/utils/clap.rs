@@ -7,13 +7,11 @@ pub fn clap() {
             Arg::new("update")
                 .long("update")
                 .help("Run update script via curl")
-                .action(clap::ArgAction::SetTrue),
         )
         .arg(
             Arg::new("uninstall")
                 .long("uninstall")
                 .help("Run uninstall script via curl")
-                .action(clap::ArgAction::SetTrue),
         )
         .get_matches();
 
