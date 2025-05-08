@@ -14,6 +14,14 @@ main() {
     CONFIG_DIR="${XDG_CONFIG_HOME:-$(grab_config_dir)}/toutui"
     INSTALL_DIR="${2:-$(grab_install_dir)}"
 
+    sed() {
+        if [[ "$OS" == "macOS"  ]]; then
+            command gsed "$@"
+        else
+            command sed "$@"
+        fi
+    }
+
     load_dependencies
     load_exit_codes
 
