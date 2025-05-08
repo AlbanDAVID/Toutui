@@ -268,6 +268,44 @@ export_source() {
     fi
 }
 
+check_toutui_installed() {
+    is_installed="false"
+
+    if [[ "$OS" == "linux" ]]; then
+        if [[ -n "$XDG_CONFIG_HOME" && ( -e "$XDG_CONFIG_HOME/toutui" || -e "$HOME/.cargo/bin/toutui" ) ]]; then
+            is_installed="true"
+        elif [[ -e "$HOME/.config/toutui" || -e "$HOME/.cargo/bin/toutui" ]]; then
+            is_installed="true"
+        fi
+    elif [[ "$OS" == "macOS" ]]; then
+        if [[ -n "$XDG_CONFIG_HOME" && ( -e "$XDG_CONFIG_HOME/toutui" || -e "$HOME/.cargo/bin/toutui" ) ]]; then
+            is_installed="true"
+        elif [[ -e "$HOME/Library/Preferences/toutui" || -e "$HOME/.cargo/bin/toutui" ]]; then
+            is_installed="true"
+        fi
+    fi
+
+
+}
+
+confirm_force_install_update() {
+
+    local answer=
+    while :; do
+        read -p "Toutui is already installed. It's recommended to perform an uninstall before. Do you still want to force an installation (not recommended)? (Y/n) : " answer
+        if [[ $answer =~ (n|N) ]]; then answer=no; break; fi
+        if [[ $answer == "" || $answer =~ (y|Y) ]]; then answer=yes; break; fi
+    done
+    case $answer in
+        no)
+            exit 0
+            ;;
+        yes)
+            ;;
+    esac
+}
+
+
 install_packages() {
     local dep="$@"
     if (( ${#dep} == 0 )); then return; fi
@@ -551,7 +589,7 @@ install_message() {
     echo "Add the directory "toutui" in $HOME/Library/Preferences (or any other path specified in XDG_CONFIG_HOME) with inside the following files: "
     echo ".env, db.sqlite3, config.toml, toutui.log"
     echo " "
-    echo " You can run "toutui --uninstall" or the official uninstall curl link to remove all these added files. Note: To avoid conflicts, PATH environment and $HOME/.cargo/bin will be deleted only if rust and cargo are not installed."
+    echo " You can run "toutui --uninstall" or the official uninstall curl link to remove all these added files. Note: To avoid conflicts, PATH environment and $HOME/.cargo/ will be deleted only if rust and cargo are not installed or if toutui is the only binary present in $HOME/.cargo/bin."
     echo 'Only dependencies will not be uninstalled (VLC, Netcat, Rust)'
     echo " "
 }
@@ -682,6 +720,10 @@ install_binary() {
 
 
 install_toutui() {
+    check_toutui_installed
+    if [[ "$is_installed" == "true" ]]; then
+        confirm_force_install_update
+    fi
     install_message
     install_menu
     if [[ "$install_method" == "binary" ]]; then
@@ -825,8 +867,8 @@ update_toutui() {
 
 uninstall_message() {
     echo "Uninstall will do this:"
-    echo "Delete the binary in $HOME/.cargo/bin (If rust/cargo are not installed ~/.cargo will be deleted)"
-    echo "$HOME/.cargo/bin will be deleted from of your PATH (only if rust/cargo are not installed)"
+    echo "Delete the binary in $HOME/.cargo/bin (If rust/cargo are not installed and if ~/.cargo/bin is empty ~/.cargo will be deleted)"
+    echo "$HOME/.cargo/bin will be deleted from of your PATH (only if rust/cargo are not installed and if toutui was the only binary in $HOME/.cargo/bin)"
     echo "For Linux:"
     echo "The directory "toutui" in $HOME/.config (or any other path specified in XDG_CONFIG_HOME) wil be deleted: "
     echo "[IMPORTANT] save your config.toml if you need it later"
@@ -847,7 +889,7 @@ uninstall_process() {
             sudo rm -r "$HOME/.config/toutui"
         fi
 
-    sudo rm "$HOME/.local/share/applications/toutui.desktop"
+        sudo rm "$HOME/.local/share/applications/toutui.desktop"
 
     fi
 
@@ -860,16 +902,25 @@ uninstall_process() {
     fi
 
     if ! command -v rustc >/dev/null 2>&1; then
-        sed -i '/\. "\$HOME\/\.cargo\/env"/d' $HOME/.bashrc
-        sed -i '/\. "\$HOME\/\.cargo\/env"/d' $HOME/.bash_profile
-        sed -i '/\. "\$HOME\/\.cargo\/env"/d' $HOME/.profile
-        sed -i '/\. "\$HOME\/\.cargo\/env"/d' $HOME/.zshenv
         sudo rm $HOME/.config/fish/conf.d/toutui.env.fish
-        sudo rm -r $HOME/.cargo
-    else
+
+        # delete .cargo folder if rust/cargo is not installed
+        # dangerous operation. It's why toutui is removed from $HOME./cargo/bin firstly
+        # and then, only if $HOME/.cargo/bin directory is empty, $HOME/.cargo will be deleted
+        # and the differents source for PATH.
+        sudo rm $HOME/.cargo/bin/toutui
+        if [ -d "$HOME/.cargo/bin" ] && [ -z "$(ls -A "$DIR")" ]; then
+            sudo rm -r $HOME/.cargo
+            sed -i '/\. "\$HOME\/\.cargo\/env"/d' $HOME/.bashrc
+            sed -i '/\. "\$HOME\/\.cargo\/env"/d' $HOME/.bash_profile
+            sed -i '/\. "\$HOME\/\.cargo\/env"/d' $HOME/.profile
+            sed -i '/\. "\$HOME\/\.cargo\/env"/d' $HOME/.zshenv
+        fi
+
+    else # if rust/cargo are installed, only toutui bin will be removed
+        sudo rm $HOME/.config/fish/conf.d/toutui.env.fish
         sudo rm $HOME/.cargo/bin/toutui
     fi
-
 }
 
 uninstall_toutui() {
