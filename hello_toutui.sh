@@ -730,7 +730,7 @@ install_binary() {
 install_toutui() {
     check_toutui_installed
     if [[ "$is_installed" == "true" ]]; then
-        confirm_force_install_update $install
+        confirm_force_install_update "install"
     fi
     install_message
     install_menu
@@ -859,7 +859,7 @@ pull_latest_version() {
 update_toutui() {
     check_toutui_installed
     if [[ "$is_installed" == "false" ]]; then
-        confirm_force_install_update $update
+        confirm_force_install_update "update"
     fi
     install_deps # check for new deps
     local local_release=$(get_toutui_local_release)
