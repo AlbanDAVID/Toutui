@@ -665,6 +665,7 @@ dl_handle_compressed_binary() {
     sudo tar -xvzf "$temp_dir/$binary_name" -C "$temp_dir"
     echo "[INFO] Copy the binary from temp directory to ~/.cargo/bin/"
     mkdir -p "$HOME/.cargo/bin"
+    sudo rm "$HOME/.cargo/bin/toutui"
     cp "$temp_dir/toutui" "$HOME/.cargo/bin/"
     rm -rf "$temp_dir"
 }
