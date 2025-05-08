@@ -884,10 +884,12 @@ uninstall_message() {
     echo "For Linux:"
     echo "The directory "toutui" in $HOME/.config (or any other path specified in XDG_CONFIG_HOME) wil be deleted: "
     echo "[IMPORTANT] save your config.toml if you need it later"
+    echo "[IMPORTANT] XDG_CONFIG_HOME must be the same as it was at the time Toutui was installed. (in case you change it)"
     echo "toutui.desktop will be deleted from $HOME/.local/share/applications"
     echo "For macOS:"
     echo "The directory "toutui" in $HOME/Library/Preferences (or any other path specified in XDG_CONFIG_HOME) will be deleted: "
     echo "[IMPORTANT] save your config.toml if you need it later"
+    echo "[IMPORTANT] XDG_CONFIG_HOME must be the same as it was at the time Toutui was installed. (in case you change it)"
     echo " "
     echo 'Only dependencies will not be uninstalled (VLC, Netcat, Rust)'
     echo " "
