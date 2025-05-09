@@ -737,6 +737,10 @@ install_binary() {
         final_url=$(echo "$url_latest_binary" | sed "s/{binary_name}/$binary_name/")
         dl_handle_compressed_binary "$final_url" "$binary_name"
     fi
+    if [[ "$OS" == "linux" && "$arch" != "x86_64" && "$arch" != "aarch64" ]]; then
+        echo "[ERROR] No binary available for Linux $arch. You might compile from source"
+        exit 0
+    fi
     if [[ "$OS" == "macOS" && "$arch" == "arm64" ]]; then
         echo "[INFO] macOS arm64 detected"
         binary_name="toutui-universal-apple-darwin.tar.gz" # for intel and sillicon
@@ -748,6 +752,10 @@ install_binary() {
         binary_name="toutui-universal-apple-darwin.tar.gz" # for intel and sillicon
         final_url=$(echo "$url_latest_binary" | sed "s/{binary_name}/$binary_name/")
         dl_handle_compressed_binary "$final_url" "$binary_name"
+    fi
+    if [[ "$OS" == "macOS" && "$arch" != "x86_64" && "$arch" != "arm64" ]]; then
+        echo "[ERROR] No binary available for macOS $arch. You might compile from source"
+        exit 0
     fi
     if [[ "$OS" == "unknown" ]]; then
         echo "unknown os"
