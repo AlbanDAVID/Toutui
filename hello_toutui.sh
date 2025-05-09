@@ -754,7 +754,6 @@ confirm_install_deps_macos() {
         case $answer in
             no)
                 echo "[IMPORTANT] You will have to install by yourself (after the install) these required dependencies: VLC, Netcat and gsed "
-                exit 0
                 ;;
             yes)
                 install_deps # install essential and/or optional deps
