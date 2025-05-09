@@ -677,7 +677,10 @@ dl_handle_compressed_binary() {
     sudo tar -xvzf "$temp_dir/$binary_name" -C "$temp_dir"
     echo "[INFO] Copy the binary from temp directory to ~/.cargo/bin/"
     mkdir -p "$HOME/.cargo/bin"
-    sudo rm "$HOME/.cargo/bin/toutui"
+    # remove the old toutui binary
+    if [[ -e "$HOME/.cargo/bin/toutui" ]]; then
+        sudo rm "$HOME/.cargo/bin/toutui"
+    fi
     cp "$temp_dir/toutui" "$HOME/.cargo/bin/"
     rm -rf "$temp_dir"
 }
@@ -786,7 +789,11 @@ install_toutui() {
         install_binary
         export_cargo_bin
         setup_launcher
-        echo "[DONE] Install complete. Type toutui in your terminal to run it."
+        if [[ "$OS" == "linux" ]]; then
+            echo "[DONE] Install complete. Launch toutui from your favorite app launcher or type toutui in your terminal to run it!"
+        elif [[ "$OS" == "macOS" ]]; then
+            echo "[DONE] Install complete. Type toutui in your terminal to run it!"
+        fi
         echo "[ADVICE] Explore and try various themes: https://github.com/AlbanDAVID/Toutui-theme"
         echo "[ADVICE] Best experience with Kitty or Alacritty terminal."
     elif [[ "$install_method" == "source" ]]; then
@@ -802,16 +809,17 @@ install_toutui() {
         setup_launcher
         # copy Toutui binary to system path
         # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
-        echo "[DONE] Install complete. Type toutui in your terminal to run it."
+        if [[ "$OS" == "linux" ]]; then
+            echo "[DONE] Install complete. Launch toutui from your favorite app launcher or type toutui in your terminal to run it!"
+        elif [[ "$OS" == "macOS" ]]; then
+            echo "[DONE] Install complete. Type toutui in your terminal to run it!"
+        fi
         echo "[ADVICE] Explore and try various themes: https://github.com/AlbanDAVID/Toutui-theme"
         echo "[ADVICE] Best experience with Kitty or Alacritty terminal."
         post_install_msg # only if .env not found
     fi
 }
 
-post_update_msg() {
-    echo "[DONE] Update complete."
-}
 
 update_menu() {
     echo "[HELP] Option 1 is the most user-friendly updating method. No compilation time, no need to install rust/cargo. However, if it does not work, select option 2."
@@ -941,7 +949,6 @@ update_toutui() {
         pull_latest_version $github_release
 
     fi
-    post_update_msg
 }
 
 uninstall_message() {
@@ -964,43 +971,79 @@ uninstall_message() {
 
 uninstall_process() {
     if [[ "$OS" == "linux" ]]; then
-        if [[ -n "$XDG_CONFIG_HOME" ]]; then
+
+        if [[ -n "$XDG_CONFIG_HOME" && -e "$XDG_CONFIG_HOME/toutui" ]]; then
             sudo rm -r "$XDG_CONFIG_HOME/toutui"
-        else
-            sudo rm -r "$HOME/.config/toutui"
+            echo "$XDG_CONFIG_HOME/toutui deleted."
         fi
 
-        sudo rm "$HOME/.local/share/applications/toutui.desktop"
+        if [[ -e "$HOME/.config/toutui" ]]; then
+            sudo rm -r "$HOME/.config/toutui"
+            echo "$HOME/.config/toutui deleted."
+        fi
+
+        if [[ -e "$HOME/.local/share/applications/toutui.desktop" ]] ; then
+            sudo rm "$HOME/.local/share/applications/toutui.desktop"
+            echo "$HOME/.local/share/applications/toutui.desktop deleted."
+        fi
 
     fi
 
     if [[ "$OS" == "macOS" ]]; then
-        if [[ -n "$XDG_CONFIG_HOME" ]]; then
+        if [[ -n "$XDG_CONFIG_HOME" && -e "$XDG_CONFIG_HOME/toutui" ]]; then
             sudo rm -r "$XDG_CONFIG_HOME/toutui"
-        else
+            echo "$XDG_CONFIG_HOME/toutui deleted."
+        fi
+
+        if [[ -e "$HOME/Library/Preferences/toutui" ]]; then
             sudo rm -r "$HOME/Library/Preferences/toutui"
+            echo "$HOME/Library/Preferences/toutui deleted."
         fi
     fi
 
     if ! command -v rustc >/dev/null 2>&1; then
-        sudo rm $HOME/.config/fish/conf.d/toutui.env.fish
+
+        if [[ -e $HOME/.config/fish/conf.d/toutui.env.fish ]]; then
+            sudo rm "$HOME/.config/fish/conf.d/toutui.env.fish"
+            echo "$HOME/.config/fish/conf.d/toutui.env.fish deleted"
+        fi
 
         # delete .cargo folder if rust/cargo is not installed
         # dangerous operation. It's why toutui is removed from $HOME./cargo/bin firstly
         # and then, only if $HOME/.cargo/bin directory is empty, $HOME/.cargo will be deleted
         # and the differents source for PATH.
-        sudo rm $HOME/.cargo/bin/toutui
+
+        if [[ -e "$HOME/.cargo/bin/toutui" ]]; then
+            sudo rm "$HOME/.cargo/bin/toutui"
+            echo "$HOME/.cargo/bin/toutui deleted."
+        fi
+
         if [ -d "$HOME/.cargo/bin" ] && [ -z "$(ls -A "$HOME/.cargo/bin")" ]; then
-            sudo rm -r $HOME/.cargo
-            sed -i '/\. "\$HOME\/\.cargo\/env"/d' $HOME/.bashrc
-            sed -i '/\. "\$HOME\/\.cargo\/env"/d' $HOME/.bash_profile
-            sed -i '/\. "\$HOME\/\.cargo\/env"/d' $HOME/.profile
-            sed -i '/\. "\$HOME\/\.cargo\/env"/d' $HOME/.zshenv
+            sudo rm -r "$HOME/.cargo"
+            echo "$HOME/.cargo deleted."
+
+            for file in "$HOME/.bashrc" "$HOME/.bash_profile" "$HOME/.profile" "$HOME/.zshenv"; do
+                if [ -f "$file" ] && grep -q '\. "\$HOME/\.cargo/env"' "$file"; then
+                    sed -i '/\. "\$HOME\/\.cargo\/env"/d' "$file"
+                    echo "'\$HOME/.cargo/env' removed from $file"
+                fi
+            done
+
+            #            sed -i '/\. "\$HOME\/\.cargo\/env"/d' "$HOME/.bashrc"
+            #            sed -i '/\. "\$HOME\/\.cargo\/env"/d' "$HOME/.bash_profile"
+            #            sed -i '/\. "\$HOME\/\.cargo\/env"/d' "$HOME/.profile"
+            #            sed -i '/\. "\$HOME\/\.cargo\/env"/d' "$HOME/.zshenv"
         fi
 
     else # if rust/cargo are installed, only toutui bin will be removed
-        sudo rm $HOME/.config/fish/conf.d/toutui.env.fish
-        sudo rm $HOME/.cargo/bin/toutui
+        if [[ -e "$HOME/.config/fish/conf.d/toutui.env.fish" ]]; then
+            sudo rm "$HOME/.config/fish/conf.d/toutui.env.fish"
+            echo "$HOME/.config/fish/conf.d/toutui.env.fish deleted."
+        fi
+        if [[ -e "$HOME/.cargo/bin/toutui" ]]; then
+            sudo rm "$HOME/.cargo/bin/toutui"
+            echo "$HOME/.cargo/bin/toutui deleted."
+        fi
     fi
 }
 
