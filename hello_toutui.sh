@@ -275,6 +275,7 @@ export_source() {
         #source "$HOME/.cargo/env.fish"
     else
         echo "[ERROR] Unsupported shell: $SHELL"
+        echo "[ERROR] You need to source by yourself"
     fi
 }
 
@@ -526,7 +527,7 @@ install_deps() {
         fi
     done
     install_packages "${missing[@]}" && echo "[INFO] Essential dependencies are installed."
-    propose_optional_dependencies "${optionals[@]}"
+    #propose_optional_dependencies "${optionals[@]}"
 }
 
 export_cargo_bin_menu() {
@@ -738,6 +739,31 @@ install_binary() {
 
 }
 
+confirm_install_deps_macos() {
+    local answer=
+    if [[ "$OS" == "macOS" ]]; then
+
+        echo "[IMPORTANT] If you accept, the script will automatically fetch and install the required dependencies (Brew, VLC, Netcat, gsed) if they are missing."
+        echo "[IMPORTANT] Please note: package detection via Homebrew can sometimes be unreliable (but it's not risky). If you encounter issues, restart the installation and choose not to accept."
+
+        while :; do
+            read -p "Accept? (Y/n) : " answer
+            if [[ $answer =~ (n|N) ]]; then answer=no; break; fi
+            if [[ $answer == "" || $answer =~ (y|Y) ]]; then answer=yes; break; fi
+        done
+        case $answer in
+            no)
+                echo "[IMPORTANT] You will have to install by yourself (after the install) these required dependencies: VLC, Netcat and gsed "
+                exit 0
+                ;;
+            yes)
+                install_deps # install essential and/or optional deps
+                ;;
+
+        esac
+    fi
+
+}
 
 install_toutui() {
     check_toutui_installed
@@ -748,7 +774,10 @@ install_toutui() {
     install_menu
     if [[ "$install_method" == "binary" ]]; then
         echo "Install the binary..."
-        install_deps # install essential and/or optional deps
+        confirm_install_deps_macos
+        if [[ "$OS" == "linux" ]]; then
+            install_deps # install essential and/or optional deps
+        fi
         install_config # create ~/.config/toutui/ etc.
         install_binary
         export_cargo_bin
@@ -851,6 +880,23 @@ pull_latest_version() {
         no)
             echo "[INFO] Ignoring latest version.";;
         yes)
+            if [[ "$OS" == "macOS" ]]; then
+                local answer2=
+                while :; do
+                    read -p "gsed package is needed to correctly perform the update. Please, check if you have it ('brew install gsed' to install it). Continue? (Y/n) : " answer
+                    if [[ $answer =~ (n|N) ]]; then answer=no; break; fi
+                    if [[ $answer == "" || $answer =~ (y|Y) ]]; then answer=yes; break; fi
+                done
+                case $answer2 in
+                    no)
+                        echo "[INFO] Update aborted"
+                        exit 0
+                        ;;
+                    yes)
+                        ;;
+
+                esac
+            fi
             # echo "[INFO] Pulling latest version..."
             # git fetch && git pull
             update_menu
@@ -873,7 +919,6 @@ update_toutui() {
     if [[ "$is_installed" == "false" ]]; then
         confirm_force_install_update "update"
     fi
-    install_deps # check for new deps
     local local_release=$(get_toutui_local_release)
     local github_release=$(get_toutui_github_release)
     echo "[INFO] Local:  $local_release"
@@ -882,6 +927,9 @@ update_toutui() {
         echo "[INFO] Up to date (version $local_release)."
     else
         #echo "TODO: check if is behind or ahead?"
+        if [[ "$OS" == "linux" ]]; then
+            install_deps # check for new deps
+        fi
         display_changelog # display before pulling?
         pull_latest_version $github_release
 
@@ -961,6 +1009,23 @@ uninstall_toutui() {
         no)
             echo "[INFO] Uninstall aborted";;
         yes)
+            if [[ "$OS" == "macOS" ]]; then
+                local answer2=
+                while :; do
+                    read -p "gsed package is needed to correctly perform uninstall. Please, check if you have it ('brew install gsed' to install it). Continue? (Y/n) : " answer
+                    if [[ $answer =~ (n|N) ]]; then answer=no; break; fi
+                    if [[ $answer == "" || $answer =~ (y|Y) ]]; then answer=yes; break; fi
+                done
+                case $answer2 in
+                    no)
+                        echo "[INFO] Update aborted"
+                        exit 0
+                        ;;
+                    yes)
+                        ;;
+
+                esac
+            fi
             echo "[INFO] Starting uninstall..."
             uninstall_process
             echo "[OK] Toutui has been successfully uninstalled."
