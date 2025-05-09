@@ -29,6 +29,7 @@ impl Widget for &mut App {
             AppView::SettingsAccount => self.render_settings_account(area, buf),
             AppView::SettingsLibrary => self.render_settings_library(area, buf),
             AppView::SettingsAbout => {},
+            AppView::SettingsUpdateUninstall => {},
         }
     }
 }
@@ -112,6 +113,10 @@ impl App {
         if self.list_state_settings.selected() == Some(2) {
             // for `About` section
             _text_render_footer = "j/↓, k/↑: move, Scroll what's new: J(down) K(up) H(top),\n Tab: home, R: refresh, Q/Esc: quit.";
+        }
+        else if self.list_state_settings.selected() == Some(3) {
+            _text_render_footer = "j/↓, k/↑: move, Scroll : J(down) K(up) H(top),\n Tab: home, R: refresh, Q/Esc: quit.";
+
         } else {
             _text_render_footer = "j/↓, k/↑: move, l/→: see options,\n Tab: home, R: refresh, Q/Esc: quit.";
         }
@@ -710,8 +715,19 @@ impl App {
 
     }
 
+    
     // desc for settings
     fn render_desc_settings(&self, area: Rect, buf: &mut Buffer, list_state: &ListState) {
+
+        let instructions = "\
+Update:
+1) Quit the app
+2) Paste the following command in a terminal: toutui --update
+
+Uninstall:
+1) Quit the app
+2) Paste the following command in a terminal: toutui --uninstall
+";
 
         match list_state.selected() {
 
@@ -719,6 +735,12 @@ impl App {
             Some(1) => {}
             Some(2) => {
                 Paragraph::new(self.changelog.clone())
+                    .scroll((self.scroll_offset as u16, 0))
+                    .wrap(Wrap { trim: true })
+                    .render(area, buf);
+                }
+            Some(3) => {
+                Paragraph::new(instructions)
                     .scroll((self.scroll_offset as u16, 0))
                     .wrap(Wrap { trim: true })
                     .render(area, buf);

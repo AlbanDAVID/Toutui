@@ -694,8 +694,8 @@ dl_handle_compressed_binary() {
     sudo tar -xvzf "$temp_dir/$binary_name" -C "$temp_dir"
     echo "[INFO] Copy the binary from temp directory to ~/.cargo/bin/"
     mkdir -p "$HOME/.cargo/bin"
-    # remove the old toutui binary
-    if [[ -e "$HOME/.cargo/bin/toutui" ]]; then
+    # remove the prev version toutui binary only if the new has been downloaded
+    if [[ -e "$HOME/.cargo/bin/toutui" && -e "$temp_dir/toutui" ]]; then
         sudo rm "$HOME/.cargo/bin/toutui"
     fi
     cp "$temp_dir/toutui" "$HOME/.cargo/bin/"
