@@ -748,15 +748,15 @@ confirm_install_deps_macos() {
 
         while :; do
             read -p "Select option? (1/2/Q (to quit the installation)) : " answer
-            if [[ $answer =~ (1) ]]; then answer=1; break; fi
-            if [[ $answer =~ (2) ]]; then answer=2; break; fi
+            if [[ $answer =~ (1) ]]; then answer=option1; break; fi
+            if [[ $answer =~ (2) ]]; then answer=option2; break; fi
             if [[ $answer =~ (q/Q) ]]; then answer=quit; break; fi
 
         done
         case $answer in
-            1)
+            option1)
                 ;;
-            2)
+            option2)
                 install_deps # install essential and/or optional deps
                 ;;
 
@@ -791,7 +791,10 @@ install_toutui() {
         echo "[ADVICE] Best experience with Kitty or Alacritty terminal."
     elif [[ "$install_method" == "source" ]]; then
         echo "Compiling from source..."
-        install_deps # install essential and/or optional deps
+        confirm_install_deps_macos
+        if [[ "$OS" == "linux" ]]; then
+            install_deps # install essential and/or optional deps
+        fi
         install_config # create ~/.config/toutui/ etc.
         install_rust # cornerstone! toutui is written by a crab
         #cargo install --git https://github.com/AlbanDAVID/Toutui --branch install_with_cargo
