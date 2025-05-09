@@ -756,11 +756,10 @@ confirm_install_deps_macos() {
         done
         case $answer in
             option1)
-                ;;
-            option2)
                 install_deps # install essential and/or optional deps
                 ;;
-
+            option2)
+                ;;
             quit)
                 echo "Installation aborted. Install required dependencies Brew, VLC, Netcat and gsed and perfom again an install"
                 exit 0
