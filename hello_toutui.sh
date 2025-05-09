@@ -743,22 +743,27 @@ confirm_install_deps_macos() {
     local answer=
     if [[ "$OS" == "macOS" ]]; then
 
-        echo "[IMPORTANT] If you accept, the script will automatically fetch and install the required dependencies (Brew, VLC, Netcat, gsed) if they are missing."
-        echo "[IMPORTANT] Please note: package detection via Homebrew can sometimes be unreliable (but it's not risky). If you encounter issues, restart the installation and choose not to accept."
+        echo "[IMPORTANT] If you select 1, the script will automatically fetch and install the required dependencies (Brew, VLC, Netcat, gsed) if they are missing."
+        echo "[IMPORTANT] Please note: package detection via Homebrew can sometimes be unreliable (but it's not risky). If you encounter issues, install the packages by yourself and select option 2."
 
         while :; do
-            read -p "Accept? (Y/n) : " answer
-            if [[ $answer =~ (n|N) ]]; then answer=no; break; fi
-            if [[ $answer == "" || $answer =~ (y|Y) ]]; then answer=yes; break; fi
+            read -p "Select option? (1/2/Q (to quit the installation)) : " answer
+            if [[ $answer =~ (1) ]]; then answer=1; break; fi
+            if [[ $answer =~ (2) ]]; then answer=2; break; fi
+            if [[ $answer =~ (q/Q) ]]; then answer=quit; break; fi
+
         done
         case $answer in
-            no)
-                echo "[IMPORTANT] You will have to install by yourself (after the install) these required dependencies: VLC, Netcat and gsed "
+            1)
                 ;;
-            yes)
+            2)
                 install_deps # install essential and/or optional deps
                 ;;
 
+            quit)
+                echo "Installation aborted. Install required dependencies Brew, VLC, Netcat and gsed and perfom again an install"
+                exit 0
+                ;;
         esac
     fi
 
