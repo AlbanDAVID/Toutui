@@ -28,7 +28,9 @@
 ## 🛠️ Roadmap  
 **Short-term Goals**  
 - Since this is a beta version, the main focus is on tracking and fixing bugs.
+
 - **Currently working on the next release: [v0.4.1-beta].**
+
 
 **Mid-term Goals**  
 - Put the app on yay    
@@ -68,9 +70,11 @@ To ensure the best experience, it's recommended to use **Kitty** or **Alacritty*
 ### Easy installation 
 
 >[!WARNING]
+
 > - **This is a beta app, please read [this](https://github.com/AlbanDAVID/Toutui?tab=readme-ov-file#%EF%B8%8F-caution-beta-version).**    
 
 **Run the following in your terminal, then follow the on-screen instructions:**    
+
 
 [![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
 
@@ -134,7 +138,9 @@ cd Toutui/
 mkdir -p ~/.config/toutui
 cp config.example.toml ~/.config/toutui/config.toml
 ```
+
 Note: `main` might be unstable. Prefer `git clone --branch stable --single-branch https://github.com/AlbanDAVID/Toutui` if you want to have the last stable release.
+
 
 Token encryption in the database (<u>**NOTE**</u>: replace `secret`)
 ```bash
