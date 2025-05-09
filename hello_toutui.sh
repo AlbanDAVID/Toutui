@@ -16,16 +16,13 @@ main() {
     # Url variables for tests in AlbDav55 fork
     url_config_file="https://github.com/AlbDav55/Toutui/raw/main/config.example.toml"
     url_latest_release="https://api.github.com/repos/AlbDav55/Toutui/releases/latest"
-    url_latest_binary="https://github.com/AlbDav55/Toutui/releases/download/$full_version/{binary_name}"
+    url_latest_binary="https://github.com/AlbDav55/Toutui/releases/download"
     url_cargo_install="https://github.com/AlbDav55/Toutui"
     url_env="https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/env"
     url_env_fish="https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/env.fish"
     url_toutui_desktop="https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/toutui.desktop"
 
     # URL variables for production (do not forget to ensure that repo name and branches are correct)
-
-    # get full and latest version on github(e.g: v0.1.0-beta)
-    full_version=$(curl -s "$url_latest_release" | grep tag_name | sed -E "s|.*\"([^\"]*)\",|\1|")
 
     # Grab essential variables
     OS=$(identify_os)
@@ -723,17 +720,21 @@ install_binary() {
     # get the architecture
     arch=$(uname -m)
 
+    # get full and latest version on github(e.g: v0.1.0-beta)
+    full_version=$(curl -s "$url_latest_release" | grep tag_name | sed -E "s|.*\"([^\"]*)\",|\1|")
+
+
     # determine binary to download
     if [[ "$OS" == "linux" && "$arch" == "x86_64" ]]; then
         echo "[INFO] Linux x86_64 detected"
         binary_name="toutui-x86_64-unknown-linux-gnu.tar.gz"
-        final_url=$(echo "$url_latest_binary" | sed "s/{binary_name}/$binary_name/")
+        final_url="$url_latest_binary/$full_version/$binary_name"
         dl_handle_compressed_binary "$final_url" "$binary_name"
     fi
     if [[ "$OS" == "linux" && "$arch" == "aarch64" ]]; then
         echo "[INFO] Linux aarch64 detected"
         binary_name="toutui-aarch64-unknown-linux-gnu.tar.gz"
-        final_url=$(echo "$url_latest_binary" | sed "s/{binary_name}/$binary_name/")
+        final_url="$url_latest_binary/$full_version/$binary_name"
         dl_handle_compressed_binary "$final_url" "$binary_name"
     fi
     if [[ "$OS" == "linux" && "$arch" != "x86_64" && "$arch" != "aarch64" ]]; then
@@ -743,13 +744,13 @@ install_binary() {
     if [[ "$OS" == "macOS" && "$arch" == "arm64" ]]; then
         echo "[INFO] macOS arm64 detected"
         binary_name="toutui-universal-apple-darwin.tar.gz" # for intel and sillicon
-        final_url=$(echo "$url_latest_binary" | sed "s/{binary_name}/$binary_name/")
+        final_url="$url_latest_binary/$full_version/$binary_name"
         dl_handle_compressed_binary "$final_url" "$binary_name"
     fi
     if [[ "$OS" == "macOS" && "$arch" == "x86_64" ]]; then
         echo "[INFO] macOS x86_64 detected"
         binary_name="toutui-universal-apple-darwin.tar.gz" # for intel and sillicon
-        final_url=$(echo "$url_latest_binary" | sed "s/{binary_name}/$binary_name/")
+        final_url="$url_latest_binary/$full_version/$binary_name"
         dl_handle_compressed_binary "$final_url" "$binary_name"
     fi
     if [[ "$OS" == "macOS" && "$arch" != "x86_64" && "$arch" != "arm64" ]]; then
