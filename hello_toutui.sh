@@ -24,6 +24,9 @@ main() {
 
     # URL variables for production (do not forget to ensure that repo name and branches are correct)
 
+    # get full and latest version on github(e.g: v0.1.0-beta)
+    full_version=$(curl -s "$url_latest_release" | grep tag_name | sed -E "s|.*\"([^\"]*)\",|\1|")
+
     # Grab essential variables
     OS=$(identify_os)
     USER=${USER:-$(grab_username)}
@@ -719,10 +722,6 @@ setup_launcher() {
 install_binary() {
     # get the architecture
     arch=$(uname -m)
-
-    # get full and latest version on github(e.g: v0.1.0-beta)
-    full_version=$(curl -s "$url_latest_release" | grep tag_name | sed -E "s|.*\"([^\"]*)\",|\1|")
-
 
     # determine binary to download
     if [[ "$OS" == "linux" && "$arch" == "x86_64" ]]; then
