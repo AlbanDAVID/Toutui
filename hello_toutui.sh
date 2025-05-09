@@ -7,6 +7,17 @@ set -eo pipefail
 main() {
     do_not_run_as_root
 
+    # Url variables for tests in AlbDav55 fork
+    url_config_file="https://github.com/AlbDav55/Toutui/raw/main/config.example.toml"
+    url_latest_release="https://api.github.com/repos/AlbDav55/Toutui/releases/latest"
+    url_latest_binary="https://github.com/AlbDav55/Toutui/releases/download/$full_version/{binary_name}"
+    url_cargo_install="https://github.com/AlbDav55/Toutui"
+    url_env="https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/env"
+    url_env_fish="https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/env.fish"
+    url_toutui_desktop="https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/toutui.desktop"
+
+    # URL variables for production (do not forget to ensure that repo name and branches are correct)
+
     # Grab essential variables
     OS=$(identify_os)
     USER=${USER:-$(grab_username)}
@@ -376,7 +387,7 @@ install_config() {
     local tmpdir
     tmpdir=$(mktemp -d) # not supported in bash 3.2
     # dl config.example.toml in temp directory
-    curl -LsSf https://github.com/AlbDav55/Toutui/raw/main/config.example.toml -o "$tmpdir/config.toml"
+    curl -LsSf "$url_config_file" -o "$tmpdir/config.toml"
 
     local example_config="$tmpdir/config.toml"
     if ! [[ -f "$example_config" ]]; then
@@ -562,8 +573,8 @@ export_cargo_bin_menu() {
     do
         case $REPLY in
             1)
-                curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/env" -o "$HOME/.cargo/env"
-                curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/env.fish" -o "$HOME/.cargo/env.fish"
+                curl -L "$url_env" -o "$HOME/.cargo/env"
+                curl -L "$url_env_fish" -o "$HOME/.cargo/env.fish"
                 export_source
                 echo "[IMPORTANT] Restart your terminal or type the following command:"
                 echo "    for bash, zsh, sh:"
@@ -688,7 +699,7 @@ dl_handle_compressed_binary() {
 setup_launcher() {
     if [[ "$OS" == "linux" ]]; then
         mkdir -p "$HOME/.local/share/applications"
-        curl -sSL "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/toutui.desktop" -o "$HOME/.local/share/applications/toutui.desktop"
+        curl -sSL "$url_toutui_desktop" -o "$HOME/.local/share/applications/toutui.desktop"
     fi
    # elif [[ "$OS" == "macOS" ]]; then
    #     mkdir -p "/Applications/toutui.app/Contents"
@@ -704,34 +715,32 @@ install_binary() {
     arch=$(uname -m)
 
     # get full and latest version on github(e.g: v0.1.0-beta)
-    full_version=$(curl -s https://api.github.com/repos/AlbDav55/Toutui/releases/latest | grep tag_name | sed -E "s|.*\"([^\"]*)\",|\1|")
+    full_version=$(curl -s "$url_latest_release" | grep tag_name | sed -E "s|.*\"([^\"]*)\",|\1|")
 
-    # get general url
-    general_url="https://github.com/AlbDav55/Toutui/releases/download/$full_version/{binary_name}"
 
     # determine binary to download
     if [[ "$OS" == "linux" && "$arch" == "x86_64" ]]; then
         echo "[INFO] Linux x86_64 detected"
         binary_name="toutui-x86_64-unknown-linux-gnu.tar.gz"
-        final_url=$(echo "$general_url" | sed "s/{binary_name}/$binary_name/")
+        final_url=$(echo "$url_latest_binary" | sed "s/{binary_name}/$binary_name/")
         dl_handle_compressed_binary "$final_url" "$binary_name"
     fi
     if [[ "$OS" == "linux" && "$arch" == "aarch64" ]]; then
         echo "[INFO] Linux aarch64 detected"
         binary_name="toutui-aarch64-unknown-linux-gnu.tar.gz"
-        final_url=$(echo "$general_url" | sed "s/{binary_name}/$binary_name/")
+        final_url=$(echo "$url_latest_binary" | sed "s/{binary_name}/$binary_name/")
         dl_handle_compressed_binary "$final_url" "$binary_name"
     fi
     if [[ "$OS" == "macOS" && "$arch" == "arm64" ]]; then
         echo "[INFO] macOS arm64 detected"
         binary_name="toutui-universal-apple-darwin.tar.gz" # for intel and sillicon
-        final_url=$(echo "$general_url" | sed "s/{binary_name}/$binary_name/")
+        final_url=$(echo "$url_latest_binary" | sed "s/{binary_name}/$binary_name/")
         dl_handle_compressed_binary "$final_url" "$binary_name"
     fi
     if [[ "$OS" == "macOS" && "$arch" == "x86_64" ]]; then
         echo "[INFO] macOS x86_64 detected"
         binary_name="toutui-universal-apple-darwin.tar.gz" # for intel and sillicon
-        final_url=$(echo "$general_url" | sed "s/{binary_name}/$binary_name/")
+        final_url=$(echo "$url_latest_binary" | sed "s/{binary_name}/$binary_name/")
         dl_handle_compressed_binary "$final_url" "$binary_name"
     fi
     if [[ "$OS" == "unknown" ]]; then
@@ -805,7 +814,7 @@ install_toutui() {
         install_config # create ~/.config/toutui/ etc.
         install_rust # cornerstone! toutui is written by a crab
         #cargo install --git https://github.com/AlbanDAVID/Toutui --branch install_with_cargo
-        cargo install --git https://github.com/AlbDav55/Toutui --branch stable
+        cargo install --git "$url_cargo_install" --branch stable
         setup_launcher
         # copy Toutui binary to system path
         # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
@@ -873,11 +882,11 @@ toutui --version | cut -d' ' -f2
 }
 
 get_toutui_github_release() {
-    curl -s https://api.github.com/repos/AlbDav55/Toutui/releases/latest | grep tag_name | sed -E "s|.*\"v([^\"]*)\",|\1|"
+    curl -s "$url_latest_release" | grep tag_name | sed -E "s|.*\"v([^\"]*)\",|\1|"
 }
 
 display_changelog() {
-    local changelog=$(curl -s https://api.github.com/repos/AlbDav55/Toutui/releases/latest | grep "\"body\"" | sed -E "s|^\s*\"body\":\s*\"([^\"]*)\"|\1|")
+    local changelog=$(curl -s "$url_latest_release" | grep "\"body\"" | sed -E "s|^\s*\"body\":\s*\"([^\"]*)\"|\1|")
     echo -e "\x1b[2m### CHANGELOG ###\x1b[0m"
     echo -e "\x1b[2m$changelog\x1b[0m"
     echo -e "\x1b[2m#################\x1b[0m"
@@ -919,7 +928,7 @@ pull_latest_version() {
                 install_binary
             elif [[ "$update_method" == "source" ]]; then
                 install_rust
-                cargo install --force --git https://github.com/AlbDav55/Toutui --branch stable
+                cargo install --force --git "$url_cargo_install" --branch stable
             fi
             install_config
             # cargo build --release
