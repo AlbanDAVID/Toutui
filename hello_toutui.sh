@@ -597,7 +597,7 @@ export_cargo_bin() {
 install_message() {
     echo "[INFO]"
     echo "The installation will have these effects:"
-    echo "Install dependencies if needed: VLC, Netcat and Rust"
+    echo "Install dependencies if needed: VLC, Netcat, Rust, for macos: Homebrew and gsed"
     echo "Add the binary in $HOME/.cargo/bin (this path will be created if does not exist)"
     echo "$HOME/.cargo/bin will be added to your PATH (only if you want, you will be asked later)"
     echo "For Linux:"
@@ -610,7 +610,7 @@ install_message() {
     echo "gsed dependencie will be installed"
     echo " "
     echo " You can run "toutui --uninstall" or the official uninstall curl link to remove all these added files. Note: To avoid conflicts, PATH environment and $HOME/.cargo/ will be deleted only if rust and cargo are not installed or if toutui is the only binary present in $HOME/.cargo/bin."
-    echo 'Only dependencies will not be uninstalled (e.g. VLC, Netcat, Rust, gsed)'
+    echo 'Only dependencies will not be uninstalled (e.g. VLC, Netcat, Rust, gsed, Homebrew)'
     echo " "
 }
 
@@ -958,7 +958,7 @@ uninstall_message() {
     echo "[IMPORTANT] save your config.toml if you need it later"
     echo "[IMPORTANT] XDG_CONFIG_HOME must be the same as it was at the time Toutui was installed. (in case you change it)"
     echo " "
-    echo 'Only dependencies will not be uninstalled (e.g. VLC, Netcat, Rust, gsed)'
+    echo 'Only dependencies will not be uninstalled (e.g. VLC, Netcat, Rust, Homebrew, gsed)'
     echo " "
 }
 
