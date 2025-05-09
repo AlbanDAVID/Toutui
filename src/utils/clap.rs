@@ -21,7 +21,7 @@ pub fn clap() {
         std::process::Command::new("sh")
             .arg("-c")
             .arg(
-                r#"bash -c 'tmpfile=$(mktemp) && curl -LsSf https://github.com/AlbanDAVID/Toutui/raw/install_with_cargo/hello_toutui.sh -o "$tmpfile" && bash "$tmpfile" uninstall && rm -f "$tmpfile"'"#,
+                r#"bash -c 'tmpfile=$(mktemp) && curl -LsSf https://github.com/AlbanDAVID/Toutui/raw/stable/hello_toutui.sh -o "$tmpfile" && bash "$tmpfile" uninstall && rm -f "$tmpfile"'"#,
             )
             .status()
             .expect("failed to run uninstall script");
@@ -31,7 +31,7 @@ pub fn clap() {
         std::process::Command::new("sh")
             .arg("-c")
             .arg(
-                r#"bash -c 'tmpfile=$(mktemp) && curl -LsSf https://github.com/AlbanDAVID/Toutui/raw/install_with_cargo/hello_toutui.sh -o "$tmpfile" && bash "$tmpfile" update && rm -f "$tmpfile"'"#,
+                r#"bash -c 'tmpfile=$(mktemp) && curl -LsSf https://github.com/AlbanDAVID/Toutui/raw/stable/hello_toutui.sh -o "$tmpfile" && bash "$tmpfile" update && rm -f "$tmpfile"'"#,
             )
             .status()
             .expect("failed to run update script");
