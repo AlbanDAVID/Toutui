@@ -303,7 +303,7 @@ confirm_force_install_update() {
     local message
 
     if [[ "$message_type" == "install" ]]; then
-        message="Toutui is already installed. It's recommended to perform an uninstall before. Do you still want to force an installation (not recommended)? (y/N) : "
+        message="Toutui is already installed. It's recommended to perform an uninstall before. Do you still want to force the installation? (y/N) : "
     elif [[ "$message_type" == "update" ]]; then
         message="Toutui in not installed. Install toutui before perform an update. Do you want to force update (not recommended)? (y/N) :"
 
@@ -740,14 +740,15 @@ install_binary() {
 }
 
 confirm_install_deps_macos() {
+    local answer=
+
     if [[ "$OS" == "macOS" ]]; then
 
         echo "[IMPORTANT] If you select 1, the script will automatically fetch and install the required dependencies (Brew, VLC, Netcat, gsed) if they are missing."
         echo "[IMPORTANT] Please note: package detection via Homebrew can sometimes be unreliable (but it's not risky). If you encounter issues, install the packages by yourself and select option 2."
 
-    local answer=
         while :; do
-            read -p "Select option? (1/2/Q (to quit the installation)) : " answer
+            read -p "Select option: (1/2/Q (to quit the installation)) : " answer
             if [[ $answer =~ (1) ]]; then answer=option1; break; fi
             if [[ $answer =~ (2) ]]; then answer=option2; break; fi
             if [[ $answer =~ (q/Q) ]]; then answer=quit; break; fi
