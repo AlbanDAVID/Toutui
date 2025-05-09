@@ -745,13 +745,13 @@ confirm_install_deps_macos() {
     if [[ "$OS" == "macOS" ]]; then
 
         echo "[IMPORTANT] If you select 1, the script will automatically fetch and install the required dependencies (Brew, VLC, Netcat, gsed) if they are missing."
-        echo "[IMPORTANT] Please note: package detection via Homebrew can sometimes be unreliable (but it's not risky). If you encounter issues, install the packages by yourself and select option 2."
+        echo "[IMPORTANT] Please note: package detection via Homebrew can sometimes be unreliable (but it's not risky). If you encounter issues, install the packages by yourself and select 2."
 
         while :; do
             read -p "Select option: (1/2/Q (to quit the installation)) : " answer
             if [[ $answer =~ (1) ]]; then answer=option1; break; fi
             if [[ $answer =~ (2) ]]; then answer=option2; break; fi
-            if [[ $answer =~ (q/Q) ]]; then answer=quit; break; fi
+            if [[ $answer =~ (q|Q) ]]; then answer=quit; break; fi
 
         done
         case $answer in
