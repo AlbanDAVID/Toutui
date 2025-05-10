@@ -14,22 +14,18 @@ main() {
     do_not_run_as_root
 
     # Url variables for tests in AlbDav55 fork
-   # url_config_file="https://github.com/AlbDav55/Toutui/raw/main/config.example.toml"
-   # url_latest_release="https://api.github.com/repos/AlbDav55/Toutui/releases/latest"
-   # url_latest_binary="https://github.com/AlbDav55/Toutui/releases/download"
-   # url_cargo_install="https://github.com/AlbDav55/Toutui"
-   # url_env="https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/env"
-   # url_env_fish="https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/env.fish"
-   # url_toutui_desktop="https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/toutui.desktop"
+    url_config_file="https://github.com/AlbDav55/Toutui/raw/main/config.example.toml"
+    url_latest_release="https://api.github.com/repos/AlbDav55/Toutui/releases/latest"
+    url_latest_binary="https://github.com/AlbDav55/Toutui/releases/download"
+    url_cargo_install="https://github.com/AlbDav55/Toutui"
+    url_toutui_desktop="https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/toutui.desktop"
 
     # URL variables for production (do not forget to ensure that repo name and branches are correct)
-    url_config_file="https://github.com/AlbanDAVID/Toutui/raw/stable/config.example.toml"
-    url_latest_release="https://api.github.com/repos/AlbanDAVID/Toutui/releases/latest"
-    url_latest_binary="https://github.com/AlbanDAVID/Toutui/releases/download"
-    url_cargo_install="https://github.com/AlbanDAVID/Toutui"
-    url_env="https://raw.githubusercontent.com/AlbanDAVID/Toutui/stable/curl/env"
-    url_env_fish="https://raw.githubusercontent.com/AlbanDAVID/Toutui/stable/curl/env.fish"
-    url_toutui_desktop="https://raw.githubusercontent.com/AlbanDAVID/Toutui/stable/curl/toutui.desktop"
+   # url_config_file="https://github.com/AlbanDAVID/Toutui/raw/stable/config.example.toml"
+   # url_latest_release="https://api.github.com/repos/AlbanDAVID/Toutui/releases/latest"
+   # url_latest_binary="https://github.com/AlbanDAVID/Toutui/releases/download"
+   # url_cargo_install="https://github.com/AlbanDAVID/Toutui"
+   # url_toutui_desktop="https://raw.githubusercontent.com/AlbanDAVID/Toutui/stable/curl/toutui.desktop"
 
     # Grab essential variables
     OS=$(identify_os)
@@ -276,30 +272,6 @@ source_cargo_env() {
         echo "[ERROR] Cannot source cargo environment automatically."
         echo "Open a new terminal and launch \"hello_toutui.sh\" again."
         exit $EXIT_NO_CARGO_PATH
-    fi
-}
-
-export_source() {
-    if [[ $SHELL =~ \/(sh|bash) ]]; then
-        echo '. "$HOME/.cargo/env"' >> "$HOME/.bashrc"
-        echo '. "$HOME/.cargo/env"' >> "$HOME/.bash_profile"
-        echo '. "$HOME/.cargo/env"' >> "$HOME/.profile"
-        #source "$HOME/.cargo/env"
-    elif [[ $SHELL =~ \/zsh ]]; then
-        echo '. "$HOME/.cargo/env"' >> "$HOME/.bashrc"
-        echo '. "$HOME/.cargo/env"' >> "$HOME/.bash_profile"
-        echo '. "$HOME/.cargo/env"' >> "$HOME/.profile"
-        echo '. "$HOME/.cargo/env"' >> "$HOME/.zshenv"
-        #source "$HOME/.cargo/env"
-    elif [[ $SHELL =~ \/fish ]]; then
-        echo '. "$HOME/.cargo/env"' >> "$HOME/.bashrc"
-        echo '. "$HOME/.cargo/env"' >> "$HOME/.bash_profile"
-        echo '. "$HOME/.cargo/env"' >> "$HOME/.profile"
-        echo 'source "$HOME/.cargo/env.fish"' >> "$HOME/.config/fish/conf.d/toutui.env.fish"
-        #source "$HOME/.cargo/env.fish"
-    else
-        echo "[ERROR] Unsupported shell: $SHELL"
-        echo "[ERROR] You need to source by yourself"
     fi
 }
 
@@ -554,76 +526,11 @@ install_deps() {
     #propose_optional_dependencies "${optionals[@]}"
 }
 
-export_cargo_bin_menu() {
-    PS3="Please enter your choice: "
-    if [[ $SHELL =~ \/(sh|bash) ]]; then
-        echo "If you select option 1, the path will then be added to your PATH environement variable by modifying the profile files located at:"
-        echo "$HOME/.profile"
-        echo "$HOME/.bash_profile"
-        echo "$HOME/.bashrc"
-        echo " You can run "toutui --uninstall" or the official uninstall curl link to revert these changes. Note: To avoid conflict, PATH environement will be deleted only if rust and cargo are not installed."
-    elif [[ $SHELL =~ \/(zsh) ]]; then
-        echo "If you select option 1, the path will then be added to your PATH environement variable by modifying the profile files located at:"
-        echo "$HOME/.profile"
-        echo "$HOME/.bash_profile"
-        echo "$HOME/.bashrc"
-        echo "$HOME/.zshenv"
-        echo " You can run "toutui --uninstall" or the official uninstall curl link to revert these changes. Note: To avoid conflict, PATH environement will be deleted only if rust and cargo are not installed."
-    elif [[ $SHELL =~ \/(fish) ]]; then
-        echo "If you select option 1, the path will then be added to your PATH environement variable by modifying the profile files located at:"
-        echo "$HOME/.profile"
-        echo "$HOME/.bash_profile"
-        echo "$HOME/.bashrc"
-        echo "$HOME/.config/fish/conf.d/toutui.env.fish"
-        echo " You can run "toutui --uninstall" or the official uninstall curl link to revert these changes. Note: To avoid conflict, PATH environement will be deleted only if rust and cargo are not installed."
-    fi
-
-    options=(
-        "Option 1 - Add automatically the path (Recommended)"
-        "Option 2 - No, I prefer do it by myself"
-    )
-    select opt in "${options[@]}"
-    do
-        case $REPLY in
-            1)
-                curl -L "$url_env" -o "$HOME/.cargo/env"
-                curl -L "$url_env_fish" -o "$HOME/.cargo/env.fish"
-                export_source
-                echo "[IMPORTANT] Restart your terminal or type the following command:"
-                echo "    for bash, zsh, sh:"
-                echo "        source \"\$HOME/.cargo/env\""
-                echo "    for fish:"
-                echo "        source \"\$HOME/.cargo/env.fish\""
-                break
-                ;;
-            2)
-                echo "You chose to do it manually."
-                break
-                ;;
-            *)
-                echo "Invalid option: $REPLY"
-                ;;
-        esac
-    done
-}
-
-export_cargo_bin() {
-    path_cargo_bin=$(echo $PATH | grep -o "$HOME/.cargo/bin")
-    if [[ -n "$path_cargo_bin" ]]; then
-        echo "[INFO] ~/.cargo/bin already exported in PATH"
-    else
-        echo "[WARN] $HOME/.cargo/bin is not exported in your PATH."
-        echo "[WARN] You need it to run toutui"
-        export_cargo_bin_menu
-    fi
-}
-
 install_message() {
     echo "[INFO]"
     echo "The installation will have these effects:"
     echo "Install dependencies if needed: VLC, Netcat, Rust, for macos: Homebrew and gsed"
-    echo "Add the binary in $HOME/.cargo/bin (this path will be created if does not exist)"
-    echo "$HOME/.cargo/bin will be added to your PATH (only if you want, you will be asked later)"
+    echo "Add the binary in /usr/local/bin"
     echo "For Linux:"
     echo "Add the directory "toutui" in $HOME/.config (or any other path specified in XDG_CONFIG_HOME) with inside the following files: "
     echo ".env, db.sqlite3, config.toml, toutui.log"
@@ -631,9 +538,8 @@ install_message() {
     echo "For macOS:"
     echo "Add the directory "toutui" in $HOME/Library/Preferences (or any other path specified in XDG_CONFIG_HOME) with inside the following files: "
     echo ".env, db.sqlite3, config.toml, toutui.log"
-    echo "gsed dependencie will be installed"
     echo " "
-    echo " You can run "toutui --uninstall" or the official uninstall curl link to remove all these added files. Note: To avoid conflicts, PATH environment and $HOME/.cargo/ will be deleted only if rust and cargo are not installed or if toutui is the only binary present in $HOME/.cargo/bin."
+    echo " You can run "toutui --uninstall" or the official uninstall curl link to remove all these added files."
     echo 'Only dependencies will not be uninstalled (e.g. VLC, Netcat, Rust, gsed, Homebrew)'
     echo " "
 }
@@ -691,6 +597,21 @@ install_menu() {
     done
 }
 
+check_and_cleanup_binary_install() {
+
+    local temp_dir=$1
+
+    if [[ ! -e "$temp_dir/toutui" ]]; then
+        echo "[ERROR] Failed to download the binary. Please try again later."
+        EXIT_FAIL
+    fi
+    if [[ -e "/usr/local/bin/toutui" && -e "$temp_dir/toutui" ]]; then
+        sudo rm "/usr/local/bin/toutui"
+    fi
+    if [[ -e "$HOME/.cargo/bin/toutui" && -e "$temp_dir/toutui" ]]; then
+        sudo rm "$HOME/.cargo/bin/toutui"
+    fi
+}
 
 dl_handle_compressed_binary() {
     local final_url=$1
@@ -699,13 +620,9 @@ dl_handle_compressed_binary() {
     echo "[INFO] Downloading the compressed binary from $final_url"
     sudo curl -L "$final_url" -o "$temp_dir/$binary_name"
     sudo tar -xvzf "$temp_dir/$binary_name" -C "$temp_dir"
-    echo "[INFO] Copy the binary from temp directory to ~/.cargo/bin/"
-    mkdir -p "$HOME/.cargo/bin"
-    # remove the prev version toutui binary only if the new has been downloaded
-    if [[ -e "$HOME/.cargo/bin/toutui" && -e "$temp_dir/toutui" ]]; then
-        sudo rm "$HOME/.cargo/bin/toutui"
-    fi
-    cp "$temp_dir/toutui" "$HOME/.cargo/bin/"
+    check_and_cleanup_bin "$temp_dir"
+    echo "[INFO] Copying the binary from temp directory to /usr/local/bin"
+    sudo cp "$temp_dir/toutui" "/usr/local/bin"
     rm -rf "$temp_dir"
 }
 
@@ -817,7 +734,6 @@ install_toutui() {
         fi
         install_config # create ~/.config/toutui/ etc.
         install_binary
-        export_cargo_bin
         setup_launcher
         if [[ "$OS" == "linux" ]]; then
             echo "[DONE] Install complete. Launch toutui from your favorite app launcher or type toutui in your terminal to run it!"
@@ -873,7 +789,7 @@ update_menu() {
                 break
                 ;;
             3)
-                echo "cd {TOUTUI REPO}"
+                echo "cd toutui"
                 echo "git pull {URL}"
                 echo "cargo run --release"
                 exit 0
@@ -913,6 +829,12 @@ display_changelog() {
     echo -e "\x1b[2m#################\x1b[0m"
 }
 
+check_and_cleanup_source_install() {
+    if [[ -e "/usr/local/bin/toutui" ]]; then
+        sudo rm "/usr/local/bin/toutui"
+    fi
+}
+
 pull_latest_version() {
     local version=$1
     local answer=
@@ -950,6 +872,7 @@ pull_latest_version() {
             elif [[ "$update_method" == "source" ]]; then
                 install_rust
                 cargo install --force --git "$url_cargo_install" --branch stable
+                check_and_cleanup_source_install
             fi
             install_config
             # cargo build --release
@@ -983,8 +906,7 @@ update_toutui() {
 
 uninstall_message() {
     echo "Uninstall will do this:"
-    echo "Delete the binary in $HOME/.cargo/bin (If rust/cargo are not installed and if ~/.cargo/bin is empty ~/.cargo will be deleted)"
-    echo "$HOME/.cargo/bin will be deleted from of your PATH (only if rust/cargo are not installed and if toutui was the only binary in $HOME/.cargo/bin)"
+    echo "Delete the binary in /usr/local/bin"
     echo "For Linux:"
     echo "The directory "toutui" in $HOME/.config (or any other path specified in XDG_CONFIG_HOME) wil be deleted: "
     echo "[IMPORTANT] save your config.toml if you need it later"
@@ -1002,6 +924,7 @@ uninstall_message() {
 uninstall_process() {
     if [[ "$OS" == "linux" ]]; then
 
+        # delete the config folder
         if [[ -n "$XDG_CONFIG_HOME" && -e "$XDG_CONFIG_HOME/toutui" ]]; then
             sudo rm -r "$XDG_CONFIG_HOME/toutui"
             echo "$XDG_CONFIG_HOME/toutui deleted."
@@ -1012,6 +935,7 @@ uninstall_process() {
             echo "$HOME/.config/toutui deleted."
         fi
 
+        # delete toutui.desktopp
         if [[ -e "$HOME/.local/share/applications/toutui.desktop" ]] ; then
             sudo rm "$HOME/.local/share/applications/toutui.desktop"
             echo "$HOME/.local/share/applications/toutui.desktop deleted."
@@ -1020,6 +944,8 @@ uninstall_process() {
     fi
 
     if [[ "$OS" == "macOS" ]]; then
+
+        # delete the config folder
         if [[ -n "$XDG_CONFIG_HOME" && -e "$XDG_CONFIG_HOME/toutui" ]]; then
             sudo rm -r "$XDG_CONFIG_HOME/toutui"
             echo "$XDG_CONFIG_HOME/toutui deleted."
@@ -1031,50 +957,18 @@ uninstall_process() {
         fi
     fi
 
-    if ! command -v rustc >/dev/null 2>&1; then
 
-        if [[ -e $HOME/.config/fish/conf.d/toutui.env.fish ]]; then
-            sudo rm "$HOME/.config/fish/conf.d/toutui.env.fish"
-            echo "$HOME/.config/fish/conf.d/toutui.env.fish deleted"
-        fi
-
-        # delete .cargo folder if rust/cargo is not installed
-        # dangerous operation. It's why toutui is removed from $HOME./cargo/bin firstly
-        # and then, only if $HOME/.cargo/bin directory is empty, $HOME/.cargo will be deleted
-        # and the differents source for PATH.
-
-        if [[ -e "$HOME/.cargo/bin/toutui" ]]; then
-            sudo rm "$HOME/.cargo/bin/toutui"
-            echo "$HOME/.cargo/bin/toutui deleted."
-        fi
-
-        if [ -d "$HOME/.cargo/bin" ] && [ -z "$(ls -A "$HOME/.cargo/bin")" ]; then
-            sudo rm -r "$HOME/.cargo"
-            echo "$HOME/.cargo deleted."
-
-            for file in "$HOME/.bashrc" "$HOME/.bash_profile" "$HOME/.profile" "$HOME/.zshenv"; do
-                if [ -f "$file" ] && grep -q '\. "\$HOME/\.cargo/env"' "$file"; then
-                    sed -i '/\. "\$HOME\/\.cargo\/env"/d' "$file"
-                    echo "'\$HOME/.cargo/env' removed from $file"
-                fi
-            done
-
-            #            sed -i '/\. "\$HOME\/\.cargo\/env"/d' "$HOME/.bashrc"
-            #            sed -i '/\. "\$HOME\/\.cargo\/env"/d' "$HOME/.bash_profile"
-            #            sed -i '/\. "\$HOME\/\.cargo\/env"/d' "$HOME/.profile"
-            #            sed -i '/\. "\$HOME\/\.cargo\/env"/d' "$HOME/.zshenv"
-        fi
-
-    else # if rust/cargo are installed, only toutui bin will be removed
-        if [[ -e "$HOME/.config/fish/conf.d/toutui.env.fish" ]]; then
-            sudo rm "$HOME/.config/fish/conf.d/toutui.env.fish"
-            echo "$HOME/.config/fish/conf.d/toutui.env.fish deleted."
-        fi
-        if [[ -e "$HOME/.cargo/bin/toutui" ]]; then
-            sudo rm "$HOME/.cargo/bin/toutui"
-            echo "$HOME/.cargo/bin/toutui deleted."
-        fi
+    # delete the binary
+    if [[ -e "/usr/local/bin/toutui" ]]; then
+        sudo rm "/usr/local/bin/toutui"
+        echo "/usr/local/bin/toutui deleted."
     fi
+    if [[ -e "$HOME/.cargo/bin/toutui" ]]; then
+        sudo rm "$HOME/.cargo/bin/toutui"
+        echo "$HOME/.cargo/bin/toutui deleted."
+    fi
+
+
 }
 
 uninstall_toutui() {
@@ -1089,23 +983,6 @@ uninstall_toutui() {
         no)
             echo "[INFO] Uninstall aborted";;
         yes)
-            if [[ "$OS" == "macOS" ]]; then
-                local answer2=
-                while :; do
-                    read -p "gsed package is needed to correctly perform uninstall. Please, check if you have it ('brew install gsed' to install it). Continue? (Y/n) : " answer
-                    if [[ $answer =~ (n|N) ]]; then answer=no; break; fi
-                    if [[ $answer == "" || $answer =~ (y|Y) ]]; then answer=yes; break; fi
-                done
-                case $answer2 in
-                    no)
-                        echo "[INFO] Update aborted"
-                        exit 0
-                        ;;
-                    yes)
-                        ;;
-
-                esac
-            fi
             echo "[INFO] Starting uninstall..."
             uninstall_process
             echo "[OK] Toutui has been successfully uninstalled."
