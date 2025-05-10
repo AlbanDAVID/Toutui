@@ -279,15 +279,15 @@ check_toutui_installed() {
     is_installed="false"
 
     if [[ "$OS" == "linux" ]]; then
-        if [[ -n "$XDG_CONFIG_HOME" && ( -e "$XDG_CONFIG_HOME/toutui" || -e "$HOME/.cargo/bin/toutui" ) ]]; then
+        if [[ -n "$XDG_CONFIG_HOME" && ( -e "$XDG_CONFIG_HOME/toutui" || -e "$HOME/.cargo/bin/toutui" || -e "/usr/local/bin/toutui" ) ]]; then
             is_installed="true"
-        elif [[ -e "$HOME/.config/toutui" || -e "$HOME/.cargo/bin/toutui" ]]; then
+        elif [[ -e "$HOME/.config/toutui" || -e "$HOME/.cargo/bin/toutui" || -e "/usr/local/bin/toutui" ]]; then
             is_installed="true"
         fi
     elif [[ "$OS" == "macOS" ]]; then
-        if [[ -n "$XDG_CONFIG_HOME" && ( -e "$XDG_CONFIG_HOME/toutui" || -e "$HOME/.cargo/bin/toutui" ) ]]; then
+        if [[ -n "$XDG_CONFIG_HOME" && ( -e "$XDG_CONFIG_HOME/toutui" || -e "$HOME/.cargo/bin/toutui" || -e "/usr/local/bin/toutui" ) ]]; then
             is_installed="true"
-        elif [[ -e "$HOME/Library/Preferences/toutui" || -e "$HOME/.cargo/bin/toutui" ]]; then
+        elif [[ -e "$HOME/Library/Preferences/toutui" || -e "$HOME/.cargo/bin/toutui" || -e "/usr/local/bin/toutui" ]]; then
             is_installed="true"
         fi
     fi
