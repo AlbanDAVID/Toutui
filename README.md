@@ -14,12 +14,12 @@
 </div>
 
 ## ✨ Features  
-✅ **Cross-platform** – <img src=".github/tux.png" align="top" width="24" alt="Tux (Linux)"/>  Linux and <img src=".github/apple.png" align="top" width="24" alt="Apple (macOS)"/> macOS    
-✅ **Lightweight & Fast** – A minimalist terminal user interface (TUI) written in Rust 🦀  
-✅ **Supports Books & Podcasts** – Enjoy both audiobooks and podcasts  
-✅ **Sync Progress & Stats** – Keep your listening progress in sync  
-✅ **Streaming Support** – Play directly without downloading  
-✅ **Customizable Color Theme** – A config file will allow you to customize the color theme. Explore and try various themes [here](https://github.com/AlbanDAVID/Toutui-theme).
+ **Cross-platform** – <img src=".github/tux.png" align="top" width="24" alt="Tux (Linux)"/>  Linux and <img src=".github/apple.png" align="top" width="24" alt="Apple (macOS)"/> macOS    
+ **Lightweight & Fast** – A minimalist terminal user interface (TUI) written in Rust 🦀  
+ **Supports Books & Podcasts** – Enjoy both audiobooks and podcasts  
+ **Sync Progress & Stats** – Keep your listening progress in sync  
+ **Streaming Support** – Play directly without downloading  
+ **Customizable Color Theme** – A config file will allow you to customize the color theme. Explore and try various themes [here](https://github.com/AlbanDAVID/Toutui-theme).
 
 ## 📰 Media
 <img src=".github/korben.png" align="top" width="50" alt="Korben"/> Featured on [Korben](https://korben.info/toutui-client-terminal-audiobookshelf.html), a well-known French tech blog covering open source and technology.
@@ -70,8 +70,8 @@ To ensure the best experience, it's recommended to use **Kitty** or **Alacritty*
 ### Easy installation 
 
 >[!WARNING]
-
-> - **This is a beta app, please read [this](https://github.com/AlbanDAVID/Toutui?tab=readme-ov-file#%EF%B8%8F-caution-beta-version).**    
+> - **This is a beta app, please read [this](https://github.com/AlbanDAVID/Toutui?tab=readme-ov-file#%EF%B8%8F-caution-beta-version).**
+>  - For any issues, check first the [wiki](https://github.com/AlbanDAVID/Toutui/wiki/). Otherwise, open an issue.
 
 **Run the following in your terminal, then follow the on-screen instructions:**    
 
@@ -106,7 +106,7 @@ bash -c 'tmpfile=$(mktemp) && curl -LsSf https://github.com/AlbanDAVID/Toutui/ra
 #### **Notes**  
 
 ##### Files installed:
-In `~/.cargo/bin` :
+In `/usr/local/bin` or `~/.cargo/bin`  :
 - `toutui` — The binary file.
 
 In `~/.config/toutui` for Linux or `~/Library/Preferences` for macOS:    
