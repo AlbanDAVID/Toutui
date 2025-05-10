@@ -9,27 +9,6 @@ body:
   - type: markdown
     attributes:
       value: 'Please first check if the issue is listed into issues.'
-  - type: dropdown
-    id: missing-requirement
-    attributes:
-      label: Does this issue concern a missing requirement?
-      options:
-        - No
-        - Yes (fill in the missing package below)
-    validations:
-      required: true
-  - type: textarea
-    id: missing-package
-    attributes:
-      label: Missing Requirement
-      description: If the issue is due to a missing package, specify which one(s) here.
-      placeholder: e.g., libssl-dev, sqlite3, VLC
-  - type: markdown
-    attributes:
-      value: '---'
-  - type: markdown
-    attributes:
-      value: 'If your issue **does not** concern a missing requirement, continue below (otherwise, you can submit now).'
   - type: textarea
     id: what-happened
     attributes:
@@ -64,9 +43,9 @@ body:
     attributes:
       label: Which install method?
       options:
-        - Easy installation 
-        - Yay
-        - Git (manual)
+        - Easy installation (option 1, binary)
+        - Easy installation (option 2, compilation)
+        - From source
         - Other (list in "Additional Notes" box)
   - type: textarea
     id: error-message
