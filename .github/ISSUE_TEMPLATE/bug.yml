@@ -68,7 +68,7 @@ body:
       options:
         - Easy installation (option 1, binary)
         - Easy installation (option 2, compilation)
-        - From source
+        - From source, local clone
         - Other (list in "Additional Notes" box)
     validations:
       required: true
