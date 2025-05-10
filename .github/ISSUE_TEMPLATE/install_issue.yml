@@ -53,6 +53,8 @@ body:
         - Easy installation (option 2, compilation)
         - From source, local clone
         - Other (list in "Additional Notes" box)
+    validations:
+      required: true
   - type: textarea
     id: error-message
     attributes:
