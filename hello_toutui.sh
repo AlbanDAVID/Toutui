@@ -620,7 +620,7 @@ dl_handle_compressed_binary() {
     echo "[INFO] Downloading the compressed binary from $final_url"
     sudo curl -L "$final_url" -o "$temp_dir/$binary_name"
     sudo tar -xvzf "$temp_dir/$binary_name" -C "$temp_dir"
-    check_and_cleanup_bin "$temp_dir"
+    check_and_cleanup_binary_install "$temp_dir"
     echo "[INFO] Copying the binary from temp directory to /usr/local/bin"
     sudo cp "$temp_dir/toutui" "/usr/local/bin"
     rm -rf "$temp_dir"
