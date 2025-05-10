@@ -438,6 +438,7 @@ install_config() {
             echo -e "$merged_config" > "$user_config"
         else
             cp "$example_config" "$user_config" || (echo "[ERROR] Cannot copy \"config.toml\"."; exit $EXIT_CONFIG)
+            rm -rf "$tmpdir"
         fi
     fi
 
