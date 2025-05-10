@@ -66,9 +66,9 @@ body:
     attributes:
       label: How did you install Toutui?
       options:
-        - Automatic install
-        - Yay
-        - Git (manual)
+        - Easy installation (option 1, binary)
+        - Easy installation (option 2, compilation)
+        - From source
         - Other (list in "Additional Notes" box)
     validations:
       required: true
