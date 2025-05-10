@@ -1,40 +1,21 @@
-name: 🔧 Installation issue
-description: If you have any issue during the installation
-title: '[Installation issue]: '
-labels: ['install issue']
+name: 🔧 Install / Update / Uninstall Issue
+description: If you have any issue during the installation, update or uninstall
+title: '[Install / Update / Uninstall Issue]: '
+labels: ['Install / Update / Uninstall Issue']
 body:
   - type: markdown
     attributes:
-      value: '🦜 Thanks for taking the time to fill out this installation issue!'
+      value: '🦜 Thanks for taking the time to fill out this issue!'
   - type: markdown
     attributes:
       value: 'Please first check if the issue is listed into issues.'
-  - type: dropdown
-    id: missing-requirement
-    attributes:
-      label: Does this issue concern a missing requirement?
-      options:
-        - No
-        - Yes (fill in the missing package below)
-    validations:
-      required: true
-  - type: textarea
-    id: missing-package
-    attributes:
-      label: Missing Requirement
-      description: If the issue is due to a missing package, specify which one(s) here.
-      placeholder: e.g., libssl-dev, sqlite3, VLC
-  - type: markdown
-    attributes:
-      value: '---'
-  - type: markdown
-    attributes:
-      value: 'If your issue **does not** concern a missing requirement, continue below (otherwise, you can submit now).'
   - type: textarea
     id: what-happened
     attributes:
       label: What happened?
       placeholder: Tell us what you see and give a screenshot if it's applicable.
+    validations:
+      required: true
   - type: textarea
     id: steps-to-reproduce
     attributes:
@@ -46,28 +27,34 @@ body:
   - type: input
     id: version
     attributes:
-      label: Toutui version that you try to install
+      label: Toutui version
       description: Do not put 'Latest version', please put the actual version here
       placeholder: 'e.g. v0.1.0-beta'
+    validations:
+      required: true
   - type: dropdown
     id: install-distro
     attributes:
-      label: On which OS are you trying to install Toutui?
+      label: On which OS ?
       options:
         - Arch Linux
         - Ubuntu
         - Debian
         - macOS
         - Other (list in "Additional Notes" box)
+    validations:
+      required: true
   - type: dropdown
     id: install-method
     attributes:
-      label: Which install method?
+      label: Which install, update method?
       options:
-        - Easy installation 
-        - Yay
-        - Git (manual)
+        - Easy installation (option 1, download the binary)
+        - Easy installation (option 2, compilation)
+        - From source, local clone
         - Other (list in "Additional Notes" box)
+    validations:
+      required: true
   - type: textarea
     id: error-message
     attributes:

@@ -29,6 +29,7 @@ impl Widget for &mut App {
             AppView::SettingsAccount => self.render_settings_account(area, buf),
             AppView::SettingsLibrary => self.render_settings_library(area, buf),
             AppView::SettingsAbout => {},
+            AppView::SettingsUpdateUninstall => {},
         }
     }
 }
@@ -54,7 +55,7 @@ impl App {
 
         let text_render_footer = "j/↓, k/↑: move, l/→: play, Tab: library, R: refresh, S: Settings, Q/Esc: quit\n B: toggle player ctrl, '/': search, Scroll desc: J(↓) K(↑) H(⇡), g/G: top/bot";
 
-        App::render_header(header_area, buf, self.lib_name_type.clone(), &self.username, &self.server_address_pretty, VERSION);
+        App::render_header(header_area, buf, self.lib_name_type.clone(), &self.username, &self.server_address_pretty, VERSION, &self.update_msg);
         App::render_footer(footer_area, buf, text_render_footer);
         self.render_list(list_area, buf, &render_list_title, &self._titles_cnt_list.clone(), &mut self.list_state_cnt_list.clone());
         if !&self._titles_cnt_list.is_empty() {
@@ -85,7 +86,7 @@ impl App {
         _text_render_footer = "j/↓, k/↑: move, l/→: play, Tab: home, R: refresh, S: Settings, Q/Esc: quit\n B: toggle player ctrl, '/': search, Scroll desc: J(↓) K(↑) H(⇡), g/G: top/bot";
         }
 
-        App::render_header(header_area, buf, self.lib_name_type.clone(), &self.username, &self.server_address_pretty, VERSION);
+        App::render_header(header_area, buf, self.lib_name_type.clone(), &self.username, &self.server_address_pretty, VERSION, &self.update_msg);
         App::render_footer(footer_area, buf, _text_render_footer);
         self.render_list(list_area, buf, &render_list_title, &self.titles_library.clone(), &mut self.list_state_library.clone());
         if !&self.titles_library.is_empty() {
@@ -112,11 +113,15 @@ impl App {
         if self.list_state_settings.selected() == Some(2) {
             // for `About` section
             _text_render_footer = "j/↓, k/↑: move, Scroll what's new: J(down) K(up) H(top),\n Tab: home, R: refresh, Q/Esc: quit.";
+        }
+        else if self.list_state_settings.selected() == Some(3) {
+            _text_render_footer = "j/↓, k/↑: move, Scroll : J(down) K(up) H(top),\n Tab: home, R: refresh, Q/Esc: quit.";
+
         } else {
             _text_render_footer = "j/↓, k/↑: move, l/→: see options,\n Tab: home, R: refresh, Q/Esc: quit.";
         }
 
-        App::render_header(header_area, buf, self.lib_name_type.clone(), &self.username, &self.server_address_pretty, VERSION);
+        App::render_header(header_area, buf, self.lib_name_type.clone(), &self.username, &self.server_address_pretty, VERSION, &self.update_msg);
         App::render_footer(footer_area, buf, _text_render_footer);
         self.render_list(list_area, buf, render_list_title, &self.settings.clone(), &mut self.list_state_settings.clone());
         self.render_info_settings(item_area1, buf, &mut self.list_state_settings.clone());
@@ -138,7 +143,7 @@ impl App {
         let render_list_title = "Settings account";
         let text_render_footer = "h: back, l/→: remove saved user,\n Tab: home, R: refresh, Q/Esc: quit.";
 
-        App::render_header(header_area, buf, self.lib_name_type.clone(), &self.username, &self.server_address_pretty, VERSION);
+        App::render_header(header_area, buf, self.lib_name_type.clone(), &self.username, &self.server_address_pretty, VERSION, &self.update_msg);
         App::render_footer(footer_area, buf, text_render_footer);
         self.render_list(list_area, buf, render_list_title, &self.all_usernames.clone(), &mut &mut self.list_state_settings_account.clone());
         //self.render_selected_item(item_area, buf, &self.titles_library.clone(), self.auth_names_library.clone());
@@ -161,7 +166,7 @@ impl App {
 
         let text_render_footer = "h: back, l/→: change library,\n Tab: home, R: refresh, Q/Esc: quit.";
 
-        App::render_header(header_area, buf, self.lib_name_type.clone(), &self.username, &self.server_address_pretty, VERSION);
+        App::render_header(header_area, buf, self.lib_name_type.clone(), &self.username, &self.server_address_pretty, VERSION, &self.update_msg);
         App::render_footer(footer_area, buf, text_render_footer);
         self.render_list(list_area, buf, &render_list_title, &self.libraries_names.clone(), &mut self.list_state_settings_library.clone());
         self.render_info_settings_library(item_area, buf, &mut self.list_state_settings_library.clone());
@@ -331,7 +336,7 @@ impl App {
             .map(|(_, value)| value.clone())
             .collect();
 
-        App::render_header(header_area, buf, self.lib_name_type.clone(), &self.username, &self.server_address_pretty, VERSION);
+        App::render_header(header_area, buf, self.lib_name_type.clone(), &self.username, &self.server_address_pretty, VERSION, &self.update_msg);
         App::render_footer(footer_area, buf, _text_render_footer);
         self.render_list(list_area, buf, render_list_title, titles_search_book_or_pod, &mut self.list_state_search_results.clone());
         if !titles_search_book_or_pod.is_empty() {
@@ -355,7 +360,7 @@ impl App {
 
         let text_render_footer = "j/↓, k/↑: move, l/→: play, h: back, Tab: home, R: refresh, S: Settings, Q/Esc: quit\n '/': search, Scroll desc: J(down) K(up) H(top), g/G: top/bottom";
 
-        App::render_header(header_area, buf, self.lib_name_type.clone(), &self.username, &self.server_address_pretty, VERSION);
+        App::render_header(header_area, buf, self.lib_name_type.clone(), &self.username, &self.server_address_pretty, VERSION, &self.update_msg);
         App::render_footer(footer_area, buf, text_render_footer);
         let no_episodes_message = "No episodes found for this podcast.\nPress 'h' to go back.";
 
@@ -394,7 +399,7 @@ impl App {
 
     // General functions for rendering 
 
-    fn render_header(area: Rect, buf: &mut Buffer, library_name: String, username: &str, server_address_pretty: &str, version: &str) {
+    fn render_header(area: Rect, buf: &mut Buffer, library_name: String, username: &str, server_address_pretty: &str, version: &str, update_msg: &str) {
         Paragraph::new(library_name)
             .bold()
             .centered()
@@ -403,7 +408,7 @@ impl App {
             .not_bold()
             .left_aligned()
             .render(area, buf);
-        Paragraph::new(format!("🦜 Toutui v{}", version))
+        Paragraph::new(format!("🦜 Toutui v{}\n {}", version, update_msg))
             .right_aligned()
             .render(area, buf);
     }
@@ -710,8 +715,19 @@ impl App {
 
     }
 
+    
     // desc for settings
     fn render_desc_settings(&self, area: Rect, buf: &mut Buffer, list_state: &ListState) {
+
+        let instructions = "\
+Update:
+1) Quit the app
+2) Paste the following command in a terminal: toutui --update
+
+Uninstall:
+1) Quit the app
+2) Paste the following command in a terminal: toutui --uninstall
+";
 
         match list_state.selected() {
 
@@ -719,6 +735,12 @@ impl App {
             Some(1) => {}
             Some(2) => {
                 Paragraph::new(self.changelog.clone())
+                    .scroll((self.scroll_offset as u16, 0))
+                    .wrap(Wrap { trim: true })
+                    .render(area, buf);
+                }
+            Some(3) => {
+                Paragraph::new(instructions)
                     .scroll((self.scroll_offset as u16, 0))
                     .wrap(Wrap { trim: true })
                     .render(area, buf);

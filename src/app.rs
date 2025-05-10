@@ -29,7 +29,7 @@ use crate::player::vlc::quit_vlc::*;
 use crate::logic::sync_session::sync_session_from_database::*;
 use crate::logic::sync_session::wait_prev_session_finished::*;
 use crate::player::integrated::handle_key_player::*;
-
+use crate::utils::check_update::*;
 
 pub enum AppView {
     Home,
@@ -39,7 +39,8 @@ pub enum AppView {
     Settings,
     SettingsAccount,
     SettingsLibrary,
-    SettingsAbout
+    SettingsAbout,
+    SettingsUpdateUninstall
 }
 
 pub struct App {
@@ -56,6 +57,7 @@ pub struct App {
     pub list_state_settings_account: ListState,
     pub list_state_settings_library: ListState,
     pub list_state_settings_about: ListState,
+    pub list_state_settings_update_uninstall: ListState,
     pub _titles_cnt_list: Vec<String>,
     pub auth_names_cnt_list: Vec<String>,
     pub pub_year_cnt_list: Vec<String>,
@@ -148,6 +150,7 @@ pub struct App {
     pub start_vlc_program: String,
     pub config: ConfigFile,
     pub changelog: String,
+    pub update_msg: String,
 }
 
 /// Init app
@@ -419,7 +422,7 @@ impl App {
     }
 }
     // init for `Settings`
-    let settings = vec!["Account".to_string(), "Library".to_string(), "About".to_string()];
+    let settings = vec!["Account".to_string(), "Library".to_string(), "About".to_string(), "Update and uninstall".to_string()];
 
     // init for `SettingsAccount`
     let mut all_usernames: Vec<String> = Vec::new();
@@ -451,6 +454,12 @@ impl App {
     if cfg!(target_os = "macos") {
         start_vlc_program = "/Applications/VLC.app/Contents/MacOS/VLC".to_string();
     }
+
+    // Init for check_update
+    let update_msg = match check_update().await {
+        Some(msg) => msg,
+        None => "".to_string(),
+    };
 
     // Init ListeState for `Home` list (continue listening)
     let mut list_state_cnt_list = ListState::default(); // init the ListState ratatui's widget
@@ -484,6 +493,10 @@ impl App {
     let mut list_state_settings_about = ListState::default();
     list_state_settings_about.select(Some(0));
 
+    // Init ListState for `SettingsUpdateUninstall` list
+    let mut list_state_settings_update_uninstall = ListState::default();
+    list_state_settings_update_uninstall.select(Some(0));
+
     Ok(Self {
         database,
         id_selected_lib,
@@ -497,6 +510,7 @@ impl App {
         list_state_settings_account,
         list_state_settings_library,
         list_state_settings_about,
+        list_state_settings_update_uninstall,
         _titles_cnt_list,
         auth_names_cnt_list,
         pub_year_cnt_list,
@@ -590,6 +604,7 @@ impl App {
         start_vlc_program,
         config,
         changelog,
+        update_msg,
     })
     }
 
@@ -738,6 +753,7 @@ pub fn handle_key(&mut self, key: KeyEvent) {
                 AppView::SettingsAccount => {self.view_state = AppView::Settings} 
                 AppView::SettingsLibrary => {self.view_state = AppView::Settings} 
                 AppView::SettingsAbout => {self.view_state = AppView::Settings} 
+                AppView::SettingsUpdateUninstall => {self.view_state = AppView::Settings} 
                 AppView::Settings => {self.view_state = AppView::Home} 
                 AppView::PodcastEpisode => {
                     if self.is_from_search_pod {
@@ -909,6 +925,8 @@ pub fn handle_key(&mut self, key: KeyEvent) {
                     }
                 }
                 AppView::SettingsAbout => {
+                }
+                AppView::SettingsUpdateUninstall => {
                 }
                 AppView::Library => {
                     if self.is_podcast {
@@ -1154,6 +1172,7 @@ fn toggle_view(&mut self) {
         AppView::SettingsAccount => AppView::Home,
         AppView::SettingsLibrary => AppView::Home,
         AppView::SettingsAbout => AppView::Home,
+        AppView::SettingsUpdateUninstall => AppView::Home,
 
     };
 }
@@ -1206,7 +1225,8 @@ pub fn select_next(&mut self) {
             } else {
                 self.list_state_settings_library.select_first();
             }}}
-        AppView::SettingsAbout => self.list_state_settings_library.select_next(),
+        AppView::SettingsAbout => self.list_state_settings_about.select_next(),
+        AppView::SettingsUpdateUninstall => self.list_state_settings_update_uninstall.select_next(),
     }
 }
 
@@ -1220,6 +1240,7 @@ pub fn select_previous(&mut self) {
         AppView::SettingsAccount => self.list_state_settings_account.select_previous(),
         AppView::SettingsLibrary => self.list_state_settings_library.select_previous(),
         AppView::SettingsAbout => self.list_state_settings_about.select_previous(),
+        AppView::SettingsUpdateUninstall => self.list_state_settings_update_uninstall.select_previous(),
     }
 }
 
@@ -1233,6 +1254,7 @@ pub fn select_first(&mut self) {
         AppView::SettingsAccount => self.list_state_settings_account.select_first(),
         AppView::SettingsLibrary => self.list_state_settings_library.select_first(),
         AppView::SettingsAbout => self.list_state_settings_about.select_first(),
+        AppView::SettingsUpdateUninstall => self.list_state_settings_update_uninstall.select_first(),
     }
 }
 
@@ -1268,6 +1290,7 @@ pub fn select_last(&mut self) {
             self.list_state_settings_library.select(Some(last_index));
         }            
         AppView::SettingsAbout => self.list_state_settings_about.select_last(),
+        AppView::SettingsUpdateUninstall => self.list_state_settings_update_uninstall.select_last(),
     }
 }
 

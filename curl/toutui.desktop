@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Toutui
+GenericName=Audiobookshelf client
+Exec=toutui
+Icon=utilities-terminal
+Type=Application
+Categories=Utility;
+Terminal=true
+

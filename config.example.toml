@@ -1,6 +1,6 @@
 #### PLAYER OPTIONS ####
 [player]
-# By default, Toutui integrated player is launched (works with cvlc, launched in background, the command line 
+# By default, Toutui integrated player is launched (works with cvlc, launched in background, the command line
 # version of vlc).
 # 0: No, 1: Yes
 # Launch Toutui integrated player:
@@ -10,7 +10,7 @@ cvlc = "1"
 # NOTE: `cvlc` must be set to 1 if you set `cvlc_term` to 1.
 cvlc_term = "0"
 
-#### PLAYER NETWORK ####
+# #### PLAYER NETWORK ####
 # By default, the player is launched to "localhost:1234"
 # Address:
 address = "localhost"

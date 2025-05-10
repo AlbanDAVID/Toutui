@@ -184,7 +184,7 @@ let changelog_10 = format!(
          ####\n",
 );
 let changelog_11 = format!(
-    "Changelog Toutui v{} (27/04/2025) \n\
+    "Changelog Toutui v0.3.5-beta (27/04/2025) \n\
          \n\
          Added:\n\
          - Display number of total items for continue listening, library and library settings (for books and podcasts)
@@ -201,10 +201,37 @@ let changelog_11 = format!(
          \n\
          Enjoy and be toutui!\n
          ####\n",
+);
+let changelog_12 = format!(
+    "Changelog Toutui v{} (10/05/2025) \n\
+         \n\
+         Warning:\n\
+         - If you're already using the app, please follow the upgrade instructions here: => 
+         https://github.com/AlbanDAVID/Toutui/wiki/Major-upgrade-instruction#v--035-beta-to-v040-beta
+
+         Added:\n\
+         - Simplified installation and updates by: 
+            - Downloading the binary.
+            - Compiling it from source (no local clone needed).
+
+         -  New commands available:
+            - cargo --update and cargo --uninstall cmd added.
+
+         - Notify if an update is available directly in the app.
+
+         - [Linux only] The app can now be launched via an app launcher.
+         \n\
+         Contributors:\n\
+         \n\
+         - AlbanDAVID, dougy147
+         \n\
+         Enjoy and be toutui!\n
+         ####\n",
          VERSION
 );
 
 
+    changelog.push_str(&changelog_12); 
     changelog.push_str(&changelog_11); 
     changelog.push_str(&changelog_10); 
     changelog.push_str(&changelog_09); 
