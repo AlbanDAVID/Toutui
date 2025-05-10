@@ -4,8 +4,8 @@
 # For test from AlbDav55 fork
 # bash -c 'tmpfile=$(mktemp) && curl -LsSf https://github.com/AlbanDAVID/Toutui/raw/install_with_cargo/hello_toutui.sh -o "$tmpfile" && bash "$tmpfile" install && rm -f "$tmpfile"'
 
-# For test from AlbanDAVID toutui repo
-# bash -c 'tmpfile=$(mktemp) && curl -LsSf https://github.com/AlbanDAVID/Toutui/raw/main/hello_toutui.sh -o "$tmpfile" && bash "$tmpfile" install && rm -f "$tmpfile"'
+# For test from AlbanDAVID toutui repo (stable branch)
+# bash -c 'tmpfile=$(mktemp) && curl -LsSf https://github.com/AlbanDAVID/Toutui/raw/stable/hello_toutui.sh -o "$tmpfile" && bash "$tmpfile" install && rm -f "$tmpfile"'
 
 
 set -eo pipefail
@@ -18,7 +18,7 @@ main() {
     url_latest_release="https://api.github.com/repos/AlbDav55/Toutui/releases/latest"
     url_latest_binary="https://github.com/AlbDav55/Toutui/releases/download"
     url_cargo_install="https://github.com/AlbDav55/Toutui"
-    url_toutui_desktop="https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/toutui.desktop"
+    url_toutui_desktop="https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_improvement/curl/toutui.desktop"
 
     # URL variables for production (do not forget to ensure that repo name and branches are correct)
    # url_config_file="https://github.com/AlbanDAVID/Toutui/raw/stable/config.example.toml"
