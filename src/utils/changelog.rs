@@ -203,7 +203,7 @@ let changelog_11 = format!(
          ####\n",
 );
 let changelog_12 = format!(
-    "Changelog Toutui v{} (27/04/2025) \n\
+    "Changelog Toutui v{} (10/05/2025) \n\
          \n\
          Warning:\n\
          - If you're already using the app, please follow the upgrade instructions here: => https://github.com/AlbanDAVID/Toutui/wiki/Major-upgrade-instruction#v--035-beta-to-v040-beta
