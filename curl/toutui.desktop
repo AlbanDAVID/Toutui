@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Toutui
 GenericName=Audiobookshelf client
-Exec=$HOME/.cargo/bin/toutui
+Exec=toutui
 Icon=utilities-terminal
 Type=Application
 Categories=Utility;
