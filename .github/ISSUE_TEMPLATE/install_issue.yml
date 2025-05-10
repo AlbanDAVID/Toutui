@@ -14,6 +14,8 @@ body:
     attributes:
       label: What happened?
       placeholder: Tell us what you see and give a screenshot if it's applicable.
+    validations:
+      required: true
   - type: textarea
     id: steps-to-reproduce
     attributes:
@@ -28,6 +30,8 @@ body:
       label: Toutui version
       description: Do not put 'Latest version', please put the actual version here
       placeholder: 'e.g. v0.1.0-beta'
+    validations:
+      required: true
   - type: dropdown
     id: install-distro
     attributes:
@@ -38,6 +42,8 @@ body:
         - Debian
         - macOS
         - Other (list in "Additional Notes" box)
+    validations:
+      required: true
   - type: dropdown
     id: install-method
     attributes:
@@ -45,7 +51,7 @@ body:
       options:
         - Easy installation (option 1, binary)
         - Easy installation (option 2, compilation)
-        - From source
+        - From source, local clone
         - Other (list in "Additional Notes" box)
   - type: textarea
     id: error-message
