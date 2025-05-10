@@ -131,16 +131,14 @@ In `~/.local/share/applications` for Linux:
 
 #### **Install from source**    
 
-[![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
+[![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)    
+Note: `main` might be unstable. Prefer `git clone --branch stable --single-branch https://github.com/AlbanDAVID/Toutui` if you want to have the last stable release.    
 ```bash
 git clone https://github.com/AlbanDAVID/Toutui
 cd Toutui/
 mkdir -p ~/.config/toutui
 cp config.example.toml ~/.config/toutui/config.toml
 ```
-
-Note: `main` might be unstable. Prefer `git clone --branch stable --single-branch https://github.com/AlbanDAVID/Toutui` if you want to have the last stable release.
-
 
 Token encryption in the database (<u>**NOTE**</u>: replace `secret`)
 ```bash
