@@ -1,10 +1,10 @@
 [package]
-name = "Toutui"
-version = "0.3.5-beta"
+name = "toutui"
+version = "0.4.0-beta"
 edition = "2021"
 
 [dependencies]
-openssl = "0.10.71"
+openssl = { version = "0.10.71", features = ["vendored"] }
 tokio = { version = "1", features = ["full"] }
 reqwest = { version = "0.11", features = ["json"] }
 serde = { version = "1.0", features = ["derive"] }
@@ -16,7 +16,7 @@ crossterm = "0.28.1"
 ratatui = "0.29.0"
 vlc-rc = "0.1.1"
 tui-textarea = "0.7.0"
-rusqlite = "0.33.0"
+rusqlite = { version = "0.33.0", features = ["bundled"] }
 regex = "1.11.1"
 log = "0.4.25"
 fern = "0.7.1"

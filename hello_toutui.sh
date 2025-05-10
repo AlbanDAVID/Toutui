@@ -1,10 +1,31 @@
 #!/usr/bin/env bash
 # Install Toutui and dependencies automagically.
 
+# For test from AlbDav55 fork
+# bash -c 'tmpfile=$(mktemp) && curl -LsSf https://github.com/AlbanDAVID/Toutui/raw/install_with_cargo/hello_toutui.sh -o "$tmpfile" && bash "$tmpfile" install && rm -f "$tmpfile"'
+
+# For test from AlbanDAVID toutui repo (stable branch)
+# bash -c 'tmpfile=$(mktemp) && curl -LsSf https://github.com/AlbanDAVID/Toutui/raw/stable/hello_toutui.sh -o "$tmpfile" && bash "$tmpfile" install && rm -f "$tmpfile"'
+
+
 set -eo pipefail
 
 main() {
     do_not_run_as_root
+
+    # Url variables for tests in AlbDav55 fork
+   # url_config_file="https://github.com/AlbDav55/Toutui/raw/main/config.example.toml"
+   # url_latest_release="https://api.github.com/repos/AlbDav55/Toutui/releases/latest"
+   # url_latest_binary="https://github.com/AlbDav55/Toutui/releases/download"
+   # url_cargo_install="https://github.com/AlbDav55/Toutui"
+   # url_toutui_desktop="https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_improvement/curl/toutui.desktop"
+
+    # URL variables for production (do not forget to ensure that repo name and branches are correct)
+    url_config_file="https://github.com/AlbanDAVID/Toutui/raw/stable/config.example.toml"
+    url_latest_release="https://api.github.com/repos/AlbanDAVID/Toutui/releases/latest"
+    url_latest_binary="https://github.com/AlbanDAVID/Toutui/releases/download"
+    url_cargo_install="https://github.com/AlbanDAVID/Toutui"
+    url_toutui_desktop="https://raw.githubusercontent.com/AlbanDAVID/Toutui/stable/curl/toutui.desktop"
 
     # Grab essential variables
     OS=$(identify_os)
@@ -12,6 +33,15 @@ main() {
     HOME=${HOME:-$(grab_home_dir)}
     CONFIG_DIR="${XDG_CONFIG_HOME:-$(grab_config_dir)}/toutui"
     INSTALL_DIR="${2:-$(grab_install_dir)}"
+
+    # if gsed is needed on macos
+    sed() {
+        if [[ "$OS" == "macOS"  ]]; then
+            command gsed "$@"
+        else
+            command sed "$@"
+        fi
+    }
 
     load_dependencies
     load_exit_codes
@@ -26,6 +56,7 @@ main() {
     case $1 in
         --install|install) install_toutui && exit $EXIT_OK || exit $EXIT_FAIL;;
         --update|update) update_toutui && exit $EXIT_OK || exit $EXIT_FAIL;;
+        --uninstall|uninstall) uninstall_toutui && exit $EXIT_OK || exit $EXIT_FAIL;;
         *) usage "INCORRECT_ARG";;
     esac
 }
@@ -35,24 +66,25 @@ load_dependencies() {
     # os:package_to_install(:cmd)?
     HC_DEPS=(
         arch:gnu-netcat:netcat \
-        centos:libsqlite3-dev:no_check \
+        #centos:libsqlite3-dev:no_check \
         centos:nc \
         *centos:epel-release \
         debian:netcat \
-        debian:libsqlite3-dev:no_check \
-        debian:libssl-dev:no_check \
+        #debian:libsqlite3-dev:no_check \
+        #debian:libssl-dev:no_check \
         fedora:nc \
         linux:curl \
         *linux:kitty \
-        linux:pkg-config \
-        linux:sqlite3 \
+        #linux:pkg-config \
+        #linux:sqlite3 \
         linux:vlc  \
         macOS:curl \
         *macOS:kitty \
-        macOS:netcat\
+        macOS:netcat \
+        macOS:gsed \
         #%macOS:openssl \
-        macOS:pkg-config \
-        macOS:sqlite3 \
+        #macOS:pkg-config \
+        #macOS:sqlite3 \
         macOS:vlc \
         opensuse:netcat \
     )
@@ -149,6 +181,7 @@ usage() {
     echo "Help:"
     echo " --install: install toutui and dependencies."
     echo " --update: update toutui and dependencies."
+    echo " --uninstall: uninstall toutui."
     echo "Example: /bin/bash ./$(basename $0) install /usr/bin"
     eval "exit \$EXIT_${exit_code}"
 }
@@ -170,10 +203,10 @@ get_distro() {
     echo "$distro"
 }
 
-#install_brew() {
-#    # adapted from https://brew.sh/
-#    bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-#}
+install_brew() {
+    # adapted from https://brew.sh/
+    bash -c "$(sudo curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+}
 
 install_from_source() {
     echo "[ERROR] Could not identify OS/Distro."
@@ -242,6 +275,52 @@ source_cargo_env() {
     fi
 }
 
+check_toutui_installed() {
+    is_installed="false"
+
+    if [[ "$OS" == "linux" ]]; then
+        if [[ -n "$XDG_CONFIG_HOME" && ( -e "$XDG_CONFIG_HOME/toutui" || -e "$HOME/.cargo/bin/toutui" || -e "/usr/local/bin/toutui" ) ]]; then
+            is_installed="true"
+        elif [[ -e "$HOME/.config/toutui" || -e "$HOME/.cargo/bin/toutui" || -e "/usr/local/bin/toutui" ]]; then
+            is_installed="true"
+        fi
+    elif [[ "$OS" == "macOS" ]]; then
+        if [[ -n "$XDG_CONFIG_HOME" && ( -e "$XDG_CONFIG_HOME/toutui" || -e "$HOME/.cargo/bin/toutui" || -e "/usr/local/bin/toutui" ) ]]; then
+            is_installed="true"
+        elif [[ -e "$HOME/Library/Preferences/toutui" || -e "$HOME/.cargo/bin/toutui" || -e "/usr/local/bin/toutui" ]]; then
+            is_installed="true"
+        fi
+    fi
+
+}
+
+confirm_force_install_update() {
+    local message_type=$1
+    local message
+
+    if [[ "$message_type" == "install" ]]; then
+        message="Toutui is already installed. It's recommended to perform an uninstall before. Do you still want to force the installation? (y/N) : "
+    elif [[ "$message_type" == "update" ]]; then
+        message="Toutui in not installed. Install toutui before perform an update. Do you want to force update (not recommended)? (y/N) :"
+
+    fi
+
+    local answer=
+    while :; do
+        read -p "$message" answer
+        if [[ -z $answer || $answer =~ (n|N) ]]; then answer=no; break; fi
+        if [[ $answer =~ (y|Y) ]]; then answer=yes; break; fi
+    done
+    case $answer in
+        no)
+            exit 0
+            ;;
+        yes)
+            ;;
+    esac
+}
+
+
 install_packages() {
     local dep="$@"
     if (( ${#dep} == 0 )); then return; fi
@@ -257,14 +336,14 @@ install_packages() {
                 *) install_from_source;;
     	    esac ;;
         macOS)
-	    if command -v brew >/dev/null 2>&1; then
-    	        brew install ${dep[@]}
-    	    else
-    	        #install_brew
-    	        echo "[ERROR] Please install \"brew\"."
-    	        exit $EXIT_FAIL
-    	    fi ;;
-    esac
+            if command -v brew >/dev/null 2>&1; then
+                brew install ${dep[@]}
+            else
+                install_brew
+                #echo "[ERROR] Please install \"brew\"."
+                #exit $EXIT_FAIL
+                fi ;;
+        esac
     echo "[INFO] Packages installed successfully."
 }
 
@@ -284,12 +363,18 @@ install_config() {
     local prompt="Please provide a secret key to encrypt the token stored in the database ($env): "
     local key=
     until [[ -f "$env" && $(sed "s/TOUTUI_SECRET_KEY=//g" "$env") != "" ]]; do
-        read -sp "$prompt: " key
+        read -p "$prompt: " key
         if ! [[ $key == "" ]]; then echo "TOUTUI_SECRET_KEY=${key}" > "$env"; echo;fi
     done
 
     # config.
-    local example_config=config.example.toml
+     # create temp directory
+    local tmpdir
+    tmpdir=$(mktemp -d) # not supported in bash 3.2
+    # dl config.example.toml in temp directory
+    curl -LsSf "$url_config_file" -o "$tmpdir/config.toml"
+
+    local example_config="$tmpdir/config.toml"
     if ! [[ -f "$example_config" ]]; then
         echo "[ERROR] \"config.example.toml\" not found."
         exit $EXIT_CONFIG
@@ -300,8 +385,8 @@ install_config() {
         if [[ -f "$user_config" ]]; then
             # If maintainer decides adding options in "config.toml", we have to
             # update user's config file accordingly without breaking things up.
-	    # Here is an attempt. If you know of any way to simplify this, feel
-	    # free to PR <|:^)
+            # Here is an attempt. If you know of any way to simplify this, feel
+            # free to PR <|:^)
             local merged_config=
 
             # Grab sections from config.example.toml AND from user config (e.g. [player])
@@ -352,9 +437,12 @@ install_config() {
 	    # Enjoy Toutui's respect for their users' config files <|:^)
             echo -e "$merged_config" > "$user_config"
         else
-            cp config.example.toml "$user_config" || (echo "[ERROR] Cannot copy \"config.toml\"."; exit $EXIT_CONFIG)
+            cp "$example_config" "$user_config" || (echo "[ERROR] Cannot copy \"config.toml\"."; exit $EXIT_CONFIG)
+            rm -rf "$tmpdir"
         fi
     fi
+
+    rm -rf "$tmpdir"
 }
 
 dep_already_installed() {
@@ -370,7 +458,7 @@ dep_already_installed() {
             opensuse*) (zypper se --installed-only "$pkg_name" &>/dev/null)2>/dev/null && installed="true";;
         esac
     elif [[ $OS == "macOS" ]]; then
-        (brew list | grep "^${pkg_name}$") && installed="true"
+        (brew list | grep $pkg_name) && installed="true"
     fi
     if [[ $installed == "false" ]]; then
         if [[ $cmd_check != "no_check" && $(command -v $cmd_check 2>/dev/null) ]]; then
@@ -436,50 +524,323 @@ install_deps() {
         fi
     done
     install_packages "${missing[@]}" && echo "[INFO] Essential dependencies are installed."
-    propose_optional_dependencies "${optionals[@]}"
+    #propose_optional_dependencies "${optionals[@]}"
+}
+
+install_message() {
+    echo "[INFO]"
+    echo "The installation will have these effects:"
+    echo "Install dependencies if needed: VLC, Netcat, Rust, for macos: Homebrew and gsed"
+    echo "Add the binary in /usr/local/bin"
+    echo "For Linux:"
+    echo "Add the directory "toutui" in $HOME/.config (or any other path specified in XDG_CONFIG_HOME) with inside the following files: "
+    echo ".env, db.sqlite3, config.toml, toutui.log"
+    echo "toutui.desktop will be added in $HOME/.local/share/applications"
+    echo "For macOS:"
+    echo "Add the directory "toutui" in $HOME/Library/Preferences (or any other path specified in XDG_CONFIG_HOME) with inside the following files: "
+    echo ".env, db.sqlite3, config.toml, toutui.log"
+    echo " "
+    echo " You can run "toutui --uninstall" or the official uninstall curl link to remove all these added files."
+    echo 'Only dependencies will not be uninstalled (e.g. VLC, Netcat, Rust, gsed, Homebrew)'
+    echo " "
+}
+
+install_menu() {
+    echo "[HELP] Option 1 is the most user-friendly installation. No compilation time, no need to install rust/cargo. However, if it does not work, select option 2."
+    ps3="Please enter your choice: "
+    options=(
+        "Option 1 - Download the binary (recommended)"
+        "Option 2 - Compile from source (remotely, no local clone, will install Rust if it is not already installed)"
+        "Option 3 - Clone the repo and compile from source locally (manually)"
+        "Quit"
+    )
+
+    select opt in "${options[@]}"
+    do
+        case $REPLY in
+            1)
+                install_method="binary"
+                break
+                ;;
+            2)
+                install_method="source"
+                break
+                ;;
+            3)
+                echo "requirements:"
+                echo "rust, netcat, vlc, (optional : kitty)"
+                echo "follow these steps: "
+                echo "clone the main branch (might be unstable):"
+                echo "git clone https://github.com/albandavid/toutui"
+                echo "or clone the last stable release:"
+                echo "git clone --branch stable --single-branch https://github.com/albandavid/toutui"
+                echo "cd toutui/"
+                echo "mkdir -p ~/.config/toutui"
+                echo "cp config.example.toml ~/.config/toutui/config.toml"
+                echo "token encryption in the database (note: replace secret) : "
+                echo "echo toutui_secret_key=secret >> ~/.config/toutui/.env"
+                echo "cargo run --release"
+                echo "update :"
+                echo "git pull {URL}"
+                echo "cargo run --release"
+                exit 0
+                break
+                ;;
+            4)
+                echo "bye!"
+                exit 0
+                break
+                ;;
+            *)
+                echo "invalid option: $REPLY"
+                ;;
+        esac
+    done
+}
+
+check_and_cleanup_binary_install() {
+
+    local temp_dir=$1
+
+    if [[ ! -e "$temp_dir/toutui" ]]; then
+        echo "[ERROR] Failed to download the binary. Please try again later."
+        EXIT_FAIL
+    fi
+    if [[ -e "/usr/local/bin/toutui" && -e "$temp_dir/toutui" ]]; then
+        sudo rm "/usr/local/bin/toutui"
+    fi
+    if [[ -e "$HOME/.cargo/bin/toutui" && -e "$temp_dir/toutui" ]]; then
+        sudo rm "$HOME/.cargo/bin/toutui"
+    fi
+}
+
+dl_handle_compressed_binary() {
+    local final_url=$1
+    local binary_name=$2
+    temp_dir=$(mktemp -d)
+    echo "[INFO] Downloading the compressed binary from $final_url"
+    sudo curl -L "$final_url" -o "$temp_dir/$binary_name"
+    sudo tar -xvzf "$temp_dir/$binary_name" -C "$temp_dir"
+    check_and_cleanup_binary_install "$temp_dir"
+    echo "[INFO] Copying the binary from temp directory to /usr/local/bin"
+    sudo cp "$temp_dir/toutui" "/usr/local/bin"
+    rm -rf "$temp_dir"
+}
+
+setup_launcher() {
+    if [[ "$OS" == "linux" ]]; then
+        mkdir -p "$HOME/.local/share/applications"
+        curl -sSL "$url_toutui_desktop" -o "$HOME/.local/share/applications/toutui.desktop"
+    fi
+   # elif [[ "$OS" == "macOS" ]]; then
+   #     mkdir -p "/Applications/toutui.app/Contents"
+   #     mkdir -p "/Applications/toutui.app/Contents/MacOS"
+   #     curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/Info.plist" -o "/Applications/toutui.app/Contents/Info.plist"
+   #     curl -L "https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_with_cargo/curl/launch.command" -o "/Applications/toutui.app/Contents/MacOS/launch.command"
+   #     chmod +x "/Applications/toutui.app/Contents/MacOS/launch.command"
+   # fi
+}
+
+install_binary() {
+    # get the architecture
+    arch=$(uname -m)
+
+    # get full and latest version on github(e.g: v0.1.0-beta)
+    full_version=$(curl -s "$url_latest_release" | grep tag_name | sed -E "s|.*\"([^\"]*)\",|\1|")
+
+
+    # determine binary to download
+    if [[ "$OS" == "linux" && "$arch" == "x86_64" ]]; then
+        echo "[INFO] Linux x86_64 detected"
+        binary_name="toutui-x86_64-unknown-linux-gnu.tar.gz"
+        final_url="$url_latest_binary/$full_version/$binary_name"
+        dl_handle_compressed_binary "$final_url" "$binary_name"
+    fi
+    if [[ "$OS" == "linux" && "$arch" == "aarch64" ]]; then
+        echo "[INFO] Linux aarch64 detected"
+        binary_name="toutui-aarch64-unknown-linux-gnu.tar.gz"
+        final_url="$url_latest_binary/$full_version/$binary_name"
+        dl_handle_compressed_binary "$final_url" "$binary_name"
+    fi
+    if [[ "$OS" == "linux" && "$arch" != "x86_64" && "$arch" != "aarch64" ]]; then
+        echo "[ERROR] No binary available for Linux $arch. You might compile from source"
+        exit 0
+    fi
+    if [[ "$OS" == "macOS" && "$arch" == "arm64" ]]; then
+        echo "[INFO] macOS arm64 detected"
+        binary_name="toutui-universal-apple-darwin.tar.gz" # for intel and sillicon
+        final_url="$url_latest_binary/$full_version/$binary_name"
+        dl_handle_compressed_binary "$final_url" "$binary_name"
+    fi
+    if [[ "$OS" == "macOS" && "$arch" == "x86_64" ]]; then
+        echo "[INFO] macOS x86_64 detected"
+        binary_name="toutui-universal-apple-darwin.tar.gz" # for intel and sillicon
+        final_url="$url_latest_binary/$full_version/$binary_name"
+        dl_handle_compressed_binary "$final_url" "$binary_name"
+    fi
+    if [[ "$OS" == "macOS" && "$arch" != "x86_64" && "$arch" != "arm64" ]]; then
+        echo "[ERROR] No binary available for macOS $arch. You might compile from source"
+        exit 0
+    fi
+    if [[ "$OS" == "unknown" ]]; then
+        echo "unknown os"
+        exit 0
+        break
+    fi
+
+}
+
+confirm_install_deps_macos() {
+    local answer=
+
+    if [[ "$OS" == "macOS" ]]; then
+
+        echo "[IMPORTANT] If you select 1, the script will automatically fetch and install the required dependencies (Brew, VLC, Netcat, gsed) if they are missing."
+        echo "[IMPORTANT] Please note: package detection via Homebrew can sometimes be unreliable (but it's not risky). If you encounter issues, install the packages by yourself and select 2."
+
+        while :; do
+            read -p "Select option: (1/2/Q (to quit the installation)) : " answer
+            if [[ $answer =~ (1) ]]; then answer=option1; break; fi
+            if [[ $answer =~ (2) ]]; then answer=option2; break; fi
+            if [[ $answer =~ (q|Q) ]]; then answer=quit; break; fi
+
+        done
+        case $answer in
+            option1)
+                install_deps # install essential and/or optional deps
+                ;;
+            option2)
+                ;;
+            quit)
+                echo "Installation aborted. Install required dependencies Brew, VLC, Netcat and gsed and perfom again an install"
+                exit 0
+                ;;
+        esac
+    fi
+
 }
 
 install_toutui() {
-    install_deps # install essential and/or optional deps
-    install_config # create ~/.config/toutui/ etc.
-    install_rust # cornerstone! toutui is written by a crab
-    cargo build --release
-    # copy Toutui binary to system path
-    sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
-    echo "[DONE] Install complete. Type toutui in your terminal to run it."
-    echo "[ADVICE] Explore themes: https://github.com/AlbanDAVID/Toutui-theme"
-    echo "[ADVICE] Best experience with Kitty or Alacritty terminal."
-    post_install_msg # only if .env not found
+    check_toutui_installed
+    if [[ "$is_installed" == "true" ]]; then
+        confirm_force_install_update "install"
+    fi
+    install_message
+    install_menu
+    if [[ "$install_method" == "binary" ]]; then
+        echo "Install the binary..."
+        confirm_install_deps_macos
+        if [[ "$OS" == "linux" ]]; then
+            install_deps # install essential and/or optional deps
+        fi
+        install_config # create ~/.config/toutui/ etc.
+        install_binary
+        setup_launcher
+        if [[ "$OS" == "linux" ]]; then
+            echo "[DONE] Install complete. Launch toutui from your favorite app launcher or type toutui in your terminal to run it!"
+        elif [[ "$OS" == "macOS" ]]; then
+            echo "[DONE] Install complete. Type toutui in your terminal to run it!"
+        fi
+        echo "[ADVICE] Explore and try various themes: https://github.com/AlbanDAVID/Toutui-theme"
+        echo "[ADVICE] Best experience with Kitty or Alacritty terminal."
+    elif [[ "$install_method" == "source" ]]; then
+        echo "Compiling from source..."
+        confirm_install_deps_macos
+        if [[ "$OS" == "linux" ]]; then
+            install_deps # install essential and/or optional deps
+        fi
+        install_config # create ~/.config/toutui/ etc.
+        install_rust # cornerstone! toutui is written by a crab
+        #cargo install --git https://github.com/AlbanDAVID/Toutui --branch install_with_cargo
+        cargo install --git "$url_cargo_install" --branch stable
+        setup_launcher
+        # copy Toutui binary to system path
+        # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
+        if [[ "$OS" == "linux" ]]; then
+            echo "[DONE] Install complete. Launch toutui from your favorite app launcher or type toutui in your terminal to run it!"
+        elif [[ "$OS" == "macOS" ]]; then
+            echo "[DONE] Install complete. Type toutui in your terminal to run it!"
+        fi
+        echo "[ADVICE] Explore and try various themes: https://github.com/AlbanDAVID/Toutui-theme"
+        echo "[ADVICE] Best experience with Kitty or Alacritty terminal."
+        post_install_msg # only if .env not found
+    fi
 }
 
-post_update_msg() {
-    echo "[DONE] Update complete."
+
+update_menu() {
+    echo "[HELP] Option 1 is the most user-friendly updating method. No compilation time, no need to install rust/cargo. However, if it does not work, select option 2."
+    ps3="Please enter your choice: "
+    options=(
+        "Option 1 - Download the binary (recommended)"
+        "Option 2 - Update by compiling from source (no local clone, will install Rust if it is not already installed)"
+        "Option 3 - Update from the local clone (manually)"
+        "Quit"
+    )
+
+    select opt in "${options[@]}"
+    do
+        case $REPLY in
+            1)
+                update_method="binary"
+                break
+                ;;
+            2)
+                update_method="source"
+                break
+                ;;
+            3)
+                echo "cd toutui"
+                echo "git pull {URL}"
+                echo "cargo run --release"
+                exit 0
+                break
+                ;;
+            4)
+                echo "bye!"
+                exit 0
+                break
+                ;;
+            *)
+                echo "invalid option: $REPLY"
+                ;;
+        esac
+    done
 }
 
 get_toutui_local_release() {
-    if ! [[ -f Cargo.toml ]]; then
-        echo "[ERROR] Cannot find \"Cargo.toml\"."
-        exit $EXIT_NO_CARGO_TOML
-    fi
-    grep "version" Cargo.toml | head -1 | sed -E "s/^version\s*=\s*\"([^\"]*)\"\s*$/\1/"
+#    if ! [[ -f Cargo.toml ]]; then
+#        echo "[ERROR] Cannot find \"Cargo.toml\"."
+#        exit $EXIT_NO_CARGO_TOML
+#    fi
+#    grep "version" Cargo.toml | head -1 | sed -E "s/^version\s*=\s*\"([^\"]*)\"\s*$/\1/"
+
+toutui --version | cut -d' ' -f2
+
 }
 
 get_toutui_github_release() {
-    curl -s https://api.github.com/repos/AlbanDAVID/Toutui/releases/latest | grep tag_name | sed -E "s|.*\"v([^\"]*)\",|\1|"
+    curl -s "$url_latest_release" | grep tag_name | sed -E "s|.*\"v([^\"]*)\",|\1|"
 }
 
 display_changelog() {
-    local changelog=$(curl -s https://api.github.com/repos/AlbanDAVID/Toutui/releases/latest | grep "\"body\"" | sed -E "s|^\s*\"body\":\s*\"([^\"]*)\"|\1|")
+    local changelog=$(curl -s "$url_latest_release" | grep "\"body\"" | sed -E "s|^\s*\"body\":\s*\"([^\"]*)\"|\1|")
     echo -e "\x1b[2m### CHANGELOG ###\x1b[0m"
     echo -e "\x1b[2m$changelog\x1b[0m"
     echo -e "\x1b[2m#################\x1b[0m"
+}
+
+check_and_cleanup_source_install() {
+    if [[ -e "/usr/local/bin/toutui" ]]; then
+        sudo rm "/usr/local/bin/toutui"
+    fi
 }
 
 pull_latest_version() {
     local version=$1
     local answer=
     while :; do
-        read -p "Would you like to pull the latest version? (Y/n) : " answer
+        read -p "Would you like to update to the latest version? (Y/n) : " answer
         if [[ $answer =~ (n|N) ]]; then answer=no; break; fi
         if [[ $answer == "" || $answer =~ (y|Y) ]]; then answer=yes; break; fi
     done
@@ -487,29 +848,148 @@ pull_latest_version() {
         no)
             echo "[INFO] Ignoring latest version.";;
         yes)
-            echo "[INFO] Pulling latest version..."
-            git fetch && git pull
-            echo "[INFO] Installing latest version..."
-	    install_config
-            cargo build --release
-            sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
+            if [[ "$OS" == "macOS" ]]; then
+                local answer2=
+                while :; do
+                    read -p "gsed package is needed to correctly perform the update. Please, check if you have it ('brew install gsed' to install it). Continue? (Y/n) : " answer
+                    if [[ $answer =~ (n|N) ]]; then answer=no; break; fi
+                    if [[ $answer == "" || $answer =~ (y|Y) ]]; then answer=yes; break; fi
+                done
+                case $answer2 in
+                    no)
+                        echo "[INFO] Update aborted"
+                        exit 0
+                        ;;
+                    yes)
+                        ;;
+
+                esac
+            fi
+            # echo "[INFO] Pulling latest version..."
+            # git fetch && git pull
+            update_menu
+            if [[ "$update_method" == "binary" ]]; then
+                install_binary
+            elif [[ "$update_method" == "source" ]]; then
+                install_rust
+                cargo install --force --git "$url_cargo_install" --branch stable
+                check_and_cleanup_source_install
+            fi
+            install_config
+            # cargo build --release
+            # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
             echo "[OK] Latest version installed (v$version)."
             ;;
     esac
 }
 
 update_toutui() {
-    install_deps # check for new deps
+    check_toutui_installed
+    if [[ "$is_installed" == "false" ]]; then
+        confirm_force_install_update "update"
+    fi
     local local_release=$(get_toutui_local_release)
     local github_release=$(get_toutui_github_release)
+    echo "[INFO] Local:  $local_release"
+    echo "[INFO] GitHub: $github_release"
     if [[ $local_release == $github_release ]]; then
         echo "[INFO] Up to date (version $local_release)."
     else
         #echo "TODO: check if is behind or ahead?"
+        if [[ "$OS" == "linux" ]]; then
+            install_deps # check for new deps
+        fi
         display_changelog # display before pulling?
         pull_latest_version $github_release
+
     fi
-    post_update_msg
+}
+
+uninstall_message() {
+    echo "Uninstall will do this:"
+    echo "Delete the binary in /usr/local/bin"
+    echo "For Linux:"
+    echo "The directory "toutui" in $HOME/.config (or any other path specified in XDG_CONFIG_HOME) wil be deleted: "
+    echo "[IMPORTANT] save your config.toml if you need it later"
+    echo "[IMPORTANT] XDG_CONFIG_HOME must be the same as it was at the time Toutui was installed. (in case you change it)"
+    echo "toutui.desktop will be deleted from $HOME/.local/share/applications"
+    echo "For macOS:"
+    echo "The directory "toutui" in $HOME/Library/Preferences (or any other path specified in XDG_CONFIG_HOME) will be deleted: "
+    echo "[IMPORTANT] save your config.toml if you need it later"
+    echo "[IMPORTANT] XDG_CONFIG_HOME must be the same as it was at the time Toutui was installed. (in case you change it)"
+    echo " "
+    echo 'Only dependencies will not be uninstalled (e.g. VLC, Netcat, Rust, Homebrew, gsed)'
+    echo " "
+}
+
+uninstall_process() {
+    if [[ "$OS" == "linux" ]]; then
+
+        # delete the config folder
+        if [[ -n "$XDG_CONFIG_HOME" && -e "$XDG_CONFIG_HOME/toutui" ]]; then
+            sudo rm -r "$XDG_CONFIG_HOME/toutui"
+            echo "$XDG_CONFIG_HOME/toutui deleted."
+        fi
+
+        if [[ -e "$HOME/.config/toutui" ]]; then
+            sudo rm -r "$HOME/.config/toutui"
+            echo "$HOME/.config/toutui deleted."
+        fi
+
+        # delete toutui.desktopp
+        if [[ -e "$HOME/.local/share/applications/toutui.desktop" ]] ; then
+            sudo rm "$HOME/.local/share/applications/toutui.desktop"
+            echo "$HOME/.local/share/applications/toutui.desktop deleted."
+        fi
+
+    fi
+
+    if [[ "$OS" == "macOS" ]]; then
+
+        # delete the config folder
+        if [[ -n "$XDG_CONFIG_HOME" && -e "$XDG_CONFIG_HOME/toutui" ]]; then
+            sudo rm -r "$XDG_CONFIG_HOME/toutui"
+            echo "$XDG_CONFIG_HOME/toutui deleted."
+        fi
+
+        if [[ -e "$HOME/Library/Preferences/toutui" ]]; then
+            sudo rm -r "$HOME/Library/Preferences/toutui"
+            echo "$HOME/Library/Preferences/toutui deleted."
+        fi
+    fi
+
+
+    # delete the binary
+    if [[ -e "/usr/local/bin/toutui" ]]; then
+        sudo rm "/usr/local/bin/toutui"
+        echo "/usr/local/bin/toutui deleted."
+    fi
+    if [[ -e "$HOME/.cargo/bin/toutui" ]]; then
+        sudo rm "$HOME/.cargo/bin/toutui"
+        echo "$HOME/.cargo/bin/toutui deleted."
+    fi
+
+
+}
+
+uninstall_toutui() {
+    uninstall_message
+    local answer=
+    while :; do
+        read -p "Are you sure to uninstall toutui? (Y/n) : " answer
+        if [[ $answer =~ (n|N) ]]; then answer=no; break; fi
+        if [[ $answer == "" || $answer =~ (y|Y) ]]; then answer=yes; break; fi
+    done
+    case $answer in
+        no)
+            echo "[INFO] Uninstall aborted";;
+        yes)
+            echo "[INFO] Starting uninstall..."
+            uninstall_process
+            echo "[OK] Toutui has been successfully uninstalled."
+            ;;
+    esac
+
 }
 
 load_exit_codes() {
@@ -538,7 +1018,5 @@ main "$@"
 
 # TODO:
 # - clone repo from here (making this bloated bash script "portable")
-# - check for correct installation path (for now: /usr/bin/toutui)
 # - test automatic dependencies install on more distributions
-# - uninstall toutui
-# - allow calling toutui from outside the terminal (need a wrapper script)
+# - allow calling toutui from outside the terminal (for macOS, available for Linux)

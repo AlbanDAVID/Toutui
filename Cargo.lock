@@ -3,33 +3,6 @@
 version = 4
 
 [[package]]
-name = "Toutui"
-version = "0.3.5-beta"
-dependencies = [
- "chrono",
- "clap",
- "color-eyre",
- "config",
- "crossterm",
- "dirs",
- "dotenv",
- "fern",
- "log",
- "magic-crypt",
- "openssl",
- "ratatui",
- "regex",
- "reqwest",
- "rusqlite",
- "serde",
- "serde_derive",
- "serde_json",
- "tokio",
- "tui-textarea",
- "vlc-rc",
-]
-
-[[package]]
 name = "addr2line"
 version = "0.21.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1202,6 +1175,7 @@ version = "0.31.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ad8935b44e7c13394a179a438e0cebba0fe08fe01b54f152e29a93b5cf993fd4"
 dependencies = [
+ "cc",
  "pkg-config",
  "vcpkg",
 ]
@@ -1376,6 +1350,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ff011a302c396a5197692431fc1948019154afc178baf7d8e37367442a4601cf"
 
 [[package]]
+name = "openssl-src"
+version = "300.5.0+3.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e8ce546f549326b0e6052b649198487d91320875da901e7bd11a06d1ee3f9c2f"
+dependencies = [
+ "cc",
+]
+
+[[package]]
 name = "openssl-sys"
 version = "0.9.106"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1383,6 +1366,7 @@ checksum = "8bb61ea9811cc39e3c2069f40b8b8e2e70d8569b361f879786cc7ed48b777cdd"
 dependencies = [
  "cc",
  "libc",
+ "openssl-src",
  "pkg-config",
  "vcpkg",
 ]
@@ -2135,6 +2119,33 @@ dependencies = [
  "serde_spanned",
  "toml_datetime",
  "winnow",
+]
+
+[[package]]
+name = "toutui"
+version = "0.4.0-beta"
+dependencies = [
+ "chrono",
+ "clap",
+ "color-eyre",
+ "config",
+ "crossterm",
+ "dirs",
+ "dotenv",
+ "fern",
+ "log",
+ "magic-crypt",
+ "openssl",
+ "ratatui",
+ "regex",
+ "reqwest",
+ "rusqlite",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "tokio",
+ "tui-textarea",
+ "vlc-rc",
 ]
 
 [[package]]
