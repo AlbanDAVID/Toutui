@@ -772,7 +772,7 @@ update_menu() {
     ps3="Please enter your choice: "
     options=(
         "Option 1 - Update the binary (recommended)"
-        "Option 2 - Update by compiling from source (remotely, no local clone, will install Rust if it is not already installed)"
+        "Option 2 - Update by compiling from source (no local clone, will install Rust if it is not already installed)"
         "Option 3 - Update from the local clone (manually)"
         "Quit"
     )
