@@ -1,11 +1,11 @@
-name: 🔧 Installation issue
-description: If you have any issue during the installation
-title: '[Installation issue]: '
-labels: ['install issue']
+name: 🔧 Install / Update / Uninstall Issue
+description: If you have any issue during the installation, update or uninstall
+title: '[Install / Update / Uninstall Issue]: '
+labels: ['Install / Update / Uninstall Issue']
 body:
   - type: markdown
     attributes:
-      value: '🦜 Thanks for taking the time to fill out this installation issue!'
+      value: '🦜 Thanks for taking the time to fill out this issue!'
   - type: markdown
     attributes:
       value: 'Please first check if the issue is listed into issues.'
@@ -25,13 +25,13 @@ body:
   - type: input
     id: version
     attributes:
-      label: Toutui version that you try to install
+      label: Toutui version
       description: Do not put 'Latest version', please put the actual version here
       placeholder: 'e.g. v0.1.0-beta'
   - type: dropdown
     id: install-distro
     attributes:
-      label: On which OS are you trying to install Toutui?
+      label: On which OS ?
       options:
         - Arch Linux
         - Ubuntu
@@ -41,7 +41,7 @@ body:
   - type: dropdown
     id: install-method
     attributes:
-      label: Which install method?
+      label: Which install, update method?
       options:
         - Easy installation (option 1, binary)
         - Easy installation (option 2, compilation)
