@@ -219,7 +219,7 @@ let changelog_12 = format!(
 
          - Notify if an update is available directly in the app.
 
-         - [Linux only] The app can now be launched via a app launcher.
+         - [Linux only] The app can now be launched via an app launcher.
          \n\
          Contributors:\n\
          \n\
