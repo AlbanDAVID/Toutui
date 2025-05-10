@@ -14,18 +14,18 @@ main() {
     do_not_run_as_root
 
     # Url variables for tests in AlbDav55 fork
-    url_config_file="https://github.com/AlbDav55/Toutui/raw/main/config.example.toml"
-    url_latest_release="https://api.github.com/repos/AlbDav55/Toutui/releases/latest"
-    url_latest_binary="https://github.com/AlbDav55/Toutui/releases/download"
-    url_cargo_install="https://github.com/AlbDav55/Toutui"
-    url_toutui_desktop="https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_improvement/curl/toutui.desktop"
+   # url_config_file="https://github.com/AlbDav55/Toutui/raw/main/config.example.toml"
+   # url_latest_release="https://api.github.com/repos/AlbDav55/Toutui/releases/latest"
+   # url_latest_binary="https://github.com/AlbDav55/Toutui/releases/download"
+   # url_cargo_install="https://github.com/AlbDav55/Toutui"
+   # url_toutui_desktop="https://raw.githubusercontent.com/AlbanDAVID/Toutui/install_improvement/curl/toutui.desktop"
 
     # URL variables for production (do not forget to ensure that repo name and branches are correct)
-   # url_config_file="https://github.com/AlbanDAVID/Toutui/raw/stable/config.example.toml"
-   # url_latest_release="https://api.github.com/repos/AlbanDAVID/Toutui/releases/latest"
-   # url_latest_binary="https://github.com/AlbanDAVID/Toutui/releases/download"
-   # url_cargo_install="https://github.com/AlbanDAVID/Toutui"
-   # url_toutui_desktop="https://raw.githubusercontent.com/AlbanDAVID/Toutui/stable/curl/toutui.desktop"
+    url_config_file="https://github.com/AlbanDAVID/Toutui/raw/stable/config.example.toml"
+    url_latest_release="https://api.github.com/repos/AlbanDAVID/Toutui/releases/latest"
+    url_latest_binary="https://github.com/AlbanDAVID/Toutui/releases/download"
+    url_cargo_install="https://github.com/AlbanDAVID/Toutui"
+    url_toutui_desktop="https://raw.githubusercontent.com/AlbanDAVID/Toutui/stable/curl/toutui.desktop"
 
     # Grab essential variables
     OS=$(identify_os)
