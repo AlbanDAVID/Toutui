@@ -33,7 +33,7 @@
 
 
 **Mid-term Goals**  
-- Put the app on yay    
+- Install the app with yay   
 - CI/CD Implementation  
 - Add future features described bellow.
 
