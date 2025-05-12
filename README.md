@@ -67,11 +67,20 @@ To ensure the best experience, it's recommended to use **Kitty** or **Alacritty*
 
 ## 🚨 Installation Instructions
 
-### Easy installation 
-
 >[!WARNING]
 > - **This is a beta app, please read [this](https://github.com/AlbanDAVID/Toutui?tab=readme-ov-file#%EF%B8%8F-caution-beta-version).**
 >  - For any issues, check first the [wiki](https://github.com/AlbanDAVID/Toutui/wiki/). Otherwise, open an issue.
+
+### Archlinux
+```
+yay -S toutui
+mkdir -p ~/.config/toutui
+cp /usr/share/toutui/config.example.toml ~/.config/toutui/config.toml
+# Token encryption in the database (NOTE: replace 'secret'):
+echo 'TOUTUI_SECRET_KEY=secret' >> ~/.config/toutui/.env
+```
+
+### Easy installation 
 
 **Run the following in your terminal, then follow the on-screen instructions:**    
 
