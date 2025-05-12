@@ -37,7 +37,7 @@ body:
     attributes:
       label: On which OS ?
       options:
-        - none
+        - None
         - Arch Linux
         - Ubuntu
         - Debian
@@ -50,7 +50,7 @@ body:
     attributes:
       label: Which install, update method?
       options:
-        - none
+        - None
         - Easy installation (option 1, download the binary)
         - Easy installation (option 2, compilation)
         - yay
