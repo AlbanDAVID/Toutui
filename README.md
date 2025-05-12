@@ -1,4 +1,7 @@
 [![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
+<!--[![Packaging status](https://repology.org/badge/version-for-repo/arch/toutui.svg)](https://repology.org/project/toutui/versions)-->
+
+
 # 🦜 Toutui: A TUI Audiobookshelf client for Linux and macOS
 
 <p align="center">
