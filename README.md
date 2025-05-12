@@ -115,7 +115,7 @@ bash -c 'tmpfile=$(mktemp) && curl -LsSf https://github.com/AlbanDAVID/Toutui/ra
 #### **Notes**  
 
 ##### Files installed:
-In `/usr/local/bin` or `~/.cargo/bin`  :
+In `/usr/local/bin` (option 1, from install script) or `~/.cargo/bin` (option 2, from install script) or `/usr/bin` (yay)  :
 - `toutui` — The binary file.
 
 In `~/.config/toutui` for Linux or `~/Library/Preferences` for macOS:    
@@ -125,8 +125,11 @@ In `~/.config/toutui` for Linux or `~/Library/Preferences` for macOS:
 - `toutui.log` — Log file.
 - `db.sqlite3` — SQLite database file.
 
-In `~/.local/share/applications` for Linux:
+In `~/.local/share/applications` (option 1, from install script) or `/usr/share/applications` (yay) for Linux:
 - `toutui.desktop` — Config file to launch Toutui from a launcher app.
+
+In `/usr/share/toutui` (yay):
+- `config.example.toml` — Configuration file.
 
 ### Git
 
