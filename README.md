@@ -136,7 +136,7 @@ In `~/.local/share/applications` (option 1, from install script) or `/usr/share/
 In `/usr/share/toutui` (yay):
 - `config.example.toml` — Configuration file.
 
-### Git
+### Install from source
 
 >[!WARNING]
 > This is a beta app, please read [this](https://github.com/AlbanDAVID/Toutui?tab=readme-ov-file#%EF%B8%8F-caution-beta-version).  
@@ -145,8 +145,6 @@ In `/usr/share/toutui` (yay):
 - `Rust`
 - `Netcat`
 - `VLC`
-
-#### **Install from source**    
 
 [![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&color=green&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
 
