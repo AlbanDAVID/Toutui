@@ -1,6 +1,5 @@
-[![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
-<!--[![Packaging status](https://repology.org/badge/version-for-repo/arch/toutui.svg)](https://repology.org/project/toutui-bin/versions)-->
-
+[![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&color=green&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
+[![AUR package](https://repology.org/badge/version-for-repo/aur/toutui.svg)](https://repology.org/project/toutui/versions)
 
 # 🦜 Toutui: A TUI Audiobookshelf client for Linux and macOS
 
@@ -75,6 +74,8 @@ To ensure the best experience, it's recommended to use **Kitty** or **Alacritty*
 >  - For any issues, check first the [wiki](https://github.com/AlbanDAVID/Toutui/wiki/). Otherwise, open an issue.
 
 ### Archlinux
+[![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&color=green&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
+[![AUR package](https://repology.org/badge/version-for-repo/aur/toutui.svg)](https://repology.org/project/toutui/versions)
 ```
 yay -S toutui-bin
 mkdir -p ~/.config/toutui
@@ -87,8 +88,8 @@ echo 'TOUTUI_SECRET_KEY=secret' >> ~/.config/toutui/.env
 
 **Run the following in your terminal, then follow the on-screen instructions:**    
 
+[![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&color=green&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
 
-[![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
 
 ```bash
 bash -c 'tmpfile=$(mktemp) && curl -LsSf https://github.com/AlbanDAVID/Toutui/raw/stable/hello_toutui.sh -o "$tmpfile" && bash "$tmpfile" install && rm -f "$tmpfile"'
