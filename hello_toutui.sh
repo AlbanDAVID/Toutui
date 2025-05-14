@@ -25,7 +25,7 @@ main() {
     url_latest_release="https://api.github.com/repos/AlbanDAVID/Toutui/releases/latest"
     url_latest_binary="https://github.com/AlbanDAVID/Toutui/releases/download"
     url_cargo_install="https://github.com/AlbanDAVID/Toutui"
-    url_toutui_desktop="https://raw.githubusercontent.com/AlbanDAVID/Toutui/stable/curl/toutui.desktop"
+    url_toutui_desktop="https://raw.githubusercontent.com/AlbanDAVID/Toutui/stable/linux/toutui.desktop"
 
     # Grab essential variables
     OS=$(identify_os)
@@ -531,7 +531,7 @@ install_message() {
     echo "[INFO]"
     echo "The installation will have these effects:"
     echo "Install dependencies if needed: VLC, Netcat, Rust, for macos: Homebrew and gsed"
-    echo "Add the binary in /usr/local/bin"
+    echo "Add the binary in /usr/local/bin (option 1) or ~/.cargo/bin (option 2)"
     echo "For Linux:"
     echo "Add the directory "toutui" in $HOME/.config (or any other path specified in XDG_CONFIG_HOME) with inside the following files: "
     echo ".env, db.sqlite3, config.toml, toutui.log"
@@ -753,6 +753,7 @@ install_toutui() {
         install_rust # cornerstone! toutui is written by a crab
         #cargo install --git https://github.com/AlbanDAVID/Toutui --branch install_with_cargo
         cargo install --git "$url_cargo_install" --branch stable
+        echo "[INFO] Binary placed in ~.cargo/bin"
         setup_launcher
         # copy Toutui binary to system path
         # sudo cp ./target/release/Toutui "${INSTALL_DIR}/toutui" || exit $EXIT_BUILD_FAIL
@@ -873,6 +874,7 @@ pull_latest_version() {
             elif [[ "$update_method" == "source" ]]; then
                 install_rust
                 cargo install --force --git "$url_cargo_install" --branch stable
+                echo "[INFO] Binary placed in ~.cargo/bin"
                 check_and_cleanup_source_install
             fi
             install_config
@@ -907,7 +909,7 @@ update_toutui() {
 
 uninstall_message() {
     echo "Uninstall will do this:"
-    echo "Delete the binary in /usr/local/bin"
+    echo "Delete the binary in /usr/local/bin or ~/.cargo/bin"
     echo "For Linux:"
     echo "The directory "toutui" in $HOME/.config (or any other path specified in XDG_CONFIG_HOME) wil be deleted: "
     echo "[IMPORTANT] save your config.toml if you need it later"
