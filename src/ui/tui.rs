@@ -722,11 +722,13 @@ impl App {
         let instructions = "\
 Update:
 1) Quit the app
-2) Paste the following command in a terminal: toutui --update
+2) If you installed from the script: toutui --update
+   From yay: yay -S toutui
 
 Uninstall:
 1) Quit the app
-2) Paste the following command in a terminal: toutui --uninstall
+2) If you installed from the script: toutui --uninstall
+   From yay: yay -R toutui-bin
 ";
 
         match list_state.selected() {

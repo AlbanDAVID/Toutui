@@ -1,5 +1,8 @@
-[![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
-# 🦜 Toutui: A TUI Audiobookshelf client for Linux and macOS  
+[![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&color=green&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
+[![AUR package](https://repology.org/badge/version-for-repo/aur/toutui.svg)](https://repology.org/project/toutui/versions)
+[![Release](https://github.com/AlbanDAVID/Toutui/actions/workflows/release.yml/badge.svg)](https://github.com/AlbanDAVID/Toutui/actions/workflows/release.yml)
+
+# 🦜 Toutui: A TUI Audiobookshelf client for Linux and macOS
 
 <p align="center">
     <em>In French, being "tout ouïe" (toutui) means being all ears.</em>
@@ -33,7 +36,7 @@
 
 
 **Mid-term Goals**  
-- Put the app on yay    
+- Install the app with yay   
 - CI/CD Implementation  
 - Add future features described bellow.
 
@@ -67,16 +70,27 @@ To ensure the best experience, it's recommended to use **Kitty** or **Alacritty*
 
 ## 🚨 Installation Instructions
 
-### Easy installation 
-
 >[!WARNING]
 > - **This is a beta app, please read [this](https://github.com/AlbanDAVID/Toutui?tab=readme-ov-file#%EF%B8%8F-caution-beta-version).**
 >  - For any issues, check first the [wiki](https://github.com/AlbanDAVID/Toutui/wiki/). Otherwise, open an issue.
 
+### Archlinux
+[![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&color=green&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
+[![AUR package](https://repology.org/badge/version-for-repo/aur/toutui.svg)](https://repology.org/project/toutui/versions)
+```
+yay -S toutui
+mkdir -p ~/.config/toutui
+cp /usr/share/toutui/config.example.toml ~/.config/toutui/config.toml
+# Token encryption in the database (NOTE: replace 'secret'):
+echo 'TOUTUI_SECRET_KEY=secret' >> ~/.config/toutui/.env
+```
+
+### Easy installation 
+
 **Run the following in your terminal, then follow the on-screen instructions:**    
 
+[![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&color=green&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
 
-[![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
 
 ```bash
 bash -c 'tmpfile=$(mktemp) && curl -LsSf https://github.com/AlbanDAVID/Toutui/raw/stable/hello_toutui.sh -o "$tmpfile" && bash "$tmpfile" install && rm -f "$tmpfile"'
@@ -106,7 +120,7 @@ bash -c 'tmpfile=$(mktemp) && curl -LsSf https://github.com/AlbanDAVID/Toutui/ra
 #### **Notes**  
 
 ##### Files installed:
-In `/usr/local/bin` or `~/.cargo/bin`  :
+In `/usr/local/bin` (option 1, from install script) or `~/.cargo/bin` (option 2, from install script) or `/usr/bin` (yay)  :
 - `toutui` — The binary file.
 
 In `~/.config/toutui` for Linux or `~/Library/Preferences` for macOS:    
@@ -116,10 +130,13 @@ In `~/.config/toutui` for Linux or `~/Library/Preferences` for macOS:
 - `toutui.log` — Log file.
 - `db.sqlite3` — SQLite database file.
 
-In `~/.local/share/applications` for Linux:
+In `~/.local/share/applications` (option 1, from install script) or `/usr/share/applications` (yay) for Linux:
 - `toutui.desktop` — Config file to launch Toutui from a launcher app.
 
-### Git
+In `/usr/share/toutui` (yay):
+- `config.example.toml` — Configuration file.
+
+### Install from source
 
 >[!WARNING]
 > This is a beta app, please read [this](https://github.com/AlbanDAVID/Toutui?tab=readme-ov-file#%EF%B8%8F-caution-beta-version).  
@@ -129,18 +146,15 @@ In `~/.local/share/applications` for Linux:
 - `Netcat`
 - `VLC`
 
-#### **Install from source**    
+[![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&color=green&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
 
-[![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
+Note: `main` might be unstable. Prefer `git clone --branch stable --single-branch https://github.com/AlbanDAVID/Toutui` if you want to have the last stable release.    
 ```bash
 git clone https://github.com/AlbanDAVID/Toutui
 cd Toutui/
 mkdir -p ~/.config/toutui
 cp config.example.toml ~/.config/toutui/config.toml
 ```
-
-Note: `main` might be unstable. Prefer `git clone --branch stable --single-branch https://github.com/AlbanDAVID/Toutui` if you want to have the last stable release.
-
 
 Token encryption in the database (<u>**NOTE**</u>: replace `secret`)
 ```bash
