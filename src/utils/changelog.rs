@@ -215,7 +215,7 @@ let changelog_12 = format!(
             - Compiling it from source (no local clone needed).
 
          -  New commands available:
-            - cargo --update and cargo --uninstall cmd added.
+            - toutui --update and toutui --uninstall cmd added.
 
          - Notify if an update is available directly in the app.
 
