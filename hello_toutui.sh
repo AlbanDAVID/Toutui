@@ -25,7 +25,7 @@ main() {
     url_latest_release="https://api.github.com/repos/AlbanDAVID/Toutui/releases/latest"
     url_latest_binary="https://github.com/AlbanDAVID/Toutui/releases/download"
     url_cargo_install="https://github.com/AlbanDAVID/Toutui"
-    url_toutui_desktop="https://raw.githubusercontent.com/AlbanDAVID/Toutui/stable/curl/toutui.desktop"
+    url_toutui_desktop="https://raw.githubusercontent.com/AlbanDAVID/Toutui/stable/linux/toutui.desktop"
 
     # Grab essential variables
     OS=$(identify_os)
