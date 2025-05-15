@@ -67,13 +67,12 @@ check_shasum() {
     local tmpfile=$1
     local file_name=$2
 
-    echo "$expected_sha256"
     actual_sha256=$(shasum -a 256 "$tmpfile" | awk "{print \$1}")
-    echo "$actual_sha256"
 
     if [[ "$actual_sha256" != "$expected_sha256" ]]; then
         echo "[ERROR] Incorrect shasum for \"$file_name\""
         EXIT_INCORRECT_SHASUM
+        rm "$tmpfile"
     else
         echo "[INFO] shasum for "$file_name": passed"
     fi
