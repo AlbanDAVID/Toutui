@@ -78,7 +78,7 @@ check_shasum() {
         if [[ "$file_type" == "dir" ]]; then
             rm -rf "$tmpdir"
         else
-            rm -f "$tmpfile"
+            rm "$tmpfile"
         fi
     else
         echo "[INFO] shasum for "$file_name": passed"
