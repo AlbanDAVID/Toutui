@@ -6,7 +6,6 @@
 
 # For test from AlbanDAVID toutui repo (stable branch)
 # bash -c 'tmpfile=$(mktemp) && curl -LsSf https://github.com/AlbanDAVID/Toutui/raw/stable/hello_toutui.sh -o "$tmpfile" && bash "$tmpfile" install && rm -f "$tmpfile"'
-#test
 
 set -eo pipefail
 
@@ -79,7 +78,6 @@ check_shasum() {
     fi
 
 }
-
 
 # [0] config.example.toml
 # [1] toutui-aarch64-unknown-linux-gnu.tar.gz
@@ -403,9 +401,11 @@ install_config() {
     # config.
      # create temp directory
     local tmpdir
-    tmpdir=$(mktemp -d) # not supported in bash 3.2
+    tmpdir=$(mktemp -d)
     # dl config.example.toml in temp directory
     curl -LsSf "$url_config_file" -o "$tmpdir/config.toml"
+
+    check_shasum "$tmpdir/config.toml" "config.toml" "$sha256sums[0]"
 
     local example_config="$tmpdir/config.toml"
     if ! [[ -f "$example_config" ]]; then
