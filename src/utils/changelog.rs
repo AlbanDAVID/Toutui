@@ -229,7 +229,7 @@ let changelog_12 = format!(
          ####\n",
 );
 let changelog_13 = format!(
-    "Changelog Toutui v{} (14/05/2025) \n\
+    "Changelog Toutui v0.4.1-beta (14/05/2025) \n\
          \n\
          Warning:\n\
          - If you're already using the app v0.3.5 or bellow, please follow the upgrade instructions here: => 
@@ -248,10 +248,32 @@ let changelog_13 = format!(
          \n\
          Enjoy and be toutui!\n
          ####\n",
+);
+let changelog_14 = format!(
+    "Changelog Toutui v{} (15/05/2025) \n\
+         \n\
+         Warning:\n\
+         - If you're already using the app v0.3.5 or bellow, please follow the upgrade instructions here: => 
+         https://github.com/AlbanDAVID/Toutui/wiki/Major-upgrade-instruction#v--035-beta-to-v040-beta
+
+         Added:\n\
+         - Verifying file integrity using SHA-256 before installation via curl script
+
+         Changed:\n\
+         - Clarification of update/uninstall instructions
+
+         \n\
+         Contributors:\n\
+         \n\
+         - AlbanDAVID
+         \n\
+         Enjoy and be toutui!\n
+         ####\n",
          VERSION
 );
 
 
+    changelog.push_str(&changelog_14); 
     changelog.push_str(&changelog_13); 
     changelog.push_str(&changelog_12); 
     changelog.push_str(&changelog_11); 

@@ -7,11 +7,12 @@
 # For test from AlbanDAVID toutui repo (stable branch)
 # bash -c 'tmpfile=$(mktemp) && curl -LsSf https://github.com/AlbanDAVID/Toutui/raw/stable/hello_toutui.sh -o "$tmpfile" && bash "$tmpfile" install && rm -f "$tmpfile"'
 
-
 set -eo pipefail
 
 main() {
     do_not_run_as_root
+
+    check_shasum $tmpfile "hello_toutui.sh" $expected_sha256 " "
 
     # Url variables for tests in AlbDav55 fork
    # url_config_file="https://github.com/AlbDav55/Toutui/raw/main/config.example.toml"
@@ -60,6 +61,44 @@ main() {
         *) usage "INCORRECT_ARG";;
     esac
 }
+
+check_shasum() {
+    local tmpfile=$1
+    local file_name=$2
+    local expected_sha256=$3
+    local file_type=$4
+
+    actual_sha256=$(shasum -a 256 "$tmpfile" | awk "{print \$1}")
+
+    if [[ "$actual_sha256" != "$expected_sha256" ]]; then
+        echo "[ERROR] Incorrect shasum for \"$file_name\""
+        echo "expected shasum: "$expected_sha256""
+        echo "actual shasum: "$actual_sha256""
+        if [[ "$file_type" == "dir" ]]; then
+            rm -rf "$tmpdir"
+            exit 1
+        else
+            rm "$tmpfile"
+            exit 1
+        fi
+    else
+        echo "[INFO] shasum for "$file_name": passed"
+    fi
+
+}
+
+# [0] config.example.toml
+# [1] toutui-aarch64-unknown-linux-gnu.tar.gz
+# [2] toutui-universal-apple-darwin.tar.gz
+# [3] toutui-x86_64-unknown-linux-gnu.tar.gz
+# [4] toutui.desktop
+sha256sums=( 'e398fc5f9ff3f4a8841a9ae4675031a0f7e6e87b2762dab544ff23ae74eab0a9'
+             '34a2316a94e4dea7fd08d73a18c2683d2b5bbdf6a7683b183dc6ea212846fb92'
+             '519c28f8ea1a16a1e4ee74e2ee46c0ad2d3588439b036193513a14ad8e7d755b'
+             '59d5a7dec8b6ef84aab13cc9c7fa25f7675b102322c7680bea4709ee5b7d84f0'
+             'cd3281594f0d27f559732539f841c3fa44dba192ca7f0fa0d21a97f1f97ce6a0'
+            )
+
 
 load_dependencies() {
     # Hard Coded dependencies here.
@@ -370,11 +409,13 @@ install_config() {
     # config.
      # create temp directory
     local tmpdir
-    tmpdir=$(mktemp -d) # not supported in bash 3.2
+    tmpdir=$(mktemp -d)
     # dl config.example.toml in temp directory
-    curl -LsSf "$url_config_file" -o "$tmpdir/config.toml"
+    curl -LsSf "$url_config_file" -o "$tmpdir/config.example.toml"
 
-    local example_config="$tmpdir/config.toml"
+    check_shasum "$tmpdir/config.example.toml" "config.example.toml" "${sha256sums[0]}" "dir"
+
+    local example_config="$tmpdir/config.example.toml"
     if ! [[ -f "$example_config" ]]; then
         echo "[ERROR] \"config.example.toml\" not found."
         exit $EXIT_CONFIG
@@ -540,7 +581,7 @@ install_message() {
     echo "Add the directory "toutui" in $HOME/Library/Preferences (or any other path specified in XDG_CONFIG_HOME) with inside the following files: "
     echo ".env, db.sqlite3, config.toml, toutui.log"
     echo " "
-    echo " You can run "toutui --uninstall" or the official uninstall curl link to remove all these added files."
+    echo " You can run "toutui --uninstall"/yay -R toutui-bin or the official uninstall curl link to remove all these added files."
     echo 'Only dependencies will not be uninstalled (e.g. VLC, Netcat, Rust, gsed, Homebrew)'
     echo " "
 }
@@ -617,20 +658,34 @@ check_and_cleanup_binary_install() {
 dl_handle_compressed_binary() {
     local final_url=$1
     local binary_name=$2
-    temp_dir=$(mktemp -d)
+    local tmpdir=$(mktemp -d)
     echo "[INFO] Downloading the compressed binary from $final_url"
-    sudo curl -L "$final_url" -o "$temp_dir/$binary_name"
-    sudo tar -xvzf "$temp_dir/$binary_name" -C "$temp_dir"
-    check_and_cleanup_binary_install "$temp_dir"
+    sudo curl -L "$final_url" -o "$tmpdir/$binary_name"
+
+    if [[ "$binary_name" == "toutui-aarch64-unknown-linux-gnu.tar.gz" ]]; then
+        check_shasum "$tmpdir/$binary_name" "toutui-aarch64-unknown-linux-gnu.tar.gz" "${sha256sums[1]}" "dir"
+    elif [[ "$binary_name" == "toutui-universal-apple-darwin.tar.gz" ]]; then
+        check_shasum "$tmpdir/$binary_name" "toutui-universal-apple-darwin.tar.gz" "${sha256sums[2]}" "dir"
+    elif [[ "$binary_name" == "toutui-x86_64-unknown-linux-gnu.tar.gz" ]]; then
+        check_shasum "$tmpdir/$binary_name" "toutui-x86_64-unknown-linux-gnu.tar.gz" "${sha256sums[3]}" "dir"
+    fi
+
+    sudo tar -xvzf "$tmpdir/$binary_name" -C "$tmpdir"
+    check_and_cleanup_binary_install "$tmpdir"
     echo "[INFO] Copying the binary from temp directory to /usr/local/bin"
-    sudo cp "$temp_dir/toutui" "/usr/local/bin"
-    rm -rf "$temp_dir"
+    sudo cp "$tmpdir/toutui" "/usr/local/bin"
+    rm -rf "$tmpdir"
 }
 
 setup_launcher() {
     if [[ "$OS" == "linux" ]]; then
+        local tmpdir
+        tmpdir=$(mktemp -d)
+        curl -sSL "$url_toutui_desktop" -o "$tmpdir/toutui.desktop"
+        check_shasum "$tmpdir/toutui.desktop" "toutui.desktop" "${sha256sums[4]}" "dir"
         mkdir -p "$HOME/.local/share/applications"
-        curl -sSL "$url_toutui_desktop" -o "$HOME/.local/share/applications/toutui.desktop"
+        sudo cp "$tmpdir/toutui.desktop" "$HOME/.local/share/applications/toutui.desktop"
+        rm -rf $tmpdir
     fi
    # elif [[ "$OS" == "macOS" ]]; then
    #     mkdir -p "/Applications/toutui.app/Contents"

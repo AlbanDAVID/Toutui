@@ -721,14 +721,14 @@ impl App {
 
         let instructions = "\
 Update:
-1) Quit the app
-2) If you installed from the script: toutui --update
-   From yay: yay -S toutui
+- Quit the app
+- If you installed Toutui via yay: yay -S toutui
+- If you installed Toutui using the script: toutui --update
 
 Uninstall:
-1) Quit the app
-2) If you installed from the script: toutui --uninstall
-   From yay: yay -R toutui-bin
+- Quit the app
+- If you installed Toutui via yay: yay -R toutui-bin
+- If you installed Toutui using the script: toutui --uninstall
 ";
 
         match list_state.selected() {
