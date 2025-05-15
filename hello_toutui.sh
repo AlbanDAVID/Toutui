@@ -6,6 +6,7 @@
 
 # For test from AlbanDAVID toutui repo (stable branch)
 # bash -c 'tmpfile=$(mktemp) && curl -LsSf https://github.com/AlbanDAVID/Toutui/raw/stable/hello_toutui.sh -o "$tmpfile" && bash "$tmpfile" install && rm -f "$tmpfile"'
+#test
 
 set -eo pipefail
 
