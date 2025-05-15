@@ -93,9 +93,9 @@ check_shasum() {
 # [3] toutui-x86_64-unknown-linux-gnu.tar.gz
 # [4] toutui.desktop
 sha256sums=( 'e398fc5f9ff3f4a8841a9ae4675031a0f7e6e87b2762dab544ff23ae74eab0a9'
-             '34a2316a94e4dea7fd08d73a18c2683d2b5bbdf6a7683b183dc6ea212846fb92'
-             '519c28f8ea1a16a1e4ee74e2ee46c0ad2d3588439b036193513a14ad8e7d755b'
-             '59d5a7dec8b6ef84aab13cc9c7fa25f7675b102322c7680bea4709ee5b7d84f0'
+             '633f91fefa04c1946076feb0e30b6195b08b379fb6a7379b8d23610d950af8c7'
+             '716c80905a72dc77ef4de9ef85e5ef50f76bf29306adfb91a0734d06130eee99'
+             '21cff0370108981eee0a70660e31bed8960650eb7d85c3c10e4b7f044f1244f2'
              'cd3281594f0d27f559732539f841c3fa44dba192ca7f0fa0d21a97f1f97ce6a0'
             )
 
