@@ -87,6 +87,14 @@ cp /usr/share/toutui/config.example.toml ~/.config/toutui/config.toml
 # Token encryption in the database (NOTE: replace 'secret'):
 echo 'TOUTUI_SECRET_KEY=secret' >> ~/.config/toutui/.env
 ```
+Update
+```
+yay -S toutui
+```
+Uninstall
+```
+yay -R toutui-bin
+```
 
 ### Easy installation 
 
