@@ -70,10 +70,10 @@ check_shasum() {
     actual_sha256=$(shasum -a 256 "$tmpfile" | awk "{print \$1}")
 
     if [[ actual_sha256 != shasum[4] ]]; then
-        echo "[ERROR] Incorrect shasum for $file_name"
+        echo "[ERROR] Incorrect shasum for "$file_name""
         EXIT_INCORRECT_SHASUM
     else
-        echo "[INFO] shasum for $file_name: passed"
+        echo "[INFO] shasum for "$file_name": passed"
     fi
 
 }
