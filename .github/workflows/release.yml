@@ -54,8 +54,8 @@ jobs:
           mkdir -p dist
           cp ./config.example.toml dist/
           cp ./linux/toutui.desktop dist/
-          cp ./target/${{ matrix.target }}/release/toutui dist/toutui-${{ matrix.target }}
-
+          cp ./hello_toutui.sh dist/
+          
       - name: Create GitHub release and upload files
         uses: softprops/action-gh-release@v1
         with:
