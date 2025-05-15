@@ -92,7 +92,7 @@ check_shasum() {
 # [2] toutui-universal-apple-darwin.tar.gz
 # [3] toutui-x86_64-unknown-linux-gnu.tar.gz
 # [4] toutui.desktop
-sha256sums=( 'e398fc5f9ff3f4a8841a9ae4675031a0f7e6e87b2762dab544ff23ae74eab0a9'
+sha256sums=( '398fc5f9ff3f4a8841a9ae4675031a0f7e6e87b2762dab544ff23ae74eab0a9'
              '34a2316a94e4dea7fd08d73a18c2683d2b5bbdf6a7683b183dc6ea212846fb92'
              '519c28f8ea1a16a1e4ee74e2ee46c0ad2d3588439b036193513a14ad8e7d755b'
              '59d5a7dec8b6ef84aab13cc9c7fa25f7675b102322c7680bea4709ee5b7d84f0'
