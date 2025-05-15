@@ -68,15 +68,15 @@ check_shasum() {
     local expected_sha256=$3
     local file_type=$4
 
-    echo "expected: "$expected_sha256""
+    echo "expected shasum: "$expected_sha256""
     actual_sha256=$(shasum -a 256 "$tmpfile" | awk "{print \$1}")
-    echo "actual: "$actual_sha256""
+    echo "actual shasum: "$actual_sha256""
 
     if [[ "$actual_sha256" != "$expected_sha256" ]]; then
         echo "[ERROR] Incorrect shasum for \"$file_name\""
-        EXIT_INCORRECT_SHASUM
         if [[ "$file_type" == "dir" ]]; then
             rm -rf "$tmpdir"
+            EXIT_INCORRECT_SHASUM
         else
             rm "$tmpfile"
         fi
