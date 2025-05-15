@@ -12,7 +12,7 @@ set -eo pipefail
 main() {
     do_not_run_as_root
 
-    check_shasum $tmpfile "hello_toutui.sh"
+    check_shasum $tmpfile "hello_toutui.sh" $expected_sha256
 
     # Url variables for tests in AlbDav55 fork
    # url_config_file="https://github.com/AlbDav55/Toutui/raw/main/config.example.toml"
@@ -65,6 +65,7 @@ main() {
 check_shasum() {
     local tmpfile=$1
     local file_name=$2
+    local expected_sha256=$3
 
     actual_sha256=$(shasum -a 256 "$tmpfile" | awk "{print \$1}")
 
