@@ -13,7 +13,7 @@ set -eo pipefail
 main() {
     do_not_run_as_root
 
-    check_shasum $tmpfile hello_toutui.sh
+    check_shasum $tmpfile "hello_toutui.sh"
 
     # Url variables for tests in AlbDav55 fork
    # url_config_file="https://github.com/AlbDav55/Toutui/raw/main/config.example.toml"
@@ -71,7 +71,7 @@ check_shasum() {
     echo "$actual_sha256"
 
     if [[ actual_sha256 != shasum[1] ]]; then
-        echo "[ERROR] Incorrect shasum for "$file_name""
+        echo "[ERROR] Incorrect shasum for \"$file_name\""
         EXIT_INCORRECT_SHASUM
     else
         echo "[INFO] shasum for "$file_name": passed"
