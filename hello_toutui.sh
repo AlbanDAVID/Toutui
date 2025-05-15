@@ -13,7 +13,7 @@ set -eo pipefail
 main() {
     do_not_run_as_root
 
-    check_shasum $tmpfile "hello_toutui.sh"
+    check_shasum $tmpfile hello_toutui.sh
 
     # Url variables for tests in AlbDav55 fork
    # url_config_file="https://github.com/AlbDav55/Toutui/raw/main/config.example.toml"
