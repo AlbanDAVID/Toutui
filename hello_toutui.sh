@@ -76,10 +76,10 @@ check_shasum() {
         echo "actual shasum: "$actual_sha256""
         if [[ "$file_type" == "dir" ]]; then
             rm -rf "$tmpdir"
-            EXIT_INCORRECT_SHASUM
+            exit 1
         else
             rm "$tmpfile"
-            EXIT_INCORRECT_SHASUM
+            exit 1
         fi
     else
         echo "[INFO] shasum for "$file_name": passed"
@@ -1061,7 +1061,6 @@ load_exit_codes() {
     EXIT_CONFIG=7
     EXIT_BUILD_FAIL=8
     EXIT_INSTALL_DIR=9
-    EXIT_INCORRECT_SHASUM=10
 }
 
 do_not_run_as_root() {
