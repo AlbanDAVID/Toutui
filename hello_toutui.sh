@@ -581,7 +581,7 @@ install_message() {
     echo "Add the directory "toutui" in $HOME/Library/Preferences (or any other path specified in XDG_CONFIG_HOME) with inside the following files: "
     echo ".env, db.sqlite3, config.toml, toutui.log"
     echo " "
-    echo " You can run "toutui --uninstall" or the official uninstall curl link to remove all these added files."
+    echo " You can run "toutui --uninstall"/yay -R toutui-bin or the official uninstall curl link to remove all these added files."
     echo 'Only dependencies will not be uninstalled (e.g. VLC, Netcat, Rust, gsed, Homebrew)'
     echo " "
 }
