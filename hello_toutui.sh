@@ -13,6 +13,8 @@ set -eo pipefail
 main() {
     do_not_run_as_root
 
+    check_shasum $tmpfile "hello_toutui.sh"
+
     # Url variables for tests in AlbDav55 fork
    # url_config_file="https://github.com/AlbDav55/Toutui/raw/main/config.example.toml"
    # url_latest_release="https://api.github.com/repos/AlbDav55/Toutui/releases/latest"
@@ -60,6 +62,36 @@ main() {
         *) usage "INCORRECT_ARG";;
     esac
 }
+
+check_shasum() {
+    local tmpfile=$1
+    local file_name=$2
+
+    actual_sha256=$(shasum -a 256 "$tmpfile" | awk "{print \$1}")
+
+    if [[ actual_sha256 != shasum[4] ]]; then
+        echo "[ERROR] Incorrect shasum for $file_name"
+        EXIT_INCORRECT_SHASUM
+    else
+        echo "[INFO] shasum for $file_name: passed"
+    fi
+
+}
+
+
+# [0] toutui-x86_64-unknown-linux-gnu.tar.gz
+# [1] toutui-aarch64-unknown-linux-gnu.tar.gz
+# [2] config.example.toml
+# [3] toutui.desktop
+# [4] hello_toutui.sh
+sha256sums=('59d5a7dec8b6ef84aab13cc9c7fa25f7675b102322c7680bea4709ee5b7d84f0'
+            '34a2316a94e4dea7fd08d73a18c2683d2b5bbdf6a7683b183dc6ea212846fb92'
+             'e398fc5f9ff3f4a8841a9ae4675031a0f7e6e87b2762dab544ff23ae74eab0a9'
+             'cd3281594f0d27f559732539f841c3fa44dba192ca7f0fa0d21a97f1f97ce6a0'
+             '519c28f8ea1a16a1e4ee74e2ee46c0ad2d3588439b036193513a14ad8e7d755b'
+             '0f0c2e34f8ef07a91daf9f10819a1edf04c291c11d91fcce9045118bc64b0c4e'
+            )
+
 
 load_dependencies() {
     # Hard Coded dependencies here.
@@ -1006,6 +1038,7 @@ load_exit_codes() {
     EXIT_CONFIG=7
     EXIT_BUILD_FAIL=8
     EXIT_INSTALL_DIR=9
+    EXIT_INCORRECT_SHASUM=10
 }
 
 do_not_run_as_root() {
