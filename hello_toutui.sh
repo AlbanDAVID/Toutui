@@ -66,11 +66,12 @@ main() {
 check_shasum() {
     local tmpfile=$1
     local file_name=$2
+    local expected_sha256=$3
 
     actual_sha256=$(shasum -a 256 "$tmpfile" | awk "{print \$1}")
     echo "$actual_sha256"
 
-    if [[ actual_sha256 != shasum[1] ]]; then
+    if [[ "$actual_sha256" != "$expected_sha256" ]]; then
         echo "[ERROR] Incorrect shasum for \"$file_name\""
         EXIT_INCORRECT_SHASUM
     else
@@ -81,13 +82,11 @@ check_shasum() {
 
 
 # [0] config.example.toml
-# [1] hello_toutui.sh
-# [2] toutui-aarch64-unknown-linux-gnu.tar.gz
-# [3] toutui-universal-apple-darwin.tar.gz
-# [4] toutui-x86_64-unknown-linux-gnu.tar.gz
-# [5] toutui.desktop
+# [1] toutui-aarch64-unknown-linux-gnu.tar.gz
+# [2] toutui-universal-apple-darwin.tar.gz
+# [3] toutui-x86_64-unknown-linux-gnu.tar.gz
+# [4] toutui.desktop
 sha256sums=( 'e398fc5f9ff3f4a8841a9ae4675031a0f7e6e87b2762dab544ff23ae74eab0a9'
-             '0f0c2e34f8ef07a91daf9f10819a1edf04c291c11d91fcce9045118bc64b0c4e'
              '34a2316a94e4dea7fd08d73a18c2683d2b5bbdf6a7683b183dc6ea212846fb92'
              '519c28f8ea1a16a1e4ee74e2ee46c0ad2d3588439b036193513a14ad8e7d755b'
              '59d5a7dec8b6ef84aab13cc9c7fa25f7675b102322c7680bea4709ee5b7d84f0'
