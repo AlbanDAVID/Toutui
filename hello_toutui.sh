@@ -403,11 +403,11 @@ install_config() {
     local tmpdir
     tmpdir=$(mktemp -d)
     # dl config.example.toml in temp directory
-    curl -LsSf "$url_config_file" -o "$tmpdir/config.toml"
+    curl -LsSf "$url_config_file" -o "$tmpdir/config.example.toml"
 
-    check_shasum "$tmpdir/config.toml" "config.toml" "$sha256sums[0]"
+    check_shasum "$tmpdir/config.example.toml" "config.example.toml" "$sha256sums[0]"
 
-    local example_config="$tmpdir/config.toml"
+    local example_config="$tmpdir/config.example.toml"
     if ! [[ -f "$example_config" ]]; then
         echo "[ERROR] \"config.example.toml\" not found."
         exit $EXIT_CONFIG
