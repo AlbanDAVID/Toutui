@@ -685,6 +685,7 @@ setup_launcher() {
         check_shasum "$tmpdir/toutui.desktop" "toutui.desktop" "${sha256sums[4]}" "dir"
         mkdir -p "$HOME/.local/share/applications"
         sudo cp "$tmpdir/toutui.desktop" "$HOME/.local/share/applications/toutui.desktop"
+        rm -rf $tmpdir
     fi
    # elif [[ "$OS" == "macOS" ]]; then
    #     mkdir -p "/Applications/toutui.app/Contents"
