@@ -79,6 +79,7 @@ check_shasum() {
             EXIT_INCORRECT_SHASUM
         else
             rm "$tmpfile"
+            EXIT_INCORRECT_SHASUM
         fi
     else
         echo "[INFO] shasum for "$file_name": passed"
