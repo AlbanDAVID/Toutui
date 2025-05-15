@@ -55,6 +55,9 @@ If you encounter any issues that are **not yet listed** in the Issues section or
 At worst, you may experience **sync issues**, but there is **no risk** of data loss, deletion, or irreversible changes (API is just used to retrieve books and sync them).
 
 ## 📝 Notes
+### 🐛 **Issues**    
+For any issues, check first the [wiki](https://github.com/AlbanDAVID/Toutui/wiki/) and [issues](https://github.com/AlbanDAVID/Toutui/issues). Otherwise, open a new one.
+
 ### 🤝 **Contributing**  
 Do not hesitate to contribute to this project by submitting your code, ideas, or feedback. Please make sure to read the [contributing guidelines](https://github.com/AlbanDAVID/Toutui/blob/main/CONTRIBUTING.md) first.
 
@@ -72,7 +75,7 @@ To ensure the best experience, it's recommended to use **Kitty** or **Alacritty*
 
 >[!WARNING]
 > - **This is a beta app, please read [this](https://github.com/AlbanDAVID/Toutui?tab=readme-ov-file#%EF%B8%8F-caution-beta-version).**
->  - For any issues, check first the [wiki](https://github.com/AlbanDAVID/Toutui/wiki/). Otherwise, open an issue.
+>  - For any issues, check first the [wiki](https://github.com/AlbanDAVID/Toutui/wiki/) and [issues](https://github.com/AlbanDAVID/Toutui/issues). Otherwise, open a new one.
 
 ### Archlinux
 [![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&color=green&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
