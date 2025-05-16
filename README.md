@@ -31,7 +31,7 @@
 ## 🛠️ Roadmap  
 **Short-term Goals**  
 - Since this is a beta version, the main focus is on tracking and fixing bugs.
-
+- Improve the design of the integrated player.
 - **Currently working on the next release: [v0.4.3-beta].**
 
 
