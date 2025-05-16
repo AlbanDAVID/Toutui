@@ -98,7 +98,7 @@ Uninstall
 yay -R toutui-bin
 ```
 
-### Easy installation 
+### ⚡ Easy installation 
 
 **Run the following in your terminal, then follow the on-screen instructions:**    
 
