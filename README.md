@@ -35,8 +35,7 @@
 - **Currently working on the next release: [v0.4.3-beta].**
 
 
-**Mid-term Goals**  
-- Install the app with yay   
+**Mid-term Goals**   
 - CI/CD Implementation  
 - Add future features described bellow.
 
