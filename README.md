@@ -77,7 +77,7 @@ To ensure the best experience, it's recommended to use **Kitty** or **Alacritty*
 > - **This is a beta app, please read [this](https://github.com/AlbanDAVID/Toutui?tab=readme-ov-file#%EF%B8%8F-caution-beta-version).**
 >  - For any issues, check first the [wiki](https://github.com/AlbanDAVID/Toutui/wiki/) and [issues](https://github.com/AlbanDAVID/Toutui/issues). Otherwise, open a new one.
 
-### Archlinux
+### <img src=".github/archlinux-icon.svg" align="top" width="24" alt="Tux (Arch Linux)"/> Arch Linux
 [![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&color=green&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
 ![AUR Version](https://img.shields.io/aur/version/toutui-bin?color=green&label=AUR)
 ```
