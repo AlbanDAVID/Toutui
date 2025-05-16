@@ -1,5 +1,5 @@
 [![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&color=green&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
-[![AUR package](https://repology.org/badge/version-for-repo/aur/toutui.svg)](https://repology.org/project/toutui/versions)
+![AUR Version](https://img.shields.io/aur/version/toutui-bin?color=green&label=AUR)
 [![Release](https://github.com/AlbanDAVID/Toutui/actions/workflows/release.yml/badge.svg)](https://github.com/AlbanDAVID/Toutui/actions/workflows/release.yml)
 
 # 🦜 Toutui: A TUI Audiobookshelf client for Linux and macOS
@@ -79,7 +79,7 @@ To ensure the best experience, it's recommended to use **Kitty** or **Alacritty*
 
 ### Archlinux
 [![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&color=green&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
-[![AUR package](https://repology.org/badge/version-for-repo/aur/toutui.svg)](https://repology.org/project/toutui/versions)
+![AUR Version](https://img.shields.io/aur/version/toutui-bin?color=green&label=AUR)
 ```
 yay -S toutui
 mkdir -p ~/.config/toutui
