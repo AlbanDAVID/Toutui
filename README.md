@@ -81,7 +81,7 @@ To ensure the best experience, it's recommended to use **Kitty** or **Alacritty*
 [![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&color=green&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
 ![AUR Version](https://img.shields.io/aur/version/toutui-bin?color=green&label=AUR)
 
-Installation
+Installation and initial configuration
 ```
 yay -S toutui
 mkdir -p ~/.config/toutui
