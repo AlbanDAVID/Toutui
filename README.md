@@ -32,7 +32,7 @@
 **Short-term Goals**  
 - Since this is a beta version, the main focus is on tracking and fixing bugs.
 
-- **Currently working on the next release: [v0.4.1-beta].**
+- **Currently working on the next release: [v0.4.3-beta].**
 
 
 **Mid-term Goals**  
