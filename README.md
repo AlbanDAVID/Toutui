@@ -80,6 +80,8 @@ To ensure the best experience, it's recommended to use **Kitty** or **Alacritty*
 ### <img src=".github/archlinux-icon.svg" align="top" width="24" alt="Tux (Arch Linux)"/> Arch Linux
 [![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&color=green&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
 ![AUR Version](https://img.shields.io/aur/version/toutui-bin?color=green&label=AUR)
+
+Installation
 ```
 yay -S toutui
 mkdir -p ~/.config/toutui
