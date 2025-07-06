@@ -203,7 +203,7 @@ cd target/release
 
 ##### Files installed:
 After installation, you will have the following files in `~/.config/toutui`
-- `.env` — Contains the secret key.
+- `.env` - Contains the secret key.
 - `config.toml` - Configuration file.
 - `toutui.log` - Log file.
 - `db.sqlite3` - SQLite database file.
