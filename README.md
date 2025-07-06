@@ -141,20 +141,20 @@ bash -c 'expected_sha256="b5c41bcd3c480fd2ca6ec0031ccecf2cf7cf4ae01f591cad64a320
 
 ##### Files installed:
 In `/usr/local/bin` (option 1, from install script) or `~/.cargo/bin` (option 2, from install script) or `/usr/bin` (yay)  :
-- `toutui` — The binary file.
+- `toutui` - The binary file.
 
 In `~/.config/toutui` for Linux or `~/Library/Preferences` for macOS:    
 **Note**: This is the default path if `XDG_CONFIG_HOME` is empty. 
-- `.env` — Contains the secret key.
-- `config.toml` — Configuration file.
-- `toutui.log` — Log file.
-- `db.sqlite3` — SQLite database file.
+- `.env` - Contains the secret key.
+- `config.toml` - Configuration file.
+- `toutui.log` - Log file.
+- `db.sqlite3` - SQLite database file.
 
 In `~/.local/share/applications` (option 1, from install script) or `/usr/share/applications` (yay) for Linux:
-- `toutui.desktop` — Config file to launch Toutui from a launcher app.
+- `toutui.desktop` - Config file to launch Toutui from a launcher app.
 
 In `/usr/share/toutui` (yay):
-- `config.example.toml` — Configuration file.
+- `config.example.toml` - Configuration file.
 
 ### Install from source
 
@@ -204,6 +204,6 @@ cd target/release
 ##### Files installed:
 After installation, you will have the following files in `~/.config/toutui`
 - `.env` — Contains the secret key.
-- `config.toml` — Configuration file.
-- `toutui.log` — Log file.
-- `db.sqlite3` — SQLite database file.
+- `config.toml` - Configuration file.
+- `toutui.log` - Log file.
+- `db.sqlite3` - SQLite database file.
