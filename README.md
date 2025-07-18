@@ -41,6 +41,7 @@
 
 ## 🔮 Future features
 Here are some features that could be added in future releases:
+- Playlist/Collections view
 - Ability to add new podcasts from the app
 - Add stats
 - Offline mode
