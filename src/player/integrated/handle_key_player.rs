@@ -63,7 +63,7 @@ pub fn handle_key_player(key: &str, address: &str, port: &str, is_playback: &mut
         // next chapter
         "P" => {
             writeln!(stream, "pause")?;
-            writeln!(stream, "chapter_n")?;
+            writeln!(stream, "next")?;
             if cfg!(target_os = "macos") {
             thread::sleep(Duration::from_millis(500));
             }
@@ -72,7 +72,7 @@ pub fn handle_key_player(key: &str, address: &str, port: &str, is_playback: &mut
         // previous chapter
         "U" => {
             writeln!(stream, "pause")?;
-            writeln!(stream, "chapter_p")?;
+            writeln!(stream, "prev")?;
             if cfg!(target_os = "macos") {
             thread::sleep(Duration::from_millis(500));
             }

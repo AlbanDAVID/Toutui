@@ -5,4 +5,5 @@ config.toml
 /src/changelog.txt
 /src/macos-sonoma
 /src/macos-sonoma.conf
+tags
 

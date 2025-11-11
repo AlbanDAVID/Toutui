@@ -53,12 +53,10 @@ pub async fn handle_l_book(
                         "".to_string(), // chapter
                         ); 
                         
-                    // clone otherwise, these variable will  be consumed and not available anymore
+                    // clone otherwise, these variable will be consumed and not available anymore
                     // for use outside start_vlc spawn
-                    let token_clone = token.clone();
                     let port_clone = port.clone();
                     let info_item_clone = info_item.clone() ;
-                    let server_address_clone = server_address.clone() ;
                     let address_player_clone = address_player.clone() ;
                     let username_clone = username.clone();
                     
@@ -66,20 +64,19 @@ pub async fn handle_l_book(
                     tokio::spawn(async move {
                         // this info! is not the most reliable to know is VLC is really launched
                         info!("[handle_l_book][start_vlc] VLC successfully launched");
-                        start_vlc(
+                        start_vlc_book(
                             &info_item_clone[0], // current_time
                             &port_clone, // player port
                             address_player_clone, // player address
-                            &info_item_clone[1], // content url 
-                            Some(&token_clone), //token
+                            &info_item_clone[1], // full_urls_vec
                             info_item_clone[4].clone(), //title
                             info_item_clone[5].clone(), // subtitle
                             info_item_clone[6].clone(), //title
-                            server_address_clone.clone(), // server address
                             program.clone(),
                             username_clone
-                            ).await;
+                        ).await;
                     });
+
 
 
                     if is_cvlc_term == "1" {
