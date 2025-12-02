@@ -88,7 +88,7 @@ body:
     id: logs
     attributes:
       label: Logs
-      description: Logs are present in ~/.config/toutui/toutui.log
+      description: Logs are present in ~/.config/toutui/toutui.log (Linux) or ~/Library/Preferences/toutui.log (macOS)
       placeholder: Paste logs here
   - type: textarea
     id: panicked-message
