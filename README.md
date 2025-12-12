@@ -1,3 +1,5 @@
+## ⚠️ I'm not able to properly maintain this project anymore. That's why I archived this repo. Thus, please don't wait for any new releases and issue fixing. Of course, you can still install the app and use it. Although it's a beta version, it might still work well for you. Thanks!
+
 [![GitHub release](https://img.shields.io/github/v/release/AlbanDAVID/Toutui?label=Latest%20Release&color=green&cacheSeconds=3600)](https://github.com/AlbanDAVID/Toutui/releases/latest)
 ![AUR Version](https://img.shields.io/aur/version/toutui-bin?color=green&label=AUR)
 [![Release](https://github.com/AlbanDAVID/Toutui/actions/workflows/release.yml/badge.svg)](https://github.com/AlbanDAVID/Toutui/actions/workflows/release.yml)
